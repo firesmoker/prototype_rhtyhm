@@ -103,15 +103,15 @@ func bar_loop() -> void:
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
 		if pointer.position.x >= current_note_x_position - note_visual_offset and pointer.position.x <= current_note_x_position + note_visual_offset:
 		#if pointer.position.x >= current_note_x_position - note_visual_offset / 2 and pointer.position.x <= current_note_x_position + note_visual_offset:
-			if not taking_input and notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
-				if notes[current_note_num].type != "rest":
-					notes[current_note_num].scale *= 1.25
-					notes[current_note_num].position.y -= note_highlight_offset
+			#if not taking_input and notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
+				#if notes[current_note_num].type != "rest":
+					#notes[current_note_num].scale = original_note_scale * 1.25
+					#notes[current_note_num].position.y -= note_highlight_offset
 			taking_input = true
 		elif pointer.position.x >= current_note_x_position + note_visual_offset:
-			if notes[current_note_num].type != "rest":
-				notes[current_note_num].scale = original_note_scale
-				notes[current_note_num].position.y += note_highlight_offset
+			#if notes[current_note_num].type != "rest":
+				#notes[current_note_num].scale = original_note_scale
+				#notes[current_note_num].position.y += note_highlight_offset
 			current_note_num += 1
 			if current_note_num < notes_dictionary.size():
 				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE
@@ -128,6 +128,18 @@ func bar_loop() -> void:
 			finished_round = true
 		await beat_signal
 		restart_level()
+
+func pulse(note_num: int) -> void:
+	notes[note_num].scale = original_note_scale * 1.25
+	notes[note_num].position.y -= note_highlight_offset
+	var timer: Timer = Timer.new()
+	add_child(timer)
+	timer.wait_time = 0.2
+	timer.start()
+	await timer.timeout
+	print("timer stopped")
+	notes[note_num].scale = original_note_scale
+	notes[note_num].position.y += note_highlight_offset
 
 func restart_level() -> void:
 	points = 0

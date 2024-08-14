@@ -32,6 +32,7 @@ tempo = 110.0
 position = Vector2(-300, 209)
 
 [node name="Pointer_AI" parent="." instance=ExtResource("2_0fjou")]
+visible = false
 self_modulate = Color(1, 1, 0, 1)
 material = SubResource("CanvasItemMaterial_6l6um")
 position = Vector2(-600, 209)

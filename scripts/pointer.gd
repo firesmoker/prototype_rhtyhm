@@ -40,15 +40,16 @@ func _process(delta: float) -> void:
 		var t: float = game_manager.elapsed_time / duration
 		position = start_position.lerp(target_position, t)
 	
-	if type == "teacher":
-		if notes_played_count < notes_to_play.size():
-			if position.x >= notes_to_play[notes_played_count].position.x:
-				if not MusicPlayer.playing:
-					MusicPlayer.play()
-				if notes_to_play[notes_played_count].type == "note":
-					MusicPlayer.get_child(0).play()
+	#if type == "teacher":
+	if notes_played_count < notes_to_play.size():
+		if position.x >= notes_to_play[notes_played_count].position.x:
+			game_manager.pulse(notes_played_count)
+			if not MusicPlayer.playing:
+				MusicPlayer.play()
+			if type == "teacher":
+				MusicPlayer.get_child(0).play()
 				print("sounding" + str(notes_played_count))
-				notes_played_count += 1
-		elif not position.x >= game_manager.notes[game_manager.notes.size() - 1].position.x:
-			notes_played_count = 0
-			notes_to_play = game_manager.notes
+			notes_played_count += 1
+	elif not position.x >= game_manager.notes[game_manager.notes.size() - 1].position.x:
+		notes_played_count = 0
+		notes_to_play = game_manager.notes
