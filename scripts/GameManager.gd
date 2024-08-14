@@ -1,7 +1,11 @@
 class_name GameManager extends Node
 @onready var points_text: Label = $"../HUD/PointsText"
+@onready var instruction: Label = $"../HUD/Instruction"
+
 @onready var pointer: Sprite2D = $"../Pointer"
 @onready var pointer_ai: Sprite2D = $"../Pointer_AI"
+@onready var background: Sprite2D = $"../Background"
+
 @export var notes: Array[Node2D]
 @export var note_y_location: float = -40
 @export var note_quarter_gap: float = 300
@@ -53,6 +57,7 @@ func _ready() -> void:
 	print(notes_dictionary)
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("play"):
+		sfx_player.stream = MusicPlayer.player_hit_sound
 		sfx_player.play()
 		if taking_input:
 			if current_note_num < notes_dictionary.size():
@@ -142,6 +147,10 @@ func pulse(note_num: int) -> void:
 	notes[note_num].position.y += note_highlight_offset
 
 func restart_level() -> void:
+	#if instruction.text == "Listen...":
+		#instruction.text = "Play!"
+	#else:
+		#instruction.text = "Listen..."
 	points = 0
 	points_text.text = "Points: " + str(points)
 	current_note_num = 0

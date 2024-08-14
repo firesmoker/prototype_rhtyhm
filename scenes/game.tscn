@@ -15,8 +15,8 @@ offsets = PackedFloat32Array(0, 0.11)
 gradient = SubResource("Gradient_aaadu")
 
 [sub_resource type="Gradient" id="Gradient_sorua"]
-offsets = PackedFloat32Array(0, 0.215)
-colors = PackedColorArray(0, 0, 0, 1, 0.560784, 0, 1, 1)
+offsets = PackedFloat32Array(0, 0.215, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.560784, 0, 1, 1, 0.560784, 0, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_5ns1f"]
 gradient = SubResource("Gradient_sorua")
@@ -75,6 +75,17 @@ offset_right = 380.0
 offset_bottom = 69.0
 theme_override_font_sizes/font_size = 50
 text = "Points: 0"
+autowrap_mode = 3
+
+[node name="Instruction" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -380.0
+offset_bottom = 69.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 50
+text = "Listen..."
 autowrap_mode = 3
 
 [node name="Music-staff" type="Sprite2D" parent="."]
