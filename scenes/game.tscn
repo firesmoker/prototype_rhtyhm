@@ -1,0 +1,94 @@
+[gd_scene load_steps=10 format=3 uid="uid://ckjo1flpk6cyw"]
+
+[ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_23irw"]
+[ext_resource type="PackedScene" uid="uid://cbv1drvhlkirr" path="res://scenes/pointer.tscn" id="2_0fjou"]
+[ext_resource type="PackedScene" uid="uid://bum12kke1fy0l" path="res://scenes/note.tscn" id="3_x7au0"]
+[ext_resource type="Texture2D" uid="uid://cxsp7jlidq1nt" path="res://Music-staff.png" id="5_dldts"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_aaadu"]
+offsets = PackedFloat32Array(0, 0.11)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wjeh1"]
+gradient = SubResource("Gradient_aaadu")
+
+[sub_resource type="Gradient" id="Gradient_sorua"]
+offsets = PackedFloat32Array(0, 0.215)
+colors = PackedColorArray(0, 0, 0, 1, 0.560784, 0, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5ns1f"]
+gradient = SubResource("Gradient_sorua")
+
+[node name="Game" type="Node2D"]
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("notes")]
+script = ExtResource("1_23irw")
+notes = [NodePath("../Notes/Note"), NodePath("../Notes/Note2"), NodePath("../Notes/Note3"), NodePath("../Notes/Note4")]
+tempo = 110.0
+
+[node name="Pointer" parent="." instance=ExtResource("2_0fjou")]
+position = Vector2(-300, 209)
+
+[node name="Pointer_AI" parent="." instance=ExtResource("2_0fjou")]
+self_modulate = Color(1, 1, 0, 1)
+material = SubResource("CanvasItemMaterial_6l6um")
+position = Vector2(-600, 209)
+type = "teacher"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+visible = false
+position = Vector2(500, 2.08165e-12)
+zoom = Vector2(0.8, 0.8)
+
+[node name="Notes" type="Node2D" parent="."]
+
+[node name="Note" parent="Notes" instance=ExtResource("3_x7au0")]
+position = Vector2(0, 2.08165e-12)
+
+[node name="Note2" parent="Notes" instance=ExtResource("3_x7au0")]
+position = Vector2(300, 2.08165e-12)
+
+[node name="Note3" parent="Notes" instance=ExtResource("3_x7au0")]
+position = Vector2(600, 2.08165e-12)
+
+[node name="Note4" parent="Notes" instance=ExtResource("3_x7au0")]
+position = Vector2(900, 2.08165e-12)
+type = "rest"
+
+[node name="Left Pole" parent="Notes" instance=ExtResource("3_x7au0")]
+visible = false
+modulate = Color(1, 1, 1, 0.282353)
+position = Vector2(-300, 2.08165e-12)
+
+[node name="Right Pole" parent="Notes" instance=ExtResource("3_x7au0")]
+visible = false
+modulate = Color(1, 1, 1, 0.282353)
+position = Vector2(1200, 2.08165e-12)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="PointsText" type="Label" parent="HUD"]
+offset_right = 380.0
+offset_bottom = 69.0
+theme_override_font_sizes/font_size = 50
+text = "Points: 0"
+autowrap_mode = 3
+
+[node name="Music-staff" type="Sprite2D" parent="."]
+position = Vector2(602.566, -58)
+scale = Vector2(9.81566, 2.77)
+texture = ExtResource("5_dldts")
+
+[node name="Sprite2D" type="Sprite2D" parent="Music-staff"]
+z_index = -1
+position = Vector2(-3.36871, 0.180509)
+scale = Vector2(5.05092, 1.48353)
+texture = SubResource("GradientTexture2D_wjeh1")
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(502, 109)
+scale = Vector2(35.1719, 35.1719)
+texture = SubResource("GradientTexture2D_5ns1f")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://cksvqiylgjqqt"]
+
+[ext_resource type="AudioStream" uid="uid://t2crloi2hxwb" path="res://BabyShark_Fmajor_110bpm_vocals.wav" id="1_1loog"]
+[ext_resource type="Script" path="res://scripts/music_player.gd" id="2_br3nq"]
+[ext_resource type="AudioStream" uid="uid://d15qg3acufuou" path="res://snare_hit_3.wav" id="3_o85pl"]
+
+[node name="MusicPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_1loog")
+volume_db = -4.952
+script = ExtResource("2_br3nq")
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_o85pl")
+pitch_scale = 1.1

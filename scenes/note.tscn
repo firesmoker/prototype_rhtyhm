@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bum12kke1fy0l"]
+
+[ext_resource type="Texture2D" uid="uid://d0dcsnv4rfoy3" path="res://quarter-note.png" id="1_fe3kh"]
+[ext_resource type="Script" path="res://scripts/note.gd" id="2_ig1r4"]
+
+[node name="Note" type="Sprite2D"]
+scale = Vector2(0.28125, 0.28125)
+texture = ExtResource("1_fe3kh")
+script = ExtResource("2_ig1r4")
