@@ -18,6 +18,7 @@ class_name GameManager extends Node
 @export var miss_color: Color = Color.RED
 @export var success_color: Color = Color.TURQUOISE
 
+var stage_index: int = 0
 var original_note_scale: Vector2 = Vector2(0.281,0.281)
 enum note_status {IDLE,ACTIVE,PLAYED,MISSED}
 
@@ -39,13 +40,17 @@ signal notes_populated_signal
 
 
 func load_rhythmic_pattern_level() -> void:
+	
+	notes_dictionary.clear()
 	#populate_note_nodes()
 	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://rhythmGameLevelExampleLevel2.json")
-	var stages: Dictionary = rhythm_game_level.get_stage(1)
+	stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
+	print("load new rhythmic pattern for stage ", stage_index)
+	var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
 	# Assuming stages["notes"] contains the list of notes
 	var input_notes: Array[Dictionary] = []
-	if "notes" in stages:
-		for note: Dictionary in stages["notes"]:
+	if "notes" in stage:
+		for note: Dictionary in stage["notes"]:
 			input_notes.append(note)
 			
 	populate_note_nodes(input_notes.size())
@@ -173,6 +178,7 @@ func _process(delta: float) -> void:
 	bar_loop()
 
 func bar_loop() -> void:
+	#print("current_note_num, notes_dictionary.size():  ",current_note_num, notes_dictionary.size())
 	if current_note_num < notes_dictionary.size():
 		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
@@ -197,12 +203,16 @@ func bar_loop() -> void:
 		if points >= 30 and not finished_round:
 			print("you win!")
 			finished_round = true
+			print("RESTART!")
 		elif not finished_round:
 			print("you lose")
 			finished_round = true
+			print("RESTART!")
 		await beat_signal
-		print("RESTART!")
-		restart_level()
+		if finished_round:
+			restart_level()
+			finished_round = false
+		
 
 func pulse(note_num: int) -> void:
 	note_nodes[note_num].scale = original_note_scale * 1.25

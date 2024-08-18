@@ -8,7 +8,7 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
 
-[sub_resource type="Shader" id="Shader_x8kq1"]
+[sub_resource type="Shader" id="Shader_phnkf"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -29,10 +29,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
 resource_local_to_scene = true
-shader = SubResource("Shader_x8kq1")
+shader = SubResource("Shader_phnkf")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_tmcrv"]
+[sub_resource type="Shader" id="Shader_ofuox"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -53,7 +53,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_tmcrv")
+shader = SubResource("Shader_ofuox")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]

@@ -61,6 +61,41 @@
 			  "is_rest": false
 			}
 		  ]
+		},
+		{
+		  "stageNumber": 3,
+		  "notes": [
+			{
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			},
+			{
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			},
+			{
+				"note": "C3",
+				"duration": 1.0,
+				"is_rest": false
+			},
+			{
+			  "note": "C3",
+			  "duration": 0.5,
+			  "is_rest": false
+			},
+			{
+			  "note": "C3",
+			  "duration": 0.5,
+			  "is_rest": false
+			},
+			{
+			  "note": "C3",
+			  "duration": 1.0,
+			  "is_rest": false
+			}
+		  ]
 		}
 	  ]
 	}

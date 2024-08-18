@@ -43,6 +43,10 @@ func get_stages() -> Array[Dictionary]:
 					stages.append(stage)
 	return stages
 	
+
+func get_stages_number() -> int: 
+	return get_stages().size()
+	
 # Optional: Function to return a specific stage by stage number
 func get_stage(stage_number: int) -> Dictionary:
 	#var stages: Array[Dictionary] = get_stages()  # Specify the type of items in the array
