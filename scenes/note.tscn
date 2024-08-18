@@ -1,9 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://bum12kke1fy0l"]
+[gd_scene load_steps=5 format=3 uid="uid://bum12kke1fy0l"]
 
 [ext_resource type="Texture2D" uid="uid://d0dcsnv4rfoy3" path="res://quarter-note.png" id="1_fe3kh"]
+[ext_resource type="Shader" path="res://note.gdshader" id="1_j46fp"]
 [ext_resource type="Script" path="res://scripts/note.gd" id="2_ig1r4"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hv2uj"]
+resource_local_to_scene = true
+shader = ExtResource("1_j46fp")
+shader_parameter/color = Color(0, 0, 0, 1)
+
 [node name="Note" type="Sprite2D"]
+z_index = 2
+material = SubResource("ShaderMaterial_hv2uj")
 scale = Vector2(0.28125, 0.28125)
 texture = ExtResource("1_fe3kh")
 script = ExtResource("2_ig1r4")

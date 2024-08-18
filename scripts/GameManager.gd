@@ -14,6 +14,10 @@ class_name GameManager extends Node
 @export var tempo: float = 120 # in BPM
 @export var points: int = 0
 @export var points_per_note: float = 10
+
+@export var miss_color: Color = Color.RED
+@export var success_color: Color = Color.TURQUOISE
+
 var original_note_scale: Vector2 = Vector2(0.281,0.281)
 enum note_status {IDLE,ACTIVE,PLAYED,MISSED}
 
@@ -135,6 +139,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						var penalty: int = int(4 - accuracy / (100 / 4)) * 4
 						print(accuracy)
 						print(penalty)
+						note_nodes[current_note_num].material.set_shader_parameter("color", success_color * (1 - (penalty * 0.05)))
 						points += points_per_note - penalty
 						points_text.text = "Points: " + str(points)
 						print("yay")
@@ -174,6 +179,13 @@ func bar_loop() -> void:
 		if pointer.position.x >= current_note_x_position - offset and pointer.position.x <= current_note_x_position + offset:
 			taking_input = true
 		elif pointer.position.x >= current_note_x_position + note_visual_offset:
+			if notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
+				if not notes_dictionary[current_note_num]["type"] == "rest":
+					notes_dictionary[current_note_num]["status"] != note_status.MISSED
+					note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
+				else:
+					notes_dictionary[current_note_num]["status"] != note_status.PLAYED
+					note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
 			current_note_num += 1
 			if current_note_num < notes_dictionary.size():
 				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE

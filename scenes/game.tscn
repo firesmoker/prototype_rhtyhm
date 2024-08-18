@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ckjo1flpk6cyw"]
+[gd_scene load_steps=14 format=3 uid="uid://ckjo1flpk6cyw"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_23irw"]
 [ext_resource type="PackedScene" uid="uid://cbv1drvhlkirr" path="res://scenes/pointer.tscn" id="2_0fjou"]
@@ -7,6 +7,54 @@
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
+
+[sub_resource type="Shader" id="Shader_x8kq1"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+uniform vec4 color: source_color;
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	COLOR.rgb = color.rgb;
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
+resource_local_to_scene = true
+shader = SubResource("Shader_x8kq1")
+shader_parameter/color = Color(0, 0, 0, 1)
+
+[sub_resource type="Shader" id="Shader_tmcrv"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+uniform vec4 color: source_color;
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	COLOR.rgb = color.rgb;
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
+resource_local_to_scene = true
+shader = SubResource("Shader_tmcrv")
+shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]
 offsets = PackedFloat32Array(0, 0.11)
@@ -31,6 +79,7 @@ tempo = 110.0
 position = Vector2(-300, 209)
 
 [node name="Pointer_AI" parent="." instance=ExtResource("2_0fjou")]
+visible = false
 self_modulate = Color(1, 1, 0, 1)
 material = SubResource("CanvasItemMaterial_6l6um")
 position = Vector2(-600, 209)
@@ -46,11 +95,13 @@ zoom = Vector2(0.8, 0.8)
 [node name="Left Pole" parent="Notes" instance=ExtResource("3_x7au0")]
 visible = false
 modulate = Color(1, 1, 1, 0.282353)
+material = SubResource("ShaderMaterial_3go28")
 position = Vector2(-300, 2.08165e-12)
 
 [node name="Right Pole" parent="Notes" instance=ExtResource("3_x7au0")]
 visible = false
 modulate = Color(1, 1, 1, 0.282353)
+material = SubResource("ShaderMaterial_64de8")
 position = Vector2(1200, 2.08165e-12)
 
 [node name="HUD" type="CanvasLayer" parent="."]
@@ -63,6 +114,7 @@ text = "Points: 0"
 autowrap_mode = 3
 
 [node name="Instruction" type="Label" parent="HUD"]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
