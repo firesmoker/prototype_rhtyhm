@@ -1,12 +1,13 @@
 class_name GameManager extends Node
 @onready var points_text: Label = $"../HUD/PointsText"
 @onready var instruction: Label = $"../HUD/Instruction"
+@onready var notes_container: Node2D = $"../Notes"
 
 @onready var pointer: Sprite2D = $"../Pointer"
 @onready var pointer_ai: Sprite2D = $"../Pointer_AI"
 @onready var background: Sprite2D = $"../Background"
 
-@export var notes: Array[Node2D]
+@export var note_nodes: Array[Note]
 @export var note_y_location: float = -40
 @export var note_quarter_gap: float = 300
 @export var note_visual_offset: float = 100
@@ -27,12 +28,13 @@ var taking_input: bool = false
 var current_note_num: int = 0
 var note_highlight_offset: float = 10
 var sfx_player: AudioStreamPlayer
-
+var NoteScene: PackedScene = preload("res://scenes/note.tscn")
 signal beat_signal
 
 
 
 func load_rhythmic_pattern_level() -> void:
+	#populate_note_nodes()
 	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://rhythmGameLevelExampleLevel2.json")
 	var stages: Dictionary = rhythm_game_level.get_stage(1)
 	# Assuming stages["notes"] contains the list of notes
@@ -41,23 +43,24 @@ func load_rhythmic_pattern_level() -> void:
 		for note: Dictionary in stages["notes"]:
 			input_notes.append(note)
 			
+	populate_note_nodes(input_notes.size())
 			
 	for i in range(input_notes.size()):
 		var type: String  = "note"
 		if input_notes[i]["is_rest"]:
 			type = "rest"
 		notes_dictionary[i] = {
-			"x_location": i * note_quarter_gap,
-			"duration": "quarter",  # Assuming all are quarter notes, adjust as needed
+			"x_location": i * note_quarter_gap * input_notes[i]["duration"],
+			"duration": input_notes[i]["duration"],  # Assuming all are quarter notes, adjust as needed
 			"type": type,
 			"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
 		}
-		notes[i].set_type(type)
+		note_nodes[i].set_type(type)
 	
 	notes_dictionary[0]["status"] = note_status.ACTIVE
 	
 	var count: int = 0
-	for note in notes:
+	for note in note_nodes:
 		note.position.x = notes_dictionary[count]["x_location"]
 		note.position.y = note_y_location
 		count += 1
@@ -66,6 +69,8 @@ func load_rhythmic_pattern_level() -> void:
 	
 	
 func _ready() -> void:
+	
+	#populate_note_nodes()
 	sfx_player = MusicPlayer.get_child(0)
 	if not MusicPlayer.playing:
 		MusicPlayer.play()
@@ -79,23 +84,23 @@ func _ready() -> void:
 		for note: Dictionary in stages["notes"]:
 			input_notes.append(note)
 			
-			
+	populate_note_nodes(input_notes.size())	
 	for i in range(input_notes.size()):
 		var type: String  = "note"
 		if input_notes[i]["is_rest"]:
 			type = "rest"
 		notes_dictionary[i] = {
 			"x_location": i * note_quarter_gap,
-			"duration": "quarter",  # Assuming all are quarter notes, adjust as needed
+			"duration": 1,  # Assuming all are quarter note, adjust as needed
 			"type": type,
 			"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
 		}
-		notes[i].type = type
+		note_nodes[i].type = type
 	
 	notes_dictionary[0]["status"] = note_status.ACTIVE
 	
 	var count: int = 0
-	for note in notes:
+	for note in note_nodes:
 		note.position.x = notes_dictionary[count]["x_location"]
 		note.position.y = note_y_location
 		count += 1
@@ -111,7 +116,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if taking_input:
 			if current_note_num < notes_dictionary.size():
 				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
-					if notes[current_note_num].type != "rest":
+					if note_nodes[current_note_num].type != "rest":
 						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
 						pointer.modulate = Color.GREEN # TEMPORARY
 						var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
@@ -156,16 +161,8 @@ func bar_loop() -> void:
 	if current_note_num < notes_dictionary.size():
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
 		if pointer.position.x >= current_note_x_position - note_visual_offset and pointer.position.x <= current_note_x_position + note_visual_offset:
-		#if pointer.position.x >= current_note_x_position - note_visual_offset / 2 and pointer.position.x <= current_note_x_position + note_visual_offset:
-			#if not taking_input and notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
-				#if notes[current_note_num].type != "rest":
-					#notes[current_note_num].scale = original_note_scale * 1.25
-					#notes[current_note_num].position.y -= note_highlight_offset
 			taking_input = true
 		elif pointer.position.x >= current_note_x_position + note_visual_offset:
-			#if notes[current_note_num].type != "rest":
-				#notes[current_note_num].scale = original_note_scale
-				#notes[current_note_num].position.y += note_highlight_offset
 			current_note_num += 1
 			if current_note_num < notes_dictionary.size():
 				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE
@@ -184,18 +181,19 @@ func bar_loop() -> void:
 		restart_level()
 
 func pulse(note_num: int) -> void:
-	notes[note_num].scale = original_note_scale * 1.25
-	notes[note_num].position.y -= note_highlight_offset
+	note_nodes[note_num].scale = original_note_scale * 1.25
+	note_nodes[note_num].position.y -= note_highlight_offset
 	var timer: Timer = Timer.new()
 	add_child(timer)
 	timer.wait_time = 0.2
 	timer.start()
 	await timer.timeout
 	print("timer stopped")
-	notes[note_num].scale = original_note_scale
-	notes[note_num].position.y += note_highlight_offset
+	note_nodes[note_num].scale = original_note_scale
+	note_nodes[note_num].position.y += note_highlight_offset
 
 func restart_level() -> void:
+	#populate_note_nodes()
 	load_rhythmic_pattern_level()
 	#if instruction.text == "Listen...":
 		#instruction.text = "Play!"
@@ -214,3 +212,15 @@ func restart_level() -> void:
 	pointer_ai.position = pointer_ai.start_position
 	
 	elapsed_time = 0
+	
+func populate_note_nodes(number_of_notes: int = 4) -> void:
+	note_nodes.clear()
+	for n: Node in notes_container.get_children():
+		notes_container.remove_child(n)
+		n.queue_free()
+		
+	print(note_nodes.size())
+	for i: int in range(number_of_notes):
+		var instance: Note = NoteScene.instantiate() as Note
+		notes_container.add_child(instance)
+		note_nodes.append(instance)

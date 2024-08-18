@@ -14,12 +14,12 @@ var original_beat_duration: float = 4
 var original_duration: float
 var player_start_position_x: float
 var teacher_start_position_x: float
-var notes_to_play: Array[Node2D]
+var notes_to_play: Array[Note]
 var notes_played_count: int = 0
 var sfx_player: AudioStreamPlayer = MusicPlayer.get_child(0)
 
 func _ready() -> void:
-	notes_to_play = game_manager.notes
+	notes_to_play = game_manager.note_nodes
 	player_start_position_x = game_manager.note_quarter_gap * (4 - beat_duration - pointer_offset)
 	teacher_start_position_x = game_manager.note_quarter_gap * (beat_duration - pointer_offset)
 	if type == "player":
@@ -58,6 +58,6 @@ func _process(delta: float) -> void:
 					MusicPlayer.get_child(0).play()
 				print("sounding" + str(notes_played_count))
 			notes_played_count += 1
-	elif not position.x >= game_manager.notes[game_manager.notes.size() - 1].position.x:
+	elif not position.x >= game_manager.note_nodes[game_manager.note_nodes.size() - 1].position.x:
 		notes_played_count = 0
-		notes_to_play = game_manager.notes
+		notes_to_play = game_manager.note_nodes

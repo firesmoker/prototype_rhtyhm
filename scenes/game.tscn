@@ -23,9 +23,8 @@ gradient = SubResource("Gradient_sorua")
 
 [node name="Game" type="Node2D"]
 
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("notes")]
+[node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_23irw")
-notes = [NodePath("../Notes/Note"), NodePath("../Notes/Note2"), NodePath("../Notes/Note3"), NodePath("../Notes/Note4")]
 tempo = 110.0
 
 [node name="Pointer" parent="." instance=ExtResource("2_0fjou")]
@@ -44,19 +43,6 @@ position = Vector2(500, 2.08165e-12)
 zoom = Vector2(0.8, 0.8)
 
 [node name="Notes" type="Node2D" parent="."]
-
-[node name="Note" parent="Notes" instance=ExtResource("3_x7au0")]
-position = Vector2(0, 2.08165e-12)
-
-[node name="Note2" parent="Notes" instance=ExtResource("3_x7au0")]
-position = Vector2(300, 2.08165e-12)
-
-[node name="Note3" parent="Notes" instance=ExtResource("3_x7au0")]
-position = Vector2(600, 2.08165e-12)
-
-[node name="Note4" parent="Notes" instance=ExtResource("3_x7au0")]
-position = Vector2(900, 2.08165e-12)
-type = "rest"
 
 [node name="Left Pole" parent="Notes" instance=ExtResource("3_x7au0")]
 visible = false

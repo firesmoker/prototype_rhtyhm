@@ -1,4 +1,4 @@
-extends Sprite2D
+class_name Note extends Sprite2D
 
 @export_enum("note", "rest") var type: String = "note"
 var path_rest_quarter: String = "res://rest_quarter.png"
