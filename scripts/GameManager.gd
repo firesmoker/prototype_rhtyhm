@@ -74,7 +74,7 @@ func load_rhythmic_pattern_level() -> void:
 				"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
 			}
 		print("duration for note is: " + str(input_notes[i]["duration"]))
-		note_nodes[i].set_type(type)
+		note_nodes[i].set_type_and_duration(type, input_notes[i]["duration"])
 	
 	notes_dictionary[0]["status"] = note_status.ACTIVE
 	
