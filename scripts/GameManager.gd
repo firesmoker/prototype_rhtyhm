@@ -36,13 +36,27 @@ func _ready() -> void:
 		MusicPlayer.play()
 	four_quarters_bar_duration = 60 / tempo * 4
 	quarter_note_duration = 60 / tempo
-	for i in range(4):			
+	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://rhythmGameLevelExample.json")
+	var stages: Dictionary = rhythm_game_level.get_stage(1)
+	# Assuming stages["notes"] contains the list of notes
+	var input_notes: Array[Dictionary] = []
+	if "notes" in stages:
+		for note: Dictionary in stages["notes"]:
+			input_notes.append(note)
+			
+			
+	for i in range(input_notes.size()):
+		var type: String  = "note"
+		if input_notes[i]["is_rest"]:
+			type = "rest"
 		notes_dictionary[i] = {
 			"x_location": i * note_quarter_gap,
-			"duration": "quarter",
-			"type": notes[i].type,
-			"status": note_status.IDLE,
-			}
+			"duration": "quarter",  # Assuming all are quarter notes, adjust as needed
+			"type": type,
+			"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
+		}
+		notes[i].type = type
+	
 	notes_dictionary[0]["status"] = note_status.ACTIVE
 	
 	var count: int = 0
