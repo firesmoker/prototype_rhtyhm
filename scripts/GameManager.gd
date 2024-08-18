@@ -30,6 +30,7 @@ var note_highlight_offset: float = 10
 var sfx_player: AudioStreamPlayer
 var NoteScene: PackedScene = preload("res://scenes/note.tscn")
 signal beat_signal
+signal notes_populated_signal
 
 
 
@@ -49,12 +50,21 @@ func load_rhythmic_pattern_level() -> void:
 		var type: String  = "note"
 		if input_notes[i]["is_rest"]:
 			type = "rest"
-		notes_dictionary[i] = {
-			"x_location": i * note_quarter_gap * input_notes[i]["duration"],
-			"duration": input_notes[i]["duration"],  # Assuming all are quarter notes, adjust as needed
-			"type": type,
-			"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
+		if i == 0:
+			notes_dictionary[i] = {
+				"x_location": 0,
+				"duration": input_notes[i]["duration"],  # Assuming all are quarter notes, adjust as needed
+				"type": type,
+				"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
 		}
+		else:
+			notes_dictionary[i] = {
+				"x_location": notes_dictionary[i-1]["x_location"] + note_quarter_gap * input_notes[i-1]["duration"],
+				"duration": input_notes[i]["duration"],  # Assuming all are quarter notes, adjust as needed
+				"type": type,
+				"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
+			}
+		print("duration for note is: " + str(input_notes[i]["duration"]))
 		note_nodes[i].set_type(type)
 	
 	notes_dictionary[0]["status"] = note_status.ACTIVE
@@ -159,8 +169,9 @@ func _process(delta: float) -> void:
 
 func bar_loop() -> void:
 	if current_note_num < notes_dictionary.size():
+		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
-		if pointer.position.x >= current_note_x_position - note_visual_offset and pointer.position.x <= current_note_x_position + note_visual_offset:
+		if pointer.position.x >= current_note_x_position - offset and pointer.position.x <= current_note_x_position + offset:
 			taking_input = true
 		elif pointer.position.x >= current_note_x_position + note_visual_offset:
 			current_note_num += 1
@@ -178,6 +189,7 @@ func bar_loop() -> void:
 			print("you lose")
 			finished_round = true
 		await beat_signal
+		print("RESTART!")
 		restart_level()
 
 func pulse(note_num: int) -> void:
@@ -188,7 +200,7 @@ func pulse(note_num: int) -> void:
 	timer.wait_time = 0.2
 	timer.start()
 	await timer.timeout
-	print("timer stopped")
+	#print("timer stopped")
 	note_nodes[note_num].scale = original_note_scale
 	note_nodes[note_num].position.y += note_highlight_offset
 
@@ -224,3 +236,4 @@ func populate_note_nodes(number_of_notes: int = 4) -> void:
 		var instance: Note = NoteScene.instantiate() as Note
 		notes_container.add_child(instance)
 		note_nodes.append(instance)
+	emit_signal("notes_populated_signal")

@@ -56,8 +56,15 @@ func _process(delta: float) -> void:
 					MusicPlayer.get_child(0).stream = MusicPlayer.rest_sound
 					MusicPlayer.get_child(0).volume_db = -3
 					MusicPlayer.get_child(0).play()
-				print("sounding" + str(notes_played_count))
+				#print("sounding" + str(notes_played_count))
 			notes_played_count += 1
 	elif not position.x >= game_manager.note_nodes[game_manager.note_nodes.size() - 1].position.x:
+		notes_played_count = 0
+		print("waiting for populate signal")
+		await game_manager.notes_populated_signal
+		print("notes populated, updating pointer")
+		notes_to_play = game_manager.note_nodes
+	else:
+		await game_manager.notes_populated_signal
 		notes_played_count = 0
 		notes_to_play = game_manager.note_nodes
