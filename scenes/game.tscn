@@ -1,14 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://ckjo1flpk6cyw"]
+[gd_scene load_steps=14 format=3 uid="uid://ckjo1flpk6cyw"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_23irw"]
 [ext_resource type="PackedScene" uid="uid://cbv1drvhlkirr" path="res://scenes/pointer.tscn" id="2_0fjou"]
 [ext_resource type="PackedScene" uid="uid://bum12kke1fy0l" path="res://scenes/note.tscn" id="3_x7au0"]
+[ext_resource type="FontFile" uid="uid://bhx6aq6fsp3bi" path="res://instruction_font.tres" id="4_63s3l"]
 [ext_resource type="Texture2D" uid="uid://cxsp7jlidq1nt" path="res://Music-staff.png" id="5_dldts"]
+[ext_resource type="Texture2D" uid="uid://d4egegdc4orhv" path="res://listen.png" id="6_vd3uy"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
 
-[sub_resource type="Shader" id="Shader_phnkf"]
+[sub_resource type="Shader" id="Shader_r7hhi"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -29,10 +31,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
 resource_local_to_scene = true
-shader = SubResource("Shader_phnkf")
+shader = SubResource("Shader_r7hhi")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_ofuox"]
+[sub_resource type="Shader" id="Shader_64ajy"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -53,7 +55,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_ofuox")
+shader = SubResource("Shader_64ajy")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]
@@ -82,7 +84,6 @@ position = Vector2(-600, 209)
 type = "teacher"
 
 [node name="Camera2D" type="Camera2D" parent="."]
-visible = false
 position = Vector2(500, 2.08165e-12)
 zoom = Vector2(0.8, 0.8)
 
@@ -110,15 +111,21 @@ text = "Points: 0"
 autowrap_mode = 3
 
 [node name="Instruction" type="Label" parent="HUD"]
-visible = false
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -380.0
-offset_bottom = 69.0
-grow_horizontal = 0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -167.0
+offset_top = -97.0
+offset_right = 167.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_63s3l")
 theme_override_font_sizes/font_size = 50
-text = "Listen..."
+text = "Listen!"
+horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Music-staff" type="Sprite2D" parent="."]
@@ -142,3 +149,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.556863, 0, 1, 1)
+
+[node name="BeatOverlay" type="ColorRect" parent="Background"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.0196078)
+
+[node name="Listen" type="Sprite2D" parent="."]
+position = Vector2(500, 201)
+texture = ExtResource("6_vd3uy")

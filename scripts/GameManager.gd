@@ -4,6 +4,8 @@ class_name GameManager extends Node
 @onready var notes_container: Node2D = $"../Notes"
 @onready var background: ColorRect = $"../Background/ColorRect"
 
+@onready var listen: Sprite2D = $"../Listen"
+
 @onready var pointer: Sprite2D = $"../Pointer"
 @onready var pointer_ai: Sprite2D = $"../Pointer_AI"
 
@@ -19,9 +21,11 @@ class_name GameManager extends Node
 @export var background_color_play: Color = Color.MEDIUM_PURPLE
 @export var miss_color: Color = Color.RED
 @export var success_color: Color = Color.TURQUOISE
+@export var listen_icon: Texture = preload("res://listen.png")
+@export var play_icon: Texture = preload("res://play_icon_small_2.png")
 
 var listen_mode_background: bool = true
-
+var original_listen_scale: Vector2
 
 
 var stage_index: int = 0
@@ -92,11 +96,13 @@ func load_rhythmic_pattern_level() -> void:
 		note.position.x = notes_dictionary[count]["x_location"]
 		note.position.y = note_y_location
 		count += 1
-	print(notes_dictionary)
+	#print(notes_dictionary)
 	
 	
 	
 func _ready() -> void:
+	listen.texture = listen_icon
+	original_listen_scale = listen.scale
 	background.color = background_color_listen
 	#populate_note_nodes()
 	sfx_player = MusicPlayer.get_child(0)
@@ -104,39 +110,12 @@ func _ready() -> void:
 		MusicPlayer.play()
 	four_quarters_bar_duration = 60 / tempo * 4
 	quarter_note_duration = 60 / tempo
-	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://rhythmGameLevelExample.json")
-	var stages: Dictionary = rhythm_game_level.get_stage(1)
-	# Assuming stages["notes"] contains the list of notes
-	var input_notes: Array[Dictionary] = []
-	if "notes" in stages:
-		for note: Dictionary in stages["notes"]:
-			input_notes.append(note)
-			
-	populate_note_nodes(input_notes.size())	
-	for i in range(input_notes.size()):
-		var type: String  = "note"
-		if input_notes[i]["is_rest"]:
-			type = "rest"
-		notes_dictionary[i] = {
-			"x_location": i * note_quarter_gap,
-			"duration": 1,  # Assuming all are quarter note, adjust as needed
-			"type": type,
-			"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
-		}
-		note_nodes[i].type = type
 	
-	notes_dictionary[0]["status"] = note_status.ACTIVE
-	
-	var count: int = 0
-	for note in note_nodes:
-		note.position.x = notes_dictionary[count]["x_location"]
-		note.position.y = note_y_location
-		count += 1
+	load_rhythmic_pattern_level()
 	
 	elapsed_time = 0.0
 	beat_time = 0 + MusicPlayer.beat_offset
 	
-	print(notes_dictionary)
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("play"):
 		sfx_player.stream = MusicPlayer.player_hit_sound
@@ -172,6 +151,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	change_background_color()
+	change_listen_icon()
 	elapsed_time += delta  # Accumulate time
 	elapsed_time_background += delta
 	beat_time += delta
@@ -284,9 +264,19 @@ func populate_note_nodes(number_of_notes: int = 4) -> void:
 	emit_signal("notes_populated_signal")
 
 func change_background_color() -> void:
+	listen.scale = lerp(original_listen_scale,original_listen_scale/3, quarter_note_duration / (beat_time + 0.1) / 10.0)
 	if listen_mode_background:
 		background.color = lerp(background.color, background_color_listen, elapsed_time_background / 30)
 		#background.color = background_color_listen
+		if elapsed_time_background / 30 >= 0.01:
+			instruction.text = "Listen!"
 	else:
 		background.color = lerp(background.color, background_color_play, elapsed_time_background / 10)
-			
+		if elapsed_time_background / 30 >= 0.01:
+			instruction.text = "Play!"
+
+func change_listen_icon() -> void:
+	if listen_mode_background:
+		listen.texture = listen_icon
+	else:
+		listen.texture = play_icon
