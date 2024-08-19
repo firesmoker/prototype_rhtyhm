@@ -4,6 +4,7 @@ class_name GameManager extends Node
 @onready var instruction: Label = $"../Background/Instruction"
 @onready var notes_container: Node2D = $"../Notes"
 @onready var background: ColorRect = $"../Background/ColorRect"
+@onready var camera_2d: Camera2D = $"../Camera2D"
 
 @onready var listen: Sprite2D = $"../Listen"
 
@@ -121,12 +122,13 @@ func _ready() -> void:
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("play"):
-		sfx_player.stream = MusicPlayer.player_hit_sound
-		sfx_player.play()
 		if taking_input:
 			if current_note_num < notes_dictionary.size():
 				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
 					if note_nodes[current_note_num].type != "rest":
+						pulse(current_note_num)
+						sfx_player.stream = MusicPlayer.player_hit_sound
+						sfx_player.play()
 						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
 						#pointer.modulate = success_color # TEMPORARY
 						var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
@@ -144,20 +146,38 @@ func _unhandled_input(event: InputEvent) -> void:
 						print("yay")
 						taking_input = false
 					else:
-						#pointer.modulate = Color.RED # TEMPORARY
-						points -= 500
+						sfx_player.stream = MusicPlayer.note_sound
+						sfx_player.play()
+						shake()
+						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
+						note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
+						points -= 10
 						points_text.text = "Points: " + str(points)
 						#pointer.modulate = miss_color
 				
 		else:
 			#pointer.modulate = miss_color
-			points -= points_per_note / 3
-			points_text.text = "Points: " + str(points)
+			sfx_player.stream = MusicPlayer.note_sound
+			sfx_player.play()
+			shake()
+			#points -= points_per_note / 3
+			#points_text.text = "Points: " + str(points)
 			print("you suck")
+
+func shake() -> void:
+	camera_2d.rotation = 0.015
+	var timer: Timer = Timer.new()
+	add_child(timer)
+	timer.wait_time = 0.1
+	timer.start()
+	await timer.timeout
+	camera_2d.rotation = 0
+
 
 func _process(delta: float) -> void:
 	change_background_color()
 	change_listen_icon()
+	listen.scale = lerp(original_listen_scale,original_listen_scale/1.5, quarter_note_duration / (beat_time + 0.1) / 10.0)
 	elapsed_time += delta  # Accumulate time
 	elapsed_time_background += delta
 	beat_time += delta
@@ -271,7 +291,6 @@ func populate_note_nodes(number_of_notes: int = 4) -> void:
 	emit_signal("notes_populated_signal")
 
 func change_background_color() -> void:
-	listen.scale = lerp(original_listen_scale,original_listen_scale/3, quarter_note_duration / (beat_time + 0.1) / 10.0)
 	if listen_mode_background:
 		background.color = lerp(background.color, background_color_listen, elapsed_time_background / 30)
 		#background.color = background_color_listen

@@ -49,13 +49,13 @@ func _process(delta: float) -> void:
 	#if type == "teacher":
 	if notes_played_count < notes_to_play.size():
 		if position.x >= notes_to_play[notes_played_count].position.x:
-			game_manager.pulse(notes_played_count)
 			if not MusicPlayer.playing:
 				MusicPlayer.play()
 			if type == "teacher":
+				game_manager.pulse(notes_played_count)
 				if notes_to_play[notes_played_count].type == "note":
-					MusicPlayer.get_child(0).stream = MusicPlayer.player_hit_sound
-					MusicPlayer.get_child(0).volume_db = -3
+					MusicPlayer.get_child(0).stream = MusicPlayer.teacher_note
+					MusicPlayer.get_child(0).volume_db = 0
 					MusicPlayer.get_child(0).play()
 				else:
 					MusicPlayer.get_child(0).stream = MusicPlayer.rest_sound
