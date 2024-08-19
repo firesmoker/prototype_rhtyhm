@@ -21,8 +21,9 @@ class_name GameManager extends Node
 @export var background_color_play: Color = Color.MEDIUM_PURPLE
 @export var miss_color: Color = Color.RED
 @export var success_color: Color = Color.TURQUOISE
-@export var listen_icon: Texture = preload("res://listen.png")
-@export var play_icon: Texture = preload("res://play_icon_small_2.png")
+@export var not_tight_color: Color = Color.DARK_GOLDENROD
+@export var listen_icon: Texture = preload("res://listen_new.png")
+@export var play_icon: Texture = preload("res://play_icon_new.png")
 
 var listen_mode_background: bool = true
 var original_listen_scale: Vector2
@@ -132,7 +133,10 @@ func _unhandled_input(event: InputEvent) -> void:
 						var penalty: int = int(4 - accuracy / (100 / 4)) * 4
 						print(accuracy)
 						print(penalty)
-						note_nodes[current_note_num].material.set_shader_parameter("color", success_color * (1 - (penalty * 0.08)))
+						if penalty > 0:
+							note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
+						else:
+							note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
 						points += points_per_note - penalty
 						points_text.text = "Points: " + str(points)
 						print("yay")

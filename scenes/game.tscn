@@ -10,7 +10,7 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
 
-[sub_resource type="Shader" id="Shader_r7hhi"]
+[sub_resource type="Shader" id="Shader_4msls"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -31,10 +31,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
 resource_local_to_scene = true
-shader = SubResource("Shader_r7hhi")
+shader = SubResource("Shader_4msls")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_64ajy"]
+[sub_resource type="Shader" id="Shader_x83m4"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -55,7 +55,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_64ajy")
+shader = SubResource("Shader_x83m4")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]
@@ -68,7 +68,7 @@ gradient = SubResource("Gradient_aaadu")
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_23irw")
-tempo = 110.0
+tempo = 85.0
 background_color_listen = Color(0.228216, 0.190589, 0.451947, 1)
 background_color_play = Color(0.556863, 0, 1, 1)
 
@@ -117,9 +117,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -167.0
-offset_top = -97.0
+offset_top = -86.0
 offset_right = 167.0
-offset_bottom = -28.0
+offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("4_63s3l")
@@ -161,4 +161,5 @@ color = Color(1, 1, 1, 0.0196078)
 
 [node name="Listen" type="Sprite2D" parent="."]
 position = Vector2(500, 201)
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("6_vd3uy")

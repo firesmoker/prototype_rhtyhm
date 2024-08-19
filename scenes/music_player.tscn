@@ -1,19 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://cksvqiylgjqqt"]
+[gd_scene load_steps=6 format=3 uid="uid://cksvqiylgjqqt"]
 
-[ext_resource type="AudioStream" uid="uid://t2crloi2hxwb" path="res://audio/BabyShark_Fmajor_110bpm_vocals.wav" id="1_1loog"]
+[ext_resource type="AudioStream" uid="uid://0m2rwbpvkyge" path="res://audio/dance_monkey_tight_2.wav" id="1_mi6rn"]
 [ext_resource type="Script" path="res://scripts/music_player.gd" id="2_br3nq"]
-[ext_resource type="AudioStream" uid="uid://d15qg3acufuou" path="res://audio/snare_hit_3.wav" id="3_o85pl"]
 [ext_resource type="AudioStream" uid="uid://ci31n62g17vpa" path="res://audio/note.wav" id="3_orr56"]
 [ext_resource type="AudioStream" uid="uid://wuw04lbxbceu" path="res://audio/rest.wav" id="4_7v3ux"]
-[ext_resource type="AudioStream" uid="uid://bo0wdlnyofbu7" path="res://audio/snare_hit_3_stronger.wav" id="6_ky12c"]
+[ext_resource type="AudioStream" uid="uid://b04nfwccpy3kv" path="res://audio/clap_1.wav" id="6_6r1vg"]
 
 [node name="MusicPlayer" type="AudioStreamPlayer"]
-stream = ExtResource("1_1loog")
-volume_db = -11.0
+stream = ExtResource("1_mi6rn")
+volume_db = -9.0
 script = ExtResource("2_br3nq")
 note_sound = ExtResource("3_orr56")
 rest_sound = ExtResource("4_7v3ux")
-player_hit_sound = ExtResource("3_o85pl")
+player_hit_sound = ExtResource("6_6r1vg")
 
 [node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_ky12c")
+stream = ExtResource("6_6r1vg")

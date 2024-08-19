@@ -28,11 +28,11 @@ func _ready() -> void:
 		restart_position = Vector2(player_start_position_x, start_position.y)
 		restart_target_position = Vector2(target_position.x, start_position.y)
 	elif type == "teacher":
-		position.x = teacher_start_position_x
-		start_position.x = teacher_start_position_x
-		target_position = target_teacher_position
-		restart_position = Vector2(teacher_start_position_x, start_position.y)
-		restart_target_position = Vector2(target_teacher_position.x, start_position.y)
+		position.x = teacher_start_position_x - 10
+		start_position.x = teacher_start_position_x - 10
+		target_position = target_teacher_position - Vector2(10, 0)
+		restart_position = Vector2(teacher_start_position_x - 10, start_position.y)
+		restart_target_position = Vector2(target_teacher_position.x - 10, start_position.y)
 		
 	duration = game_manager.quarter_note_duration * (beat_duration + pointer_offset)
 
