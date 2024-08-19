@@ -12,12 +12,7 @@
 			},
 			{
 				"note": "C3",
-				"duration": 0.5,
-				"is_rest": false
-			},
-			{
-				"note": "C3",
-				"duration": 0.5,
+				"duration": 1.0,
 				"is_rest": false
 			},
 			{
@@ -28,7 +23,7 @@
 			{
 			  "note": "C3",
 			  "duration": 1,
-			  "is_rest": true
+			  "is_rest": false
 			}
 		  ]
 		},
@@ -47,17 +42,12 @@
 			},
 			{
 			  "note": "C3",
-			  "duration": 0.5,
-			  "is_rest": false
+			  "duration": 1,
+			  "is_rest": true
 			},
 			{
 			  "note": "C3",
-			  "duration": 0.5,
-			  "is_rest": false
-			},
-			{
-			  "note": "C3",
-			  "duration": 1.0,
+			  "duration": 1,
 			  "is_rest": false
 			}
 		  ]
@@ -67,12 +57,7 @@
 		  "notes": [
 			{
 				"note": "C3",
-				"duration": 0.5,
-				"is_rest": false
-			},
-			{
-				"note": "C3",
-				"duration": 0.5,
+				"duration": 1,
 				"is_rest": false
 			},
 			{

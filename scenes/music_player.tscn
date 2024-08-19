@@ -1,13 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://cksvqiylgjqqt"]
 
-[ext_resource type="AudioStream" uid="uid://0m2rwbpvkyge" path="res://audio/dance_monkey_tight_2.wav" id="1_mi6rn"]
+[ext_resource type="AudioStream" uid="uid://daa6ltb7u650x" path="res://audio/BabyShark_FMajor_80bpm_Vocals.wav" id="1_04fen"]
 [ext_resource type="Script" path="res://scripts/music_player.gd" id="2_br3nq"]
 [ext_resource type="AudioStream" uid="uid://ci31n62g17vpa" path="res://audio/note.wav" id="3_orr56"]
 [ext_resource type="AudioStream" uid="uid://wuw04lbxbceu" path="res://audio/rest.wav" id="4_7v3ux"]
 [ext_resource type="AudioStream" uid="uid://b04nfwccpy3kv" path="res://audio/clap_1.wav" id="6_6r1vg"]
 
 [node name="MusicPlayer" type="AudioStreamPlayer"]
-stream = ExtResource("1_mi6rn")
+stream = ExtResource("1_04fen")
 volume_db = -9.0
 script = ExtResource("2_br3nq")
 note_sound = ExtResource("3_orr56")

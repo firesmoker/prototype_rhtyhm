@@ -7,6 +7,7 @@ var duration: float = 2.5
 @export var pointer_offset: int = 4
 @export_enum("player","teacher") var type: String = "player"
 @export var start_position: Vector2 = Vector2(-300, 209)
+@export var disappearing_pointer: bool = true
 var restart_position: Vector2
 var restart_target_position: Vector2
 var quarter_note_duration: float = 0.5
@@ -28,11 +29,12 @@ func _ready() -> void:
 		restart_position = Vector2(player_start_position_x, start_position.y)
 		restart_target_position = Vector2(target_position.x, start_position.y)
 	elif type == "teacher":
-		position.x = teacher_start_position_x - 10
-		start_position.x = teacher_start_position_x - 10
-		target_position = target_teacher_position - Vector2(10, 0)
-		restart_position = Vector2(teacher_start_position_x - 10, start_position.y)
-		restart_target_position = Vector2(target_teacher_position.x - 10, start_position.y)
+		var offset: float = game_manager.tempo / 8.0
+		position.x = teacher_start_position_x - offset
+		start_position.x = teacher_start_position_x - offset
+		target_position = target_teacher_position - Vector2(offset, 0)
+		restart_position = Vector2(teacher_start_position_x - offset, start_position.y)
+		restart_target_position = Vector2(target_teacher_position.x - offset, start_position.y)
 		
 	duration = game_manager.quarter_note_duration * (beat_duration + pointer_offset)
 
@@ -40,6 +42,9 @@ func _process(delta: float) -> void:
 	if game_manager.elapsed_time < duration:
 		var t: float = game_manager.elapsed_time / duration
 		position = start_position.lerp(target_position, t)
+	
+	if notes_played_count >= 1 and disappearing_pointer:
+		modulate.a -= 0.08
 	
 	#if type == "teacher":
 	if notes_played_count < notes_to_play.size():
@@ -68,3 +73,4 @@ func _process(delta: float) -> void:
 		await game_manager.notes_populated_signal
 		notes_played_count = 0
 		notes_to_play = game_manager.note_nodes
+

@@ -1,6 +1,7 @@
 class_name GameManager extends Node
+
 @onready var points_text: Label = $"../HUD/PointsText"
-@onready var instruction: Label = $"../HUD/Instruction"
+@onready var instruction: Label = $"../Background/Instruction"
 @onready var notes_container: Node2D = $"../Notes"
 @onready var background: ColorRect = $"../Background/ColorRect"
 
@@ -8,6 +9,7 @@ class_name GameManager extends Node
 
 @onready var pointer: Sprite2D = $"../Pointer"
 @onready var pointer_ai: Sprite2D = $"../Pointer_AI"
+
 
 @export var note_nodes: Array[Note]
 @export var note_y_location: float = -40
@@ -22,8 +24,8 @@ class_name GameManager extends Node
 @export var miss_color: Color = Color.RED
 @export var success_color: Color = Color.TURQUOISE
 @export var not_tight_color: Color = Color.DARK_GOLDENROD
-@export var listen_icon: Texture = preload("res://listen_new.png")
-@export var play_icon: Texture = preload("res://play_icon_new.png")
+@export var listen_icon: Texture = preload("res://stop_icon.png")
+@export var play_icon: Texture = preload("res://play_icon_green.png")
 
 var listen_mode_background: bool = true
 var original_listen_scale: Vector2
@@ -53,11 +55,11 @@ signal notes_populated_signal
 
 
 
-func load_rhythmic_pattern_level() -> void:
+func load_rhythmic_pattern_level(levelname: String = "rhythmGameLevelExampleLevel2") -> void:
 	
 	notes_dictionary.clear()
 	#populate_note_nodes()
-	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://rhythmGameLevelExampleLevel2.json")
+	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://" + levelname + ".json")
 	stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
 	print("load new rhythmic pattern for stage ", stage_index)
 	var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
@@ -126,11 +128,11 @@ func _unhandled_input(event: InputEvent) -> void:
 				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
 					if note_nodes[current_note_num].type != "rest":
 						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
-						pointer.modulate = success_color # TEMPORARY
+						#pointer.modulate = success_color # TEMPORARY
 						var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
 						var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
 						accuracy = (1 - accuracy / note_visual_offset) * 100
-						var penalty: int = int(4 - accuracy / (100 / 4)) * 4
+						var penalty: int = int(2 - accuracy / (100 / 2)) * 4
 						print(accuracy)
 						print(penalty)
 						if penalty > 0:
@@ -145,10 +147,10 @@ func _unhandled_input(event: InputEvent) -> void:
 						#pointer.modulate = Color.RED # TEMPORARY
 						points -= 500
 						points_text.text = "Points: " + str(points)
-						pointer.modulate = miss_color
+						#pointer.modulate = miss_color
 				
 		else:
-			pointer.modulate = miss_color
+			#pointer.modulate = miss_color
 			points -= points_per_note / 3
 			points_text.text = "Points: " + str(points)
 			print("you suck")
@@ -176,11 +178,11 @@ func _process(delta: float) -> void:
 			bars_passed += 1
 			beats_passed = 0
 			
-	if taking_input and current_note_num < notes_dictionary.size(): # TEMPORARY
-		if notes_dictionary[current_note_num]["status"] == note_status.PLAYED:
-			pointer.modulate = success_color # TEMPORARY
-	else: # TEMPORARY
-		pointer.modulate = Color.WHITE # TEMPORARY
+	#if taking_input and current_note_num < notes_dictionary.size(): # TEMPORARY
+		#if notes_dictionary[current_note_num]["status"] == note_status.PLAYED:
+			#pointer.modulate = success_color # TEMPORARY
+	#else: # TEMPORARY
+		#pointer.modulate = Color.WHITE # TEMPORARY
 		
 	bar_loop()
 
@@ -235,6 +237,7 @@ func pulse(note_num: int) -> void:
 
 func restart_level() -> void:
 	#populate_note_nodes()
+	pointer.modulate.a = 1
 	load_rhythmic_pattern_level()
 	#if instruction.text == "Listen...":
 		#instruction.text = "Play!"

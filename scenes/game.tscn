@@ -10,7 +10,7 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
 
-[sub_resource type="Shader" id="Shader_4msls"]
+[sub_resource type="Shader" id="Shader_tq00a"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -31,10 +31,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
 resource_local_to_scene = true
-shader = SubResource("Shader_4msls")
+shader = SubResource("Shader_tq00a")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_x83m4"]
+[sub_resource type="Shader" id="Shader_1t4su"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -55,11 +55,12 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_x83m4")
+shader = SubResource("Shader_1t4su")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]
-offsets = PackedFloat32Array(0, 0.11)
+offsets = PackedFloat32Array(0, 0.0234987, 1)
+colors = PackedColorArray(0.505344, 0.505344, 0.505344, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_wjeh1"]
 gradient = SubResource("Gradient_aaadu")
@@ -68,12 +69,13 @@ gradient = SubResource("Gradient_aaadu")
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_23irw")
-tempo = 85.0
-background_color_listen = Color(0.228216, 0.190589, 0.451947, 1)
-background_color_play = Color(0.556863, 0, 1, 1)
+tempo = 80.0
+background_color_listen = Color(0.442548, 0.0854517, 0.0721435, 1)
+background_color_play = Color(0, 0.530021, 0.264785, 1)
+success_color = Color(0.22153, 0.727998, 0.282802, 1)
 
 [node name="Pointer" parent="." instance=ExtResource("2_0fjou")]
-visible = false
+top_level = true
 position = Vector2(-300, 209)
 
 [node name="Pointer_AI" parent="." instance=ExtResource("2_0fjou")]
@@ -84,7 +86,7 @@ position = Vector2(-600, 209)
 type = "teacher"
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(500, 2.08165e-12)
+position = Vector2(420, 2.08165e-12)
 zoom = Vector2(0.8, 0.8)
 
 [node name="Notes" type="Node2D" parent="."]
@@ -110,24 +112,6 @@ theme_override_font_sizes/font_size = 50
 text = "Points: 0"
 autowrap_mode = 3
 
-[node name="Instruction" type="Label" parent="HUD"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -167.0
-offset_top = -86.0
-offset_right = 167.0
-offset_bottom = -17.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_fonts/font = ExtResource("4_63s3l")
-theme_override_font_sizes/font_size = 50
-text = "Listen!"
-horizontal_alignment = 1
-autowrap_mode = 3
-
 [node name="Music-staff" type="Sprite2D" parent="."]
 position = Vector2(602.566, -58)
 scale = Vector2(9.81566, 2.77)
@@ -135,8 +119,8 @@ texture = ExtResource("5_dldts")
 
 [node name="Sprite2D" type="Sprite2D" parent="Music-staff"]
 z_index = -1
-position = Vector2(-3.36871, 0.180509)
-scale = Vector2(5.05092, 1.48353)
+position = Vector2(32.2376, 0.180509)
+scale = Vector2(3.93822, 1.48353)
 texture = SubResource("GradientTexture2D_wjeh1")
 
 [node name="Background" type="CanvasLayer" parent="."]
@@ -159,7 +143,27 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0.0196078)
 
+[node name="Instruction" type="Label" parent="Background"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -208.5
+offset_top = 116.0
+offset_right = 208.5
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_63s3l")
+theme_override_font_sizes/font_size = 100
+text = "Listen!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="Listen" type="Sprite2D" parent="."]
-position = Vector2(500, 201)
-scale = Vector2(0.8, 0.8)
+position = Vector2(-163, -62)
 texture = ExtResource("6_vd3uy")
