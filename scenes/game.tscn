@@ -1,16 +1,18 @@
-[gd_scene load_steps=14 format=3 uid="uid://ckjo1flpk6cyw"]
+[gd_scene load_steps=18 format=3 uid="uid://ckjo1flpk6cyw"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_23irw"]
 [ext_resource type="PackedScene" uid="uid://cbv1drvhlkirr" path="res://scenes/pointer.tscn" id="2_0fjou"]
 [ext_resource type="PackedScene" uid="uid://bum12kke1fy0l" path="res://scenes/note.tscn" id="3_x7au0"]
 [ext_resource type="FontFile" uid="uid://bhx6aq6fsp3bi" path="res://instruction_font.tres" id="4_63s3l"]
+[ext_resource type="Texture2D" uid="uid://v3cxc6ouqia7" path="res://Star_Empty.svg" id="4_nsii6"]
 [ext_resource type="Texture2D" uid="uid://cxsp7jlidq1nt" path="res://Music-staff.png" id="5_dldts"]
 [ext_resource type="Texture2D" uid="uid://d4egegdc4orhv" path="res://listen.png" id="6_vd3uy"]
+[ext_resource type="PackedScene" uid="uid://e7vogwvlx1kl" path="res://scenes/hit_note.tscn" id="8_pof02"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
 
-[sub_resource type="Shader" id="Shader_l2gas"]
+[sub_resource type="Shader" id="Shader_5p40s"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -31,10 +33,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
 resource_local_to_scene = true
-shader = SubResource("Shader_l2gas")
+shader = SubResource("Shader_5p40s")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_71gem"]
+[sub_resource type="Shader" id="Shader_gqcjn"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -55,7 +57,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_71gem")
+shader = SubResource("Shader_gqcjn")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]
@@ -64,6 +66,35 @@ colors = PackedColorArray(0.505344, 0.505344, 0.505344, 1, 1, 1, 1, 1, 1, 1, 1, 
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_wjeh1"]
 gradient = SubResource("Gradient_aaadu")
+
+[sub_resource type="Shader" id="Shader_brrim"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+uniform vec4 color: source_color;
+uniform float alpha = 1;
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	COLOR.rgb = color.rgb;
+	if (COLOR.a > alpha) {
+		COLOR.a = alpha;
+	}
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w6oym"]
+resource_local_to_scene = true
+shader = SubResource("Shader_brrim")
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/alpha = 1.0
 
 [node name="Game" type="Node2D"]
 
@@ -113,6 +144,35 @@ theme_override_font_sizes/font_size = 50
 text = "Points: 0"
 autowrap_mode = 3
 
+[node name="ProgressBar" type="ProgressBar" parent="HUD"]
+modulate = Color(1, 0.784314, 0, 1)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -260.0
+offset_top = 31.0
+offset_right = 260.0
+offset_bottom = 89.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+max_value = 150.0
+show_percentage = false
+
+[node name="Star1" type="Sprite2D" parent="HUD"]
+position = Vector2(450, 58)
+scale = Vector2(0.456, 0.456)
+texture = ExtResource("4_nsii6")
+
+[node name="Star2" type="Sprite2D" parent="HUD"]
+position = Vector2(616, 58)
+scale = Vector2(0.456, 0.456)
+texture = ExtResource("4_nsii6")
+
+[node name="Star3" type="Sprite2D" parent="HUD"]
+position = Vector2(800, 58)
+scale = Vector2(0.456, 0.456)
+texture = ExtResource("4_nsii6")
+
 [node name="Music-staff" type="Sprite2D" parent="."]
 position = Vector2(602.566, -58)
 scale = Vector2(9.81566, 2.77)
@@ -142,7 +202,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 0.0196078)
+color = Color(1, 0.854902, 0, 0.784314)
 
 [node name="Instruction" type="Label" parent="Background"]
 anchors_preset = 8
@@ -168,3 +228,8 @@ autowrap_mode = 3
 [node name="Listen" type="Sprite2D" parent="."]
 position = Vector2(-163, -62)
 texture = ExtResource("6_vd3uy")
+
+[node name="Hit_Note" parent="." instance=ExtResource("8_pof02")]
+material = SubResource("ShaderMaterial_w6oym")
+position = Vector2(578, 305)
+fade_speed = 0.03

@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://e7vogwvlx1kl"]
+
+[ext_resource type="PackedScene" uid="uid://bum12kke1fy0l" path="res://scenes/note.tscn" id="1_5kjlu"]
+[ext_resource type="Shader" path="res://note.gdshader" id="2_w5vem"]
+[ext_resource type="Script" path="res://scenes/hit_note.gd" id="3_7fvmp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y24ol"]
+resource_local_to_scene = true
+shader = ExtResource("2_w5vem")
+shader_parameter/color = Color(0.435294, 0.435294, 0.435294, 0.658824)
+shader_parameter/alpha = 1.0
+
+[node name="Hit_Note" instance=ExtResource("1_5kjlu")]
+material = SubResource("ShaderMaterial_y24ol")
+script = ExtResource("3_7fvmp")
+original_color = Color(0.333333, 0.333333, 0.333333, 0.623529)
+fade_speed = 0.01

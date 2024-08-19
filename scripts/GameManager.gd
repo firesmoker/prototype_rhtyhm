@@ -5,11 +5,18 @@ class_name GameManager extends Node
 @onready var notes_container: Node2D = $"../Notes"
 @onready var background: ColorRect = $"../Background/ColorRect"
 @onready var camera_2d: Camera2D = $"../Camera2D"
+@onready var progress_bar: ProgressBar = $"../HUD/ProgressBar"
+@onready var beat_overlay: ColorRect = $"../Background/BeatOverlay"
 
 @onready var listen: Sprite2D = $"../Listen"
 
 @onready var pointer: Sprite2D = $"../Pointer"
 @onready var pointer_ai: Sprite2D = $"../Pointer_AI"
+@onready var star_1: Sprite2D = $"../HUD/Star1"
+@onready var star_2: Sprite2D = $"../HUD/Star2"
+@onready var star_3: Sprite2D = $"../HUD/Star3"
+
+
 
 
 @export var note_nodes: Array[Note]
@@ -18,6 +25,7 @@ class_name GameManager extends Node
 @export var note_visual_offset: float = 100
 @export var tempo: float = 120 # in BPM
 @export var points: int = 0
+@export var level_points: int = 0
 @export var points_per_note: float = 10
 
 @export var background_color_listen: Color = Color.DARK_SLATE_BLUE
@@ -27,10 +35,13 @@ class_name GameManager extends Node
 @export var not_tight_color: Color = Color.DARK_GOLDENROD
 @export var listen_icon: Texture = preload("res://stop_icon.png")
 @export var play_icon: Texture = preload("res://play_icon_green.png")
+@export var star_empty_icon: Texture = preload("res://Star_Empty.svg")
+@export var star_filled_icon: Texture = preload("res://Star_Filled.svg")
 
 var listen_mode_background: bool = true
 var original_listen_scale: Vector2
 
+var star_overlay_strength: float = 0.8
 
 var stage_index: int = 0
 var original_note_scale: Vector2 = Vector2(0.281,0.281)
@@ -49,6 +60,7 @@ var current_note_num: int = 0
 var note_highlight_offset: float = 10
 var sfx_player: AudioStreamPlayer
 var NoteScene: PackedScene = preload("res://scenes/note.tscn")
+var HitNoteScene: PackedScene = preload("res://scenes/hit_note.tscn")
 var bars_passed: int = 0
 var beats_passed: int = 0
 signal beat_signal
@@ -122,6 +134,10 @@ func _ready() -> void:
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("play"):
+		var instance: HitNote = HitNoteScene.instantiate() as HitNote
+		instance.position.x = pointer.position.x
+		instance.position.y = note_y_location
+		add_child(instance)
 		if taking_input:
 			if current_note_num < notes_dictionary.size():
 				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
@@ -138,11 +154,20 @@ func _unhandled_input(event: InputEvent) -> void:
 						print(accuracy)
 						print(penalty)
 						if penalty > 0:
+							instance.current_color.r = not_tight_color.r
+							instance.current_color.g = not_tight_color.g
+							instance.current_color.b = not_tight_color.b
 							note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
 						else:
+							instance.current_color.r = success_color.r
+							instance.current_color.g = success_color.g
+							instance.current_color.b = success_color.b
 							note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
 						points += points_per_note - penalty
-						points_text.text = "Points: " + str(points)
+						level_points += points_per_note - penalty
+						progress_bar.value = level_points
+						points_text.text = "Points: " + str(level_points)
+						trigger_stars()
 						print("yay")
 						taking_input = false
 					else:
@@ -152,7 +177,9 @@ func _unhandled_input(event: InputEvent) -> void:
 						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
 						note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
 						points -= 10
-						points_text.text = "Points: " + str(points)
+						level_points -= 10
+						progress_bar.value = level_points
+						points_text.text = "Points: " + str(level_points)
 						#pointer.modulate = miss_color
 				
 		else:
@@ -163,6 +190,25 @@ func _unhandled_input(event: InputEvent) -> void:
 			#points -= points_per_note / 3
 			#points_text.text = "Points: " + str(points)
 			print("you suck")
+
+func trigger_stars() -> void:
+	if progress_bar.value >= progress_bar.max_value / 4:
+		if star_1.texture != star_filled_icon:
+			sfx_player.stream = MusicPlayer.star_success
+			sfx_player.play()
+			star_pulse()
+			star_1.texture = star_filled_icon
+	if progress_bar.value >= progress_bar.max_value / 2:
+		if star_2.texture != star_filled_icon:
+			sfx_player.stream = MusicPlayer.star_success
+			sfx_player.play()
+			star_pulse()
+			star_2.texture = star_filled_icon
+	if progress_bar.value >= progress_bar.max_value:
+		if star_3.texture != star_filled_icon:
+			sfx_player.stream = MusicPlayer.star_success
+			sfx_player.play()
+			star_3.texture = star_filled_icon
 
 func shake() -> void:
 	camera_2d.rotation = 0.015
@@ -177,6 +223,7 @@ func shake() -> void:
 func _process(delta: float) -> void:
 	change_background_color()
 	change_listen_icon()
+	beat_overlay.color.a -= 0.035
 	listen.scale = lerp(original_listen_scale,original_listen_scale/1.5, quarter_note_duration / (beat_time + 0.1) / 10.0)
 	elapsed_time += delta  # Accumulate time
 	elapsed_time_background += delta
@@ -264,7 +311,6 @@ func restart_level() -> void:
 	#else:
 		#instruction.text = "Listen..."
 	points = 0
-	points_text.text = "Points: " + str(points)
 	current_note_num = 0
 	notes_dictionary[0]["status"] = note_status.ACTIVE
 	pointer.start_position = pointer.restart_position
@@ -276,6 +322,10 @@ func restart_level() -> void:
 	pointer_ai.position = pointer_ai.start_position
 	
 	elapsed_time = 0
+
+func star_pulse() -> void:
+	beat_overlay.visible = true
+	beat_overlay.color.a = star_overlay_strength
 	
 func populate_note_nodes(number_of_notes: int = 4) -> void:
 	note_nodes.clear()

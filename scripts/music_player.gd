@@ -5,3 +5,4 @@ var beat_offset: float = 0
 @export var rest_sound: AudioStream
 @export var player_hit_sound: AudioStream
 @export var teacher_note: AudioStream
+@export var star_success: AudioStream

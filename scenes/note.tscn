@@ -8,6 +8,7 @@
 resource_local_to_scene = true
 shader = ExtResource("1_j46fp")
 shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/alpha = 1.0
 
 [node name="Note" type="Sprite2D"]
 z_index = 2

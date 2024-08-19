@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cksvqiylgjqqt"]
+[gd_scene load_steps=8 format=3 uid="uid://cksvqiylgjqqt"]
 
 [ext_resource type="AudioStream" uid="uid://daa6ltb7u650x" path="res://audio/BabyShark_FMajor_80bpm_Vocals.wav" id="1_04fen"]
 [ext_resource type="Script" path="res://scripts/music_player.gd" id="2_br3nq"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://wuw04lbxbceu" path="res://audio/rest.wav" id="4_7v3ux"]
 [ext_resource type="AudioStream" uid="uid://b04nfwccpy3kv" path="res://audio/clap_1.wav" id="6_6r1vg"]
 [ext_resource type="AudioStream" uid="uid://ca7m4dpoqvys1" path="res://audio/teacher_note8.wav" id="6_7n6wj"]
+[ext_resource type="AudioStream" uid="uid://1sfdunw6oonm" path="res://audio/success.mp3" id="7_dwq7n"]
 
 [node name="MusicPlayer" type="AudioStreamPlayer"]
 stream = ExtResource("1_04fen")
@@ -15,6 +16,7 @@ note_sound = ExtResource("3_nffp7")
 rest_sound = ExtResource("4_7v3ux")
 player_hit_sound = ExtResource("6_6r1vg")
 teacher_note = ExtResource("6_7n6wj")
+star_success = ExtResource("7_dwq7n")
 
 [node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_6r1vg")
