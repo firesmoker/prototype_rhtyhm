@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ckjo1flpk6cyw"]
+[gd_scene load_steps=12 format=3 uid="uid://ckjo1flpk6cyw"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_23irw"]
 [ext_resource type="PackedScene" uid="uid://cbv1drvhlkirr" path="res://scenes/pointer.tscn" id="2_0fjou"]
@@ -62,20 +62,16 @@ offsets = PackedFloat32Array(0, 0.11)
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_wjeh1"]
 gradient = SubResource("Gradient_aaadu")
 
-[sub_resource type="Gradient" id="Gradient_sorua"]
-offsets = PackedFloat32Array(0, 0.215, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.560784, 0, 1, 1, 0.560784, 0, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_5ns1f"]
-gradient = SubResource("Gradient_sorua")
-
 [node name="Game" type="Node2D"]
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_23irw")
 tempo = 110.0
+background_color_listen = Color(0.228216, 0.190589, 0.451947, 1)
+background_color_play = Color(0.556863, 0, 1, 1)
 
 [node name="Pointer" parent="." instance=ExtResource("2_0fjou")]
+visible = false
 position = Vector2(-300, 209)
 
 [node name="Pointer_AI" parent="." instance=ExtResource("2_0fjou")]
@@ -136,8 +132,13 @@ position = Vector2(-3.36871, 0.180509)
 scale = Vector2(5.05092, 1.48353)
 texture = SubResource("GradientTexture2D_wjeh1")
 
-[node name="Background" type="Sprite2D" parent="."]
-z_index = -2
-position = Vector2(502, 109)
-scale = Vector2(35.1719, 35.1719)
-texture = SubResource("GradientTexture2D_5ns1f")
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.556863, 0, 1, 1)

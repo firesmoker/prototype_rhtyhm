@@ -2,10 +2,10 @@ class_name GameManager extends Node
 @onready var points_text: Label = $"../HUD/PointsText"
 @onready var instruction: Label = $"../HUD/Instruction"
 @onready var notes_container: Node2D = $"../Notes"
+@onready var background: ColorRect = $"../Background/ColorRect"
 
 @onready var pointer: Sprite2D = $"../Pointer"
 @onready var pointer_ai: Sprite2D = $"../Pointer_AI"
-@onready var background: Sprite2D = $"../Background"
 
 @export var note_nodes: Array[Note]
 @export var note_y_location: float = -40
@@ -15,8 +15,14 @@ class_name GameManager extends Node
 @export var points: int = 0
 @export var points_per_note: float = 10
 
+@export var background_color_listen: Color = Color.DARK_SLATE_BLUE
+@export var background_color_play: Color = Color.MEDIUM_PURPLE
 @export var miss_color: Color = Color.RED
 @export var success_color: Color = Color.TURQUOISE
+
+var listen_mode_background: bool = true
+
+
 
 var stage_index: int = 0
 var original_note_scale: Vector2 = Vector2(0.281,0.281)
@@ -27,6 +33,7 @@ var notes_dictionary: Dictionary
 var four_quarters_bar_duration: float = 2
 var quarter_note_duration: float = 0.5  # Duration of a quarter note in seconds (120 BPM)
 var elapsed_time: float = 0.0
+var elapsed_time_background: float = 0.0
 var beat_time: float = 0
 var beat_num: int = -1
 var taking_input: bool = false
@@ -34,6 +41,8 @@ var current_note_num: int = 0
 var note_highlight_offset: float = 10
 var sfx_player: AudioStreamPlayer
 var NoteScene: PackedScene = preload("res://scenes/note.tscn")
+var bars_passed: int = 0
+var beats_passed: int = 0
 signal beat_signal
 signal notes_populated_signal
 
@@ -88,7 +97,7 @@ func load_rhythmic_pattern_level() -> void:
 	
 	
 func _ready() -> void:
-	
+	background.color = background_color_listen
 	#populate_note_nodes()
 	sfx_player = MusicPlayer.get_child(0)
 	if not MusicPlayer.playing:
@@ -137,41 +146,55 @@ func _unhandled_input(event: InputEvent) -> void:
 				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
 					if note_nodes[current_note_num].type != "rest":
 						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
-						pointer.modulate = Color.GREEN # TEMPORARY
+						pointer.modulate = success_color # TEMPORARY
 						var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
 						var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
 						accuracy = (1 - accuracy / note_visual_offset) * 100
 						var penalty: int = int(4 - accuracy / (100 / 4)) * 4
 						print(accuracy)
 						print(penalty)
-						note_nodes[current_note_num].material.set_shader_parameter("color", success_color * (1 - (penalty * 0.05)))
+						note_nodes[current_note_num].material.set_shader_parameter("color", success_color * (1 - (penalty * 0.08)))
 						points += points_per_note - penalty
 						points_text.text = "Points: " + str(points)
 						print("yay")
 						taking_input = false
 					else:
-						pointer.modulate = Color.RED # TEMPORARY
+						#pointer.modulate = Color.RED # TEMPORARY
 						points -= 500
 						points_text.text = "Points: " + str(points)
-						pointer.modulate = Color.RED
+						pointer.modulate = miss_color
 				
 		else:
-			pointer.modulate = Color.RED
+			pointer.modulate = miss_color
 			points -= points_per_note / 3
 			points_text.text = "Points: " + str(points)
 			print("you suck")
 
 func _process(delta: float) -> void:
+	change_background_color()
 	elapsed_time += delta  # Accumulate time
+	elapsed_time_background += delta
 	beat_time += delta
 	if beat_time >= quarter_note_duration:
 		#print("beat")
 		emit_signal("beat_signal")
 		beat_num += 1
+		beats_passed += 1
+		print(beats_passed)
 		beat_time -= quarter_note_duration 
+		if beats_passed == 1:
+			elapsed_time_background = 0
+		if beats_passed == 3:
+			listen_mode_background = !listen_mode_background
+			print("changing to next background")
+		elif beats_passed >= 4:
+			print("BAR PASSED")
+			bars_passed += 1
+			beats_passed = 0
+			
 	if taking_input and current_note_num < notes_dictionary.size(): # TEMPORARY
 		if notes_dictionary[current_note_num]["status"] == note_status.PLAYED:
-			pointer.modulate = Color.GREEN # TEMPORARY
+			pointer.modulate = success_color # TEMPORARY
 	else: # TEMPORARY
 		pointer.modulate = Color.WHITE # TEMPORARY
 		
@@ -259,3 +282,11 @@ func populate_note_nodes(number_of_notes: int = 4) -> void:
 		notes_container.add_child(instance)
 		note_nodes.append(instance)
 	emit_signal("notes_populated_signal")
+
+func change_background_color() -> void:
+	if listen_mode_background:
+		background.color = lerp(background.color, background_color_listen, elapsed_time_background / 30)
+		#background.color = background_color_listen
+	else:
+		background.color = lerp(background.color, background_color_play, elapsed_time_background / 10)
+			
