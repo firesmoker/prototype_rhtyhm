@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cksvqiylgjqqt"]
 
-[ext_resource type="AudioStream" uid="uid://daa6ltb7u650x" path="res://audio/BabyShark_FMajor_80bpm_Vocals.wav" id="1_04fen"]
+[ext_resource type="AudioStream" uid="uid://qiuga0p2g1n2" path="res://audio/Believer_90_shorter.wav" id="1_yefkl"]
 [ext_resource type="Script" path="res://scripts/music_player.gd" id="2_br3nq"]
 [ext_resource type="AudioStream" uid="uid://c2ysdoossnjpk" path="res://audio/wrong4.wav" id="3_nffp7"]
 [ext_resource type="AudioStream" uid="uid://wuw04lbxbceu" path="res://audio/rest.wav" id="4_7v3ux"]
@@ -9,7 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://1sfdunw6oonm" path="res://audio/success.mp3" id="7_dwq7n"]
 
 [node name="MusicPlayer" type="AudioStreamPlayer"]
-stream = ExtResource("1_04fen")
+stream = ExtResource("1_yefkl")
 volume_db = -9.0
 script = ExtResource("2_br3nq")
 note_sound = ExtResource("3_nffp7")

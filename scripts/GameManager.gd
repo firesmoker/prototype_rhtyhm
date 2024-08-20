@@ -68,11 +68,12 @@ signal notes_populated_signal
 
 
 
-func load_rhythmic_pattern_level(levelname: String = "rhythmGameLevelExampleLevel2") -> void:
+func load_rhythmic_pattern_level(levelname: String = "believer90") -> void:
+	
 	
 	notes_dictionary.clear()
 	#populate_note_nodes()
-	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://" + levelname + ".json")
+	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://levels/" + levelname + ".json")
 	stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
 	print("load new rhythmic pattern for stage ", stage_index)
 	var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
@@ -117,6 +118,7 @@ func load_rhythmic_pattern_level(levelname: String = "rhythmGameLevelExampleLeve
 	
 	
 func _ready() -> void:
+	connect("finished",MusicPlayer)
 	listen.texture = listen_icon
 	original_listen_scale = listen.scale
 	background.color = background_color_listen
@@ -134,16 +136,13 @@ func _ready() -> void:
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("play"):
-		var instance: HitNote = HitNoteScene.instantiate() as HitNote
-		instance.position.x = pointer.position.x
-		instance.position.y = note_y_location
-		add_child(instance)
 		if taking_input:
 			if current_note_num < notes_dictionary.size():
 				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
 					if note_nodes[current_note_num].type != "rest":
 						pulse(current_note_num)
 						sfx_player.stream = MusicPlayer.player_hit_sound
+						MusicPlayer.get_child(0).volume_db = -3
 						sfx_player.play()
 						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
 						#pointer.modulate = success_color # TEMPORARY
@@ -154,14 +153,18 @@ func _unhandled_input(event: InputEvent) -> void:
 						print(accuracy)
 						print(penalty)
 						if penalty > 0:
+							var instance: HitNote = HitNoteScene.instantiate() as HitNote
+							instance.position.x = pointer.position.x
+							instance.position.y = note_y_location
+							add_child(instance)
 							instance.current_color.r = not_tight_color.r
 							instance.current_color.g = not_tight_color.g
 							instance.current_color.b = not_tight_color.b
 							note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
 						else:
-							instance.current_color.r = success_color.r
-							instance.current_color.g = success_color.g
-							instance.current_color.b = success_color.b
+							#instance.current_color.r = success_color.r
+							#instance.current_color.g = success_color.g
+							#instance.current_color.b = success_color.b
 							note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
 						points += points_per_note - penalty
 						level_points += points_per_note - penalty
@@ -172,6 +175,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						taking_input = false
 					else:
 						sfx_player.stream = MusicPlayer.note_sound
+						MusicPlayer.get_child(0).volume_db = -3
 						sfx_player.play()
 						shake()
 						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
@@ -185,6 +189,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			#pointer.modulate = miss_color
 			sfx_player.stream = MusicPlayer.note_sound
+			MusicPlayer.get_child(0).volume_db = -3
 			sfx_player.play()
 			shake()
 			#points -= points_per_note / 3
@@ -195,18 +200,21 @@ func trigger_stars() -> void:
 	if progress_bar.value >= progress_bar.max_value / 4:
 		if star_1.texture != star_filled_icon:
 			sfx_player.stream = MusicPlayer.star_success
+			MusicPlayer.get_child(0).volume_db = 0
 			sfx_player.play()
 			star_pulse()
 			star_1.texture = star_filled_icon
 	if progress_bar.value >= progress_bar.max_value / 2:
 		if star_2.texture != star_filled_icon:
 			sfx_player.stream = MusicPlayer.star_success
+			MusicPlayer.get_child(0).volume_db = 0
 			sfx_player.play()
 			star_pulse()
 			star_2.texture = star_filled_icon
 	if progress_bar.value >= progress_bar.max_value:
 		if star_3.texture != star_filled_icon:
 			sfx_player.stream = MusicPlayer.star_success
+			MusicPlayer.get_child(0).volume_db = 0
 			sfx_player.play()
 			star_3.texture = star_filled_icon
 
