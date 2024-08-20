@@ -11,6 +11,31 @@
 			{
 				"note": "C3",
 				"duration": 1.0,
+				"is_rest": true
+			},
+			{
+				"note": "C3",
+				"duration": 1.0,
+				"is_rest": true
+			},
+			{
+			  "note": "C3",
+			  "duration": 1,
+			  "is_rest": true
+			},
+			{
+			  "note": "C3",
+			  "duration": 1,
+			  "is_rest": true
+			}
+		  ]
+		},
+		{
+		  "stageNumber": 2,
+		  "notes": [
+			{
+				"note": "C3",
+				"duration": 1.0,
 				"is_rest": false
 			},
 			{
@@ -31,7 +56,7 @@
 		  ]
 		},
 		{
-		  "stageNumber": 2,
+		  "stageNumber": 3,
 		  "notes": [
 			{
 				"note": "C3",
@@ -56,7 +81,7 @@
 		  ]
 		},
 		{
-			"stageNumber": 3,
+			"stageNumber": 4,
 			"notes": [
 			  {
 				  "note": "C3",
@@ -81,7 +106,7 @@
 			]
 		  },
 		  {
-			"stageNumber": 4,
+			"stageNumber": 5,
 			"notes": [
 			  {
 				  "note": "C3",
@@ -106,7 +131,7 @@
 			]
 		  },
 		  {
-			"stageNumber": 5,
+			"stageNumber": 6,
 			"notes": [
 				{
 					"note": "C3",
@@ -128,37 +153,6 @@
 					"duration": 1.0,
 					"is_rest": false
 				}
-			]
-		  },
-		  {
-			"stageNumber": 6,
-			"notes": [
-			  {
-				"note": "C3",
-				"duration": 1.0,
-				"is_rest": false
-			  },
-			  {
-				"note": "C3",
-				"duration": 1.0,
-				"is_rest": false
-			  },
-			  {
-				"note": "C3",
-				"duration": 0.5,
-				"is_rest": false
-			  },
-			  {
-				"note": "C3",
-				"duration": 0.5,
-				"is_rest": false
-			  },
-			  
-			  {
-				"note": "C3",
-				"duration": 1.0,
-				"is_rest": false
-			  }
 			]
 		  },
 		  {
@@ -185,6 +179,36 @@
 				"is_rest": false
 			  },
 			  
+			  {
+				"note": "C3",
+				"duration": 1.0,
+				"is_rest": false
+			  }
+			]
+		  },
+		  {
+			"stageNumber": 8,
+			"notes": [
+			  {
+				"note": "C3",
+				"duration": 1.0,
+				"is_rest": false
+			  },
+			  {
+				"note": "C3",
+				"duration": 1.0,
+				"is_rest": false
+			  },
+			  {
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			  },
+			  {
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			  },
 			  {
 				"note": "C3",
 				"duration": 1.0,
