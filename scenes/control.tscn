@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cy8yitgsn8y74"]
+
+[ext_resource type="Script" path="res://scenes/control.gd" id="1_36pqa"]
+[ext_resource type="Texture2D" uid="uid://doihh3jn6466p" path="res://AlbumCover_BabyShark_Soundtrack_450.jpg" id="2_ldey4"]
+[ext_resource type="Texture2D" uid="uid://c4umekvn4i4ks" path="res://Believer.jpg" id="2_lt4a8"]
+[ext_resource type="Script" path="res://scenes/song_cover_image.gd" id="3_4hx77"]
+
+[node name="Control" type="Node2D"]
+script = ExtResource("1_36pqa")
+
+[node name="Beliver" type="Node2D" parent="."]
+texture_filter = 1
+
+[node name="cover_image" type="Sprite2D" parent="Beliver"]
+position = Vector2(227, 227)
+texture = ExtResource("2_lt4a8")
+script = ExtResource("3_4hx77")
+
+[node name="BabyShark" type="Node2D" parent="."]
+texture_filter = 1
+
+[node name="cover_image" type="Sprite2D" parent="BabyShark"]
+position = Vector2(781, 228)
+texture = ExtResource("2_ldey4")
+script = ExtResource("3_4hx77")

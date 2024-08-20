@@ -64,14 +64,18 @@ var HitNoteScene: PackedScene = preload("res://scenes/hit_note.tscn")
 var bars_passed: int = 0
 var beats_passed: int = 0
 var did_load_bpm_and_audio: bool = false
+static var levelname: String = "rhythmGameLevelExampleLevel2"
 signal beat_signal
 signal notes_populated_signal
 
+static func changeToBeliver() -> void:
+	levelname = "believer90"
+	
+static func changeToBabyShark() -> void:
+	levelname = "babyShark80"
+	
 
-func load_rhythmic_pattern_level(levelname: String = "believer90") -> void:
-	# believer90
-	# babyShark80
-		
+func load_rhythmic_pattern_level() -> void:
 	notes_dictionary.clear()
 	#populate_note_nodes()
 
