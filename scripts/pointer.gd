@@ -24,10 +24,11 @@ func _ready() -> void:
 	player_start_position_x = game_manager.note_quarter_gap * (4 - beat_duration - pointer_offset)
 	teacher_start_position_x = game_manager.note_quarter_gap * (beat_duration - pointer_offset)
 	if type == "player":
-		position.x = player_start_position_x
-		start_position.x = player_start_position_x
-		restart_position = Vector2(player_start_position_x, start_position.y)
-		restart_target_position = Vector2(target_position.x, start_position.y)
+		var offset: float = game_manager.tempo / 6.0
+		position.x = player_start_position_x - offset
+		start_position.x = player_start_position_x - offset
+		restart_position = Vector2(player_start_position_x - offset, start_position.y)
+		restart_target_position = Vector2(target_position.x - offset, start_position.y)
 	elif type == "teacher":
 		var offset: float = game_manager.tempo / 8.0
 		position.x = teacher_start_position_x - offset
