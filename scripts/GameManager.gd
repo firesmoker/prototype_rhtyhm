@@ -63,17 +63,27 @@ var NoteScene: PackedScene = preload("res://scenes/note.tscn")
 var HitNoteScene: PackedScene = preload("res://scenes/hit_note.tscn")
 var bars_passed: int = 0
 var beats_passed: int = 0
+var did_load_bpm_and_audio: bool = false
 signal beat_signal
 signal notes_populated_signal
 
 
-
-func load_rhythmic_pattern_level(levelname: String = "believer90") -> void:
-	
+func load_rhythmic_pattern_level(levelname: String = "rhythmGameLevelExampleLevel2") -> void:
 	
 	notes_dictionary.clear()
 	#populate_note_nodes()
 	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://levels/" + levelname + ".json")
+	if not did_load_bpm_and_audio:
+		tempo = rhythm_game_level.get_bpm()
+		# Access the AudioStreamPlayer node
+		# Load the new audio stream file
+		var audio_file: String =  rhythm_game_level.get_audio_file()
+		var new_stream: AudioStream = load("res://audio//" + audio_file)
+		# Set the new stream to the audio player
+		MusicPlayer.stream = new_stream
+		did_load_bpm_and_audio = true
+	
+	
 	stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
 	print("load new rhythmic pattern for stage ", stage_index)
 	var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
@@ -118,19 +128,18 @@ func load_rhythmic_pattern_level(levelname: String = "believer90") -> void:
 	
 	
 func _ready() -> void:
-	connect("finished",MusicPlayer)
 	listen.texture = listen_icon
 	original_listen_scale = listen.scale
 	background.color = background_color_listen
 	#populate_note_nodes()
+
+	load_rhythmic_pattern_level()
+	four_quarters_bar_duration = 60 / tempo * 4
+	quarter_note_duration = 60 / tempo
 	sfx_player = MusicPlayer.get_child(0)
 	if not MusicPlayer.playing:
 		MusicPlayer.play()
-	four_quarters_bar_duration = 60 / tempo * 4
-	quarter_note_duration = 60 / tempo
-	
-	load_rhythmic_pattern_level()
-	
+		
 	elapsed_time = 0.0
 	beat_time = 0 + MusicPlayer.beat_offset
 	

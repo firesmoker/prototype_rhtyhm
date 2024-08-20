@@ -1,6 +1,8 @@
 {
 	"rhythmGameLevel": {
 	  "levelName": "Level 1",
+	  "bpm": 120,
+	  "audioFile": "Believe_Cher_Fmajor_120bpm_Temp.wav",
 	  "stages": [
 		{
 		  "stageNumber": 1,

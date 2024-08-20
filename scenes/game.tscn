@@ -12,7 +12,7 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
 
-[sub_resource type="Shader" id="Shader_2775m"]
+[sub_resource type="Shader" id="Shader_hpvou"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -33,10 +33,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
 resource_local_to_scene = true
-shader = SubResource("Shader_2775m")
+shader = SubResource("Shader_hpvou")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_eoox6"]
+[sub_resource type="Shader" id="Shader_ymtn8"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -57,7 +57,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_eoox6")
+shader = SubResource("Shader_ymtn8")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]
@@ -67,7 +67,7 @@ colors = PackedColorArray(0.505344, 0.505344, 0.505344, 1, 1, 1, 1, 1, 1, 1, 1, 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_wjeh1"]
 gradient = SubResource("Gradient_aaadu")
 
-[sub_resource type="Shader" id="Shader_te3pa"]
+[sub_resource type="Shader" id="Shader_8gs23"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -92,7 +92,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w6oym"]
 resource_local_to_scene = true
-shader = SubResource("Shader_te3pa")
+shader = SubResource("Shader_8gs23")
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/alpha = 1.0
 
@@ -100,22 +100,10 @@ shader_parameter/alpha = 1.0
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_23irw")
-note_y_location = null
-note_quarter_gap = null
-note_visual_offset = null
 tempo = 90.0
-points = null
-level_points = null
-points_per_note = null
 background_color_listen = Color(0.442548, 0.0854517, 0.0721435, 1)
 background_color_play = Color(0, 0.530021, 0.264785, 1)
-miss_color = null
 success_color = Color(0.22153, 0.727998, 0.282802, 1)
-not_tight_color = null
-listen_icon = null
-play_icon = null
-star_empty_icon = null
-star_filled_icon = null
 
 [node name="Pointer" parent="." instance=ExtResource("2_0fjou")]
 top_level = true

@@ -27,6 +27,18 @@ func load_json_data(json_filename: String) -> void:
 	else:
 		print("File not found: ", json_filename)
 
+func get_audio_file() -> String:
+	if "rhythmGameLevel" in rhythm_game_data:
+		if "audioFile" in rhythm_game_data["rhythmGameLevel"]:
+			return rhythm_game_data["rhythmGameLevel"]["audioFile"]
+	return ""
+	
+func get_bpm() -> int:
+	if "rhythmGameLevel" in rhythm_game_data:
+		if "bpm" in rhythm_game_data["rhythmGameLevel"]:
+			return rhythm_game_data["rhythmGameLevel"]["bpm"]
+	return 600
+	
 # Function to return the data as a list
 func get_stages_tmp() -> Array[Dictionary]:
 	if "rhythmGameLevel" in rhythm_game_data:
