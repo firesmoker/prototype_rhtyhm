@@ -166,7 +166,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						points += points_per_note - penalty
 						level_points += points_per_note - penalty
 						progress_bar.value = level_points
-						points_text.text = "Points: " + str(level_points)
+						points_text.text = "נקודות: " + str(level_points)
 						trigger_stars()
 						print("yay")
 						taking_input = false
@@ -179,7 +179,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						points -= 10
 						level_points -= 10
 						progress_bar.value = level_points
-						points_text.text = "Points: " + str(level_points)
+						points_text.text = "נקודות: " + str(level_points)
 						#pointer.modulate = miss_color
 				
 		else:
@@ -345,11 +345,11 @@ func change_background_color() -> void:
 		background.color = lerp(background.color, background_color_listen, elapsed_time_background / 30)
 		#background.color = background_color_listen
 		if elapsed_time_background / 30 >= 0.01:
-			instruction.text = "Listen!"
+			instruction.text = "הקשב"
 	else:
 		background.color = lerp(background.color, background_color_play, elapsed_time_background / 10)
 		if elapsed_time_background / 30 >= 0.01:
-			instruction.text = "Play!"
+			instruction.text = "נגן"
 
 func change_listen_icon() -> void:
 	if listen_mode_background:
