@@ -68,10 +68,14 @@ signal beat_signal
 signal notes_populated_signal
 
 
-func load_rhythmic_pattern_level(levelname: String = "rhythmGameLevelExampleLevel2") -> void:
-	
+func load_rhythmic_pattern_level(levelname: String = "believer90") -> void:
+	# believer90
+	# babyShark80
+		
 	notes_dictionary.clear()
 	#populate_note_nodes()
+
+	# 
 	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://levels/" + levelname + ".json")
 	if not did_load_bpm_and_audio:
 		tempo = rhythm_game_level.get_bpm()
@@ -128,12 +132,13 @@ func load_rhythmic_pattern_level(levelname: String = "rhythmGameLevelExampleLeve
 	
 	
 func _ready() -> void:
+	load_rhythmic_pattern_level()
+	
 	listen.texture = listen_icon
 	original_listen_scale = listen.scale
 	background.color = background_color_listen
 	#populate_note_nodes()
 
-	load_rhythmic_pattern_level()
 	four_quarters_bar_duration = 60 / tempo * 4
 	quarter_note_duration = 60 / tempo
 	sfx_player = MusicPlayer.get_child(0)
@@ -239,9 +244,9 @@ func shake() -> void:
 
 func _process(delta: float) -> void:
 	change_background_color()
-	change_listen_icon()
+	#change_listen_icon()
 	beat_overlay.color.a -= 0.035
-	listen.scale = lerp(original_listen_scale,original_listen_scale/1.5, quarter_note_duration / (beat_time + 0.1) / 10.0)
+	#listen.scale = lerp(original_listen_scale,original_listen_scale/1.5, quarter_note_duration / (beat_time + 0.1) / 10.0)
 	elapsed_time += delta  # Accumulate time
 	elapsed_time_background += delta
 	beat_time += delta
@@ -256,8 +261,12 @@ func _process(delta: float) -> void:
 			elapsed_time_background = 0
 		if beats_passed == 3:
 			listen_mode_background = !listen_mode_background
+			if not listen_mode_background:
+				listen.texture = play_icon
 			print("changing to next background")
 		elif beats_passed >= 4:
+			if listen_mode_background:
+				listen.texture = listen_icon
 			print("BAR PASSED")
 			bars_passed += 1
 			beats_passed = 0

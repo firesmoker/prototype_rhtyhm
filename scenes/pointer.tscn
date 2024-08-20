@@ -1,8 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://cbv1drvhlkirr"]
 
-[ext_resource type="Texture2D" uid="uid://bd1t1twbmb7k1" path="res://icon.svg" id="1_i5n3r"]
+[ext_resource type="Texture2D" uid="uid://c3qfrqsovtf5" path="res://up-arrow.png" id="1_4pbrb"]
 [ext_resource type="Script" path="res://scripts/pointer.gd" id="2_ig1r4"]
 
 [node name="Pointer" type="Sprite2D"]
-texture = ExtResource("1_i5n3r")
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_4pbrb")
 script = ExtResource("2_ig1r4")

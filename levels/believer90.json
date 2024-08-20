@@ -2,6 +2,8 @@
 {
 	"rhythmGameLevel": {
 	  "levelName": "Level 1",
+	  "bpm": 90,
+	  "audioFile": "Believer_90_shorter.wav",
 	  "stages": [
 		{
 		  "stageNumber": 1,

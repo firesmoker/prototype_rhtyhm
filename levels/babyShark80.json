@@ -1,6 +1,8 @@
 {
 	"rhythmGameLevel": {
 	  "levelName": "Level 1",
+	  "bpm": 80,
+	  "audioFile": "Babyshark_80_short.wav",
 	  "stages": [
 		{
 		  "stageNumber": 1,
@@ -131,16 +133,7 @@
 			"stageNumber": 6,
 			"notes": [
 			  
-			  {
-				"note": "C3",
-				"duration": 0.5,
-				"is_rest": false
-			  },
-			  {
-				"note": "C3",
-				"duration": 0.5,
-				"is_rest": false
-			  },
+			 
 			  {
 				"note": "C3",
 				"duration": 1.0,
@@ -150,6 +143,16 @@
 				"note": "C3",
 				"duration": 1.0,
 				"is_rest": true
+			  },
+			 {
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			  },
+			  {
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
 			  },
 			  {
 				"note": "C3",
@@ -161,16 +164,7 @@
 		  {
 			"stageNumber": 7,
 			"notes": [
-				{
-					"note": "C3",
-					"duration": 0.5,
-					"is_rest": false
-				  },
-				  {
-					"note": "C3",
-					"duration": 0.5,
-					"is_rest": false
-				  },
+				
 				  {
 					"note": "C3",
 					"duration": 1.0,
@@ -180,6 +174,16 @@
 					"note": "C3",
 					"duration": 1.0,
 					"is_rest": true
+				  },
+				{
+					"note": "C3",
+					"duration": 0.5,
+					"is_rest": false
+				  },
+				  {
+					"note": "C3",
+					"duration": 0.5,
+					"is_rest": false
 				  },
 				  {
 					"note": "C3",

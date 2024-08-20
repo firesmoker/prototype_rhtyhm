@@ -12,7 +12,7 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
 
-[sub_resource type="Shader" id="Shader_hpvou"]
+[sub_resource type="Shader" id="Shader_crx7t"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -33,10 +33,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
 resource_local_to_scene = true
-shader = SubResource("Shader_hpvou")
+shader = SubResource("Shader_crx7t")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_ymtn8"]
+[sub_resource type="Shader" id="Shader_yjugv"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -57,7 +57,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_ymtn8")
+shader = SubResource("Shader_yjugv")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]
@@ -67,7 +67,7 @@ colors = PackedColorArray(0.505344, 0.505344, 0.505344, 1, 1, 1, 1, 1, 1, 1, 1, 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_wjeh1"]
 gradient = SubResource("Gradient_aaadu")
 
-[sub_resource type="Shader" id="Shader_8gs23"]
+[sub_resource type="Shader" id="Shader_0uxbo"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -92,7 +92,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w6oym"]
 resource_local_to_scene = true
-shader = SubResource("Shader_8gs23")
+shader = SubResource("Shader_0uxbo")
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/alpha = 1.0
 
@@ -206,6 +206,7 @@ grow_vertical = 2
 color = Color(1, 0.854902, 0, 0.784314)
 
 [node name="Instruction" type="Label" parent="Background"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

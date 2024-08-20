@@ -3,7 +3,7 @@
 [ext_resource type="AudioStream" uid="uid://qiuga0p2g1n2" path="res://audio/Believer_90_shorter.wav" id="1_yefkl"]
 [ext_resource type="Script" path="res://scripts/music_player.gd" id="2_br3nq"]
 [ext_resource type="AudioStream" uid="uid://c2ysdoossnjpk" path="res://audio/wrong4.wav" id="3_nffp7"]
-[ext_resource type="AudioStream" uid="uid://wuw04lbxbceu" path="res://audio/rest.wav" id="4_7v3ux"]
+[ext_resource type="AudioStream" uid="uid://b0p8xtqir7bse" path="res://audio/rest2.wav" id="4_tpnkm"]
 [ext_resource type="AudioStream" uid="uid://b04nfwccpy3kv" path="res://audio/clap_1.wav" id="6_6r1vg"]
 [ext_resource type="AudioStream" uid="uid://ca7m4dpoqvys1" path="res://audio/teacher_note8.wav" id="6_7n6wj"]
 [ext_resource type="AudioStream" uid="uid://1sfdunw6oonm" path="res://audio/success.mp3" id="7_dwq7n"]
@@ -13,7 +13,7 @@ stream = ExtResource("1_yefkl")
 volume_db = -9.0
 script = ExtResource("2_br3nq")
 note_sound = ExtResource("3_nffp7")
-rest_sound = ExtResource("4_7v3ux")
+rest_sound = ExtResource("4_tpnkm")
 player_hit_sound = ExtResource("6_6r1vg")
 teacher_note = ExtResource("6_7n6wj")
 star_success = ExtResource("7_dwq7n")
