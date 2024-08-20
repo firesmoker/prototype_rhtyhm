@@ -64,7 +64,7 @@ var HitNoteScene: PackedScene = preload("res://scenes/hit_note.tscn")
 var bars_passed: int = 0
 var beats_passed: int = 0
 var did_load_bpm_and_audio: bool = false
-static var levelname: String = "rhythmGameLevelExampleLevel2"
+static var levelname: String = "dancemonkey85"
 signal beat_signal
 signal notes_populated_signal
 

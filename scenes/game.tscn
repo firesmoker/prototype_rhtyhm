@@ -12,7 +12,7 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]
 blend_mode = 1
 
-[sub_resource type="Shader" id="Shader_0203c"]
+[sub_resource type="Shader" id="Shader_jg6oy"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -33,10 +33,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3go28"]
 resource_local_to_scene = true
-shader = SubResource("Shader_0203c")
+shader = SubResource("Shader_jg6oy")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_fkdls"]
+[sub_resource type="Shader" id="Shader_oo8ku"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -57,7 +57,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_64de8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_fkdls")
+shader = SubResource("Shader_oo8ku")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_aaadu"]
@@ -67,7 +67,7 @@ colors = PackedColorArray(0.505344, 0.505344, 0.505344, 1, 1, 1, 1, 1, 1, 1, 1, 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_wjeh1"]
 gradient = SubResource("Gradient_aaadu")
 
-[sub_resource type="Shader" id="Shader_2uo38"]
+[sub_resource type="Shader" id="Shader_ueljc"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform vec4 color: source_color;
@@ -92,7 +92,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w6oym"]
 resource_local_to_scene = true
-shader = SubResource("Shader_2uo38")
+shader = SubResource("Shader_ueljc")
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/alpha = 1.0
 
@@ -108,7 +108,6 @@ success_color = Color(0.22153, 0.727998, 0.282802, 1)
 [node name="Pointer" parent="." instance=ExtResource("2_0fjou")]
 top_level = true
 position = Vector2(-300, 209)
-disappearing_pointer = false
 
 [node name="Pointer_AI" parent="." instance=ExtResource("2_0fjou")]
 visible = false
@@ -156,7 +155,7 @@ offset_right = 260.0
 offset_bottom = 89.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 40
-max_value = 150.0
+max_value = 270.0
 show_percentage = false
 
 [node name="Star1" type="Sprite2D" parent="HUD"]
