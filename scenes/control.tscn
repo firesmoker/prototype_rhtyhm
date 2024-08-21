@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cy8yitgsn8y74"]
+[gd_scene load_steps=7 format=3 uid="uid://cy8yitgsn8y74"]
 
 [ext_resource type="Script" path="res://scripts/control.gd" id="1_36pqa"]
 [ext_resource type="Texture2D" uid="uid://doihh3jn6466p" path="res://AlbumCover_BabyShark_Soundtrack_450.jpg" id="2_ldey4"]
 [ext_resource type="Texture2D" uid="uid://c4umekvn4i4ks" path="res://Believer.jpg" id="2_lt4a8"]
 [ext_resource type="Script" path="res://scripts/song_cover_image.gd" id="3_4hx77"]
+[ext_resource type="Texture2D" uid="uid://bqcnarikb7jgf" path="res://pantera.jpeg" id="5_53nxw"]
+[ext_resource type="Texture2D" uid="uid://dymfbft6jr2g3" path="res://LibrarySongCover_Happy.jpg" id="5_nweso"]
 
 [node name="Control" type="Node2D"]
 position = Vector2(46, 55)
@@ -85,9 +87,9 @@ texture_filter = 1
 scale = Vector2(0.7, 0.662)
 
 [node name="cover_image" type="Sprite2D" parent="Level6"]
-position = Vector2(710, 1016)
-scale = Vector2(0.7, 0.662)
-texture = ExtResource("2_ldey4")
+position = Vector2(704.082, 1019.98)
+scale = Vector2(1.8747, 1.23048)
+texture = ExtResource("5_53nxw")
 script = ExtResource("3_4hx77")
 
 [node name="Level7" type="Node2D" parent="."]
@@ -95,7 +97,7 @@ texture_filter = 1
 scale = Vector2(0.7, 0.662)
 
 [node name="cover_image" type="Sprite2D" parent="Level7"]
-position = Vector2(1246, 1006)
-scale = Vector2(0.7, 0.662)
-texture = ExtResource("2_ldey4")
+position = Vector2(1232.65, 1017.7)
+scale = Vector2(0.537226, 0.496058)
+texture = ExtResource("5_nweso")
 script = ExtResource("3_4hx77")
