@@ -73,7 +73,12 @@ static func changeToBeliver() -> void:
 	
 static func changeToBabyShark() -> void:
 	levelname = "babyShark80"
-	
+
+static func changeToHappy() -> void:
+	levelname = "happy160"
+
+static func changeToPantera() -> void:
+	levelname = "Pantera"
 
 func load_rhythmic_pattern_level() -> void:
 	notes_dictionary.clear()

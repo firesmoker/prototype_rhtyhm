@@ -54,13 +54,13 @@ func _input(event: InputEvent) -> void:
 			get_tree().change_scene_to_packed(new_scene)
 			
 		if level6.get_rect().has_point(level6.to_local(event.position)):
-			GameManager.changeToBabyShark()
-			specific_node.levelname = "babyShark80"
+			GameManager.changeToPantera()
+			specific_node.levelname = "Pantera"
 			get_tree().change_scene_to_packed(new_scene)
 			
 		if level7.get_rect().has_point(level7.to_local(event.position)):
-			GameManager.changeToBabyShark()
-			specific_node.levelname = "babyShark80"
+			GameManager.changeToHappy()
+			specific_node.levelname = "happy160"
 			get_tree().change_scene_to_packed(new_scene)
 
 
