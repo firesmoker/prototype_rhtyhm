@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cy8yitgsn8y74"]
+[gd_scene load_steps=10 format=3 uid="uid://cy8yitgsn8y74"]
 
 [ext_resource type="Script" path="res://scripts/control.gd" id="1_36pqa"]
 [ext_resource type="Texture2D" uid="uid://doihh3jn6466p" path="res://AlbumCover_BabyShark_Soundtrack_450.jpg" id="2_ldey4"]
-[ext_resource type="Texture2D" uid="uid://bxv8kuyvfn4s7" path="res://believer3.png" id="2_ljjm2"]
+[ext_resource type="Texture2D" uid="uid://c4umekvn4i4ks" path="res://Believer.jpg" id="2_lt4a8"]
 [ext_resource type="Script" path="res://scripts/song_cover_image.gd" id="3_4hx77"]
 [ext_resource type="Texture2D" uid="uid://bqcnarikb7jgf" path="res://pantera.jpeg" id="5_53nxw"]
+[ext_resource type="Texture2D" uid="uid://dyp4hq5wdnfi2" path="res://monkey.png" id="5_k6y7w"]
 [ext_resource type="Texture2D" uid="uid://dymfbft6jr2g3" path="res://LibrarySongCover_Happy.jpg" id="5_nweso"]
+[ext_resource type="Texture2D" uid="uid://b4k676rx2sudn" path="res://countingStars.png" id="6_uk6n3"]
+[ext_resource type="Texture2D" uid="uid://bxv8kuyvfn4s7" path="res://believer3.png" id="7_8k5hk"]
 
 [node name="Control" type="Node2D"]
 position = Vector2(46, 55)
@@ -19,7 +22,7 @@ scale = Vector2(0.7, 0.662)
 [node name="cover_image" type="Sprite2D" parent="Beliver"]
 position = Vector2(177, 168)
 scale = Vector2(0.7, 0.662)
-texture = ExtResource("2_ljjm2")
+texture = ExtResource("2_lt4a8")
 script = ExtResource("3_4hx77")
 
 [node name="BabyShark" type="Node2D" parent="."]
@@ -49,7 +52,7 @@ scale = Vector2(0.7, 0.662)
 [node name="cover_image" type="Sprite2D" parent="DanceMonkey"]
 position = Vector2(188, 583)
 scale = Vector2(0.7, 0.662)
-texture = ExtResource("5_fk34d")
+texture = ExtResource("5_k6y7w")
 script = ExtResource("3_4hx77")
 
 [node name="DanceMonkeyHarder" type="Node2D" parent="."]
@@ -59,7 +62,7 @@ scale = Vector2(0.7, 0.662)
 [node name="cover_image" type="Sprite2D" parent="DanceMonkeyHarder"]
 position = Vector2(706, 583)
 scale = Vector2(0.7, 0.662)
-texture = ExtResource("5_fk34d")
+texture = ExtResource("5_k6y7w")
 script = ExtResource("3_4hx77")
 
 [node name="CountingStars" type="Node2D" parent="."]
@@ -69,7 +72,7 @@ scale = Vector2(0.7, 0.662)
 [node name="cover_image" type="Sprite2D" parent="CountingStars"]
 position = Vector2(1246, 595)
 scale = Vector2(0.7, 0.662)
-texture = ExtResource("6_j8tmx")
+texture = ExtResource("6_uk6n3")
 script = ExtResource("3_4hx77")
 
 [node name="BelieverHarder" type="Node2D" parent="."]
@@ -79,11 +82,10 @@ scale = Vector2(0.7, 0.662)
 [node name="cover_image" type="Sprite2D" parent="BelieverHarder"]
 position = Vector2(190, 1009)
 scale = Vector2(0.7, 0.662)
-texture = ExtResource("2_ljjm2")
+texture = ExtResource("7_8k5hk")
 script = ExtResource("3_4hx77")
 
 [node name="Level6" type="Node2D" parent="."]
-visible = false
 texture_filter = 1
 scale = Vector2(0.7, 0.662)
 
@@ -94,7 +96,6 @@ texture = ExtResource("5_53nxw")
 script = ExtResource("3_4hx77")
 
 [node name="Level7" type="Node2D" parent="."]
-visible = false
 texture_filter = 1
 scale = Vector2(0.7, 0.662)
 
