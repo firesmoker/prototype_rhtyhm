@@ -17,8 +17,6 @@ class_name GameManager extends Node
 @onready var star_3: Sprite2D = $"../HUD/Star3"
 
 
-
-
 @export var note_nodes: Array[Note]
 @export var note_y_location: float = -40
 @export var note_quarter_gap: float = 300

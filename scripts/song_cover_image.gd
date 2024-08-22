@@ -2,11 +2,11 @@ extends Sprite2D
 
 @onready var beliver: Node2D = $"../../Beliver/cover_image"
 @onready var BabyShark: Node2D = $"../../BabyShark/cover_image"
-@onready var level1: Node2D = $"../../Level1/cover_image"
-@onready var level2: Node2D = $"../../Level2/cover_image"
-@onready var level3: Node2D = $"../../Level3/cover_image"
-@onready var level4: Node2D = $"../../Level4/cover_image"
-@onready var level5: Node2D = $"../../Level5/cover_image"
+@onready var BabySharkHarder: Node2D = $"../../BabySharkHarder/cover_image"
+@onready var DanceMonkey: Node2D = $"../../DanceMonkey/cover_image"
+@onready var DanceMonkeyHarder: Node2D = $"../../DanceMonkeyHarder/cover_image"
+@onready var CountingStars: Node2D = $"../../CountingStars/cover_image"
+@onready var BelieverHarder: Node2D = $"../../BelieverHarder/cover_image"
 @onready var level6: Node2D = $"../../Level6/cover_image"
 @onready var level7: Node2D = $"../../Level7/cover_image"
 
@@ -28,29 +28,29 @@ func _input(event: InputEvent) -> void:
 			specific_node.levelname = "babyShark80"
 			get_tree().change_scene_to_packed(new_scene)
 			
-		if level1.get_rect().has_point(level1.to_local(event.position)):
+		if BabySharkHarder.get_rect().has_point(BabySharkHarder.to_local(event.position)):
 			GameManager.changeToBabyShark()
-			specific_node.levelname = "babyShark80"
+			specific_node.levelname = "babyShark110"
 			get_tree().change_scene_to_packed(new_scene)
 			
-		if level2.get_rect().has_point(level2.to_local(event.position)):
+		if DanceMonkey.get_rect().has_point(DanceMonkey.to_local(event.position)):
 			GameManager.changeToBabyShark()
-			specific_node.levelname = "babyShark80"
+			specific_node.levelname = "dancemonkey85"
 			get_tree().change_scene_to_packed(new_scene)
 			
-		if level3.get_rect().has_point(level3.to_local(event.position)):
+		if DanceMonkeyHarder.get_rect().has_point(DanceMonkeyHarder.to_local(event.position)):
 			GameManager.changeToBabyShark()
-			specific_node.levelname = "babyShark80"
+			specific_node.levelname = "dancemonkey90"
 			get_tree().change_scene_to_packed(new_scene)
 			
-		if level4.get_rect().has_point(level4.to_local(event.position)):
+		if CountingStars.get_rect().has_point(CountingStars.to_local(event.position)):
 			GameManager.changeToBabyShark()
-			specific_node.levelname = "babyShark80"
+			specific_node.levelname = "countingStars122"
 			get_tree().change_scene_to_packed(new_scene)
 			
-		if level5.get_rect().has_point(level5.to_local(event.position)):
+		if BelieverHarder.get_rect().has_point(BelieverHarder.to_local(event.position)):
 			GameManager.changeToBabyShark()
-			specific_node.levelname = "babyShark80"
+			specific_node.levelname = "believer115"
 			get_tree().change_scene_to_packed(new_scene)
 			
 		if level6.get_rect().has_point(level6.to_local(event.position)):
