@@ -74,4 +74,3 @@ func _process(delta: float) -> void:
 		await game_manager.notes_populated_signal
 		notes_played_count = 0
 		notes_to_play = game_manager.note_nodes
-

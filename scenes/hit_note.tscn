@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://e7vogwvlx1kl"]
 
 [ext_resource type="PackedScene" uid="uid://bum12kke1fy0l" path="res://scenes/note.tscn" id="1_5kjlu"]
-[ext_resource type="Shader" path="res://note.gdshader" id="2_w5vem"]
-[ext_resource type="Script" path="res://scenes/hit_note.gd" id="3_7fvmp"]
+[ext_resource type="Shader" uid="uid://con6qsrxq5tnk" path="res://note.gdshader" id="2_w5vem"]
+[ext_resource type="Script" uid="uid://b266k251q2v18" path="res://scenes/hit_note.gd" id="3_7fvmp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y24ol"]
 resource_local_to_scene = true

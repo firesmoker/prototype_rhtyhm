@@ -34,4 +34,3 @@ func load_image_for_type(image_type: String, duration: float = 1.0) -> void:
 		_:
 			image_path = "res://quarter-note.png"
 	texture = load(image_path)
-

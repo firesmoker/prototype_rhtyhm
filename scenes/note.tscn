@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://bum12kke1fy0l"]
 
 [ext_resource type="Texture2D" uid="uid://d0dcsnv4rfoy3" path="res://quarter-note.png" id="1_fe3kh"]
-[ext_resource type="Shader" path="res://note.gdshader" id="1_j46fp"]
-[ext_resource type="Script" path="res://scripts/note.gd" id="2_ig1r4"]
+[ext_resource type="Shader" uid="uid://con6qsrxq5tnk" path="res://note.gdshader" id="1_j46fp"]
+[ext_resource type="Script" uid="uid://dluapmdcgu1gr" path="res://scripts/note.gd" id="2_ig1r4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hv2uj"]
 resource_local_to_scene = true

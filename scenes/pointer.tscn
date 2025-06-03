@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cbv1drvhlkirr"]
 
 [ext_resource type="Texture2D" uid="uid://c3qfrqsovtf5" path="res://up-arrow.png" id="1_4pbrb"]
-[ext_resource type="Script" path="res://scripts/pointer.gd" id="2_ig1r4"]
+[ext_resource type="Script" uid="uid://b0sw8eir12uro" path="res://scripts/pointer.gd" id="2_ig1r4"]
 
 [node name="Pointer" type="Sprite2D"]
 scale = Vector2(0.2, 0.2)

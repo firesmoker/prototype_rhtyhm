@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://cksvqiylgjqqt"]
 
 [ext_resource type="AudioStream" uid="uid://dbdyrc878argc" path="res://audio/Believer_115.wav" id="1_btrc0"]
-[ext_resource type="Script" path="res://scripts/music_player.gd" id="2_br3nq"]
+[ext_resource type="Script" uid="uid://hse6mlyihw04" path="res://scripts/music_player.gd" id="2_br3nq"]
 [ext_resource type="AudioStream" uid="uid://c2ysdoossnjpk" path="res://audio/wrong4.wav" id="3_nffp7"]
 [ext_resource type="AudioStream" uid="uid://b0p8xtqir7bse" path="res://audio/rest2.wav" id="4_tpnkm"]
 [ext_resource type="AudioStream" uid="uid://b04nfwccpy3kv" path="res://audio/clap_1.wav" id="6_6r1vg"]
