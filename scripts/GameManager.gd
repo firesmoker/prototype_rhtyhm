@@ -6,7 +6,7 @@ class_name GameManager extends Node
 @onready var background: ColorRect = $"../Background/ColorRect"
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var progress_bar: ProgressBar = $"../HUD/ProgressBar"
-@onready var beat_overlay: ColorRect = $"../Background/BeatOverlay"
+@onready var star_success_overlay: ColorRect = $"../Background/StarSuccessOverlay"
 
 @onready var listen: Sprite2D = $"../Listen"
 
@@ -78,6 +78,172 @@ static func changeToHappy() -> void:
 static func changeToPantera() -> void:
 	levelname = "Pantera"
 
+func set_ui() -> void:
+	listen.texture = listen_icon
+	original_listen_scale = listen.scale
+	background.color = background_color_listen
+
+func _ready() -> void:
+	load_rhythmic_pattern_level()
+	set_ui()
+	
+	four_quarters_bar_duration = 60 / tempo * 4
+	quarter_note_duration = 60 / tempo
+	sfx_player = MusicPlayer.get_child(0)
+	elapsed_time = 0.0
+	beat_time = 0 + MusicPlayer.beat_offset
+
+func _process(delta: float) -> void:
+	#if current_note_num < note_nodes.size(): #DEBUG
+		#note_nodes[current_note_num].material.set_shader_parameter("color", Color.BLUE)  #DEBUG
+	if not MusicPlayer.playing:
+		MusicPlayer.play()	
+	change_background_color()
+	elapsed_time += delta
+	elapsed_time_background += delta
+	beat_time += delta
+	if beat_time >= quarter_note_duration:
+		emit_signal("beat_signal")
+		beat_num += 1
+		beats_passed += 1
+		print(beats_passed)
+		beat_time -= quarter_note_duration 
+		if beats_passed == 1:
+			elapsed_time_background = 0
+		if beats_passed == 3:
+			listen_mode_background = !listen_mode_background
+			if not listen_mode_background:
+				listen.texture = play_icon
+		elif beats_passed >= 4:
+			if listen_mode_background:
+				listen.texture = listen_icon
+			print("BAR PASSED")
+			bars_passed += 1
+			beats_passed = 0
+	bar_loop()
+
+func change_active_note() -> void:
+	pass
+
+func _unhandled_input(event: InputEvent) -> void:
+	handle_input_wip(event)
+	#handle_input(event)
+	
+
+func handle_input_wip(event: InputEvent) -> void:
+	if event.is_action_pressed("play"):
+		if current_note_num < notes_dictionary.size():
+			if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
+				if note_nodes[current_note_num].type != "rest":
+					notes_dictionary[current_note_num]["status"] = note_status.PLAYED
+					note_hit_effect(current_note_num)
+					calculate_note_hit_success()
+					
+
+func note_hit_effect(note_num: int) -> void:
+	pulse(note_num)
+	sfx_player.stream = MusicPlayer.player_hit_sound
+	MusicPlayer.get_child(0).volume_db = -3
+	sfx_player.play()
+
+func calculate_note_hit_success() -> void:
+	#note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
+				if note_nodes[current_note_num].type != "rest":
+					var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
+					var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
+					var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
+					accuracy = (1 - accuracy / offset) * 100
+					var penalty: int = int(2 - accuracy / (100 / 2) * notes_dictionary[current_note_num]["duration"]) * 4
+					print(accuracy)
+					print(penalty)
+					if penalty > 0:
+						var instance: HitNote = HitNoteScene.instantiate() as HitNote
+						instance.position.x = pointer.position.x
+						instance.position.y = note_y_location
+						add_child(instance)
+						instance.current_color.r = not_tight_color.r
+						instance.current_color.g = not_tight_color.g
+						instance.current_color.b = not_tight_color.b
+						note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
+					else:
+						#instance.current_color.r = success_color.r
+						#instance.current_color.g = success_color.g
+						#instance.current_color.b = success_color.b
+						note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
+					points += points_per_note - penalty
+					level_points += points_per_note - penalty
+					progress_bar.value = level_points
+					points_text.text = "נקודות: " + str(level_points)
+					trigger_stars()
+					print("yay")
+					taking_input = false
+				else:
+					shake()
+					note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
+					points -= 10
+					level_points -= 10
+					progress_bar.value = level_points
+					points_text.text = "נקודות: " + str(level_points)
+					#pointer.modulate = miss_color
+func handle_input(event: InputEvent) -> void:
+	if event.is_action_pressed("play") and taking_input:
+		if current_note_num < notes_dictionary.size():
+			if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
+				if note_nodes[current_note_num].type != "rest":
+					pulse(current_note_num)
+					sfx_player.stream = MusicPlayer.player_hit_sound
+					MusicPlayer.get_child(0).volume_db = -3
+					sfx_player.play()
+					notes_dictionary[current_note_num]["status"] = note_status.PLAYED
+					#pointer.modulate = success_color # TEMPORARY
+					var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
+					var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
+					var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
+					accuracy = (1 - accuracy / offset) * 100
+					var penalty: int = int(2 - accuracy / (100 / 2)) * 4
+					print(accuracy)
+					print(penalty)
+					if penalty > 0:
+						var instance: HitNote = HitNoteScene.instantiate() as HitNote
+						instance.position.x = pointer.position.x
+						instance.position.y = note_y_location
+						add_child(instance)
+						instance.current_color.r = not_tight_color.r
+						instance.current_color.g = not_tight_color.g
+						instance.current_color.b = not_tight_color.b
+						note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
+					else:
+						#instance.current_color.r = success_color.r
+						#instance.current_color.g = success_color.g
+						#instance.current_color.b = success_color.b
+						note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
+					points += points_per_note - penalty
+					level_points += points_per_note - penalty
+					progress_bar.value = level_points
+					points_text.text = "נקודות: " + str(level_points)
+					trigger_stars()
+					print("yay")
+					taking_input = false
+				else:
+					sfx_player.stream = MusicPlayer.note_sound
+					MusicPlayer.get_child(0).volume_db = -3
+					sfx_player.play()
+					shake()
+					notes_dictionary[current_note_num]["status"] = note_status.PLAYED
+					note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
+					points -= 10
+					level_points -= 10
+					progress_bar.value = level_points
+					points_text.text = "נקודות: " + str(level_points)
+					#pointer.modulate = miss_color
+				
+	elif event.is_action_pressed("play") and not taking_input:
+		sfx_player.stream = MusicPlayer.note_sound
+		MusicPlayer.get_child(0).volume_db = -3
+		sfx_player.play()
+		shake()
+		print("you suck")
+
 func load_rhythmic_pattern_level() -> void:
 	notes_dictionary.clear()
 	#populate_note_nodes()
@@ -138,84 +304,7 @@ func load_rhythmic_pattern_level() -> void:
 	
 	
 	
-func _ready() -> void:
-	load_rhythmic_pattern_level()
-	
-	listen.texture = listen_icon
-	original_listen_scale = listen.scale
-	background.color = background_color_listen
-	#populate_note_nodes()
 
-	four_quarters_bar_duration = 60 / tempo * 4
-	quarter_note_duration = 60 / tempo
-	sfx_player = MusicPlayer.get_child(0)
-	if not MusicPlayer.playing:
-		MusicPlayer.play()
-		
-	elapsed_time = 0.0
-	beat_time = 0 + MusicPlayer.beat_offset
-	
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("play"):
-		if taking_input:
-			if current_note_num < notes_dictionary.size():
-				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
-					if note_nodes[current_note_num].type != "rest":
-						pulse(current_note_num)
-						sfx_player.stream = MusicPlayer.player_hit_sound
-						MusicPlayer.get_child(0).volume_db = -3
-						sfx_player.play()
-						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
-						#pointer.modulate = success_color # TEMPORARY
-						var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
-						var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
-						accuracy = (1 - accuracy / note_visual_offset) * 100
-						var penalty: int = int(2 - accuracy / (100 / 2)) * 4
-						print(accuracy)
-						print(penalty)
-						if penalty > 0:
-							var instance: HitNote = HitNoteScene.instantiate() as HitNote
-							instance.position.x = pointer.position.x
-							instance.position.y = note_y_location
-							add_child(instance)
-							instance.current_color.r = not_tight_color.r
-							instance.current_color.g = not_tight_color.g
-							instance.current_color.b = not_tight_color.b
-							note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
-						else:
-							#instance.current_color.r = success_color.r
-							#instance.current_color.g = success_color.g
-							#instance.current_color.b = success_color.b
-							note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
-						points += points_per_note - penalty
-						level_points += points_per_note - penalty
-						progress_bar.value = level_points
-						points_text.text = "נקודות: " + str(level_points)
-						trigger_stars()
-						print("yay")
-						taking_input = false
-					else:
-						sfx_player.stream = MusicPlayer.note_sound
-						MusicPlayer.get_child(0).volume_db = -3
-						sfx_player.play()
-						shake()
-						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
-						note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
-						points -= 10
-						level_points -= 10
-						progress_bar.value = level_points
-						points_text.text = "נקודות: " + str(level_points)
-						#pointer.modulate = miss_color
-				
-		else:
-			#pointer.modulate = miss_color
-			sfx_player.stream = MusicPlayer.note_sound
-			MusicPlayer.get_child(0).volume_db = -3
-			sfx_player.play()
-			shake()
-			#points -= points_per_note / 3
-			#points_text.text = "Points: " + str(points)
-			print("you suck")
 
 func trigger_stars() -> void:
 	if progress_bar.value >= progress_bar.max_value / 4:
@@ -249,51 +338,14 @@ func shake() -> void:
 	camera_2d.rotation = 0
 
 
-func _process(delta: float) -> void:
-	change_background_color()
-	#change_listen_icon()
-	beat_overlay.color.a -= 0.035
-	#listen.scale = lerp(original_listen_scale,original_listen_scale/1.5, quarter_note_duration / (beat_time + 0.1) / 10.0)
-	elapsed_time += delta  # Accumulate time
-	elapsed_time_background += delta
-	beat_time += delta
-	if beat_time >= quarter_note_duration:
-		#print("beat")
-		emit_signal("beat_signal")
-		beat_num += 1
-		beats_passed += 1
-		print(beats_passed)
-		beat_time -= quarter_note_duration 
-		if beats_passed == 1:
-			elapsed_time_background = 0
-		if beats_passed == 3:
-			listen_mode_background = !listen_mode_background
-			if not listen_mode_background:
-				listen.texture = play_icon
-			print("changing to next background")
-		elif beats_passed >= 4:
-			if listen_mode_background:
-				listen.texture = listen_icon
-			print("BAR PASSED")
-			bars_passed += 1
-			beats_passed = 0
-			
-	#if taking_input and current_note_num < notes_dictionary.size(): # TEMPORARY
-		#if notes_dictionary[current_note_num]["status"] == note_status.PLAYED:
-			#pointer.modulate = success_color # TEMPORARY
-	#else: # TEMPORARY
-		#pointer.modulate = Color.WHITE # TEMPORARY
-		
-	bar_loop()
-
-func bar_loop() -> void:
-	#print("current_note_num, notes_dictionary.size():  ",current_note_num, notes_dictionary.size())
+func bar_loop_wip() -> void:
 	if current_note_num < notes_dictionary.size():
 		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
+		print(offset)
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
-		if pointer.position.x >= current_note_x_position - offset and pointer.position.x <= current_note_x_position + offset:
+		if pointer.position.x >= current_note_x_position - offset and pointer.position.x <= current_note_x_position + offset and notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
 			taking_input = true
-		elif pointer.position.x >= current_note_x_position + note_visual_offset:
+		elif pointer.position.x >= current_note_x_position + offset:
 			if notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
 				if not notes_dictionary[current_note_num]["type"] == "rest":
 					notes_dictionary[current_note_num]["status"] != note_status.MISSED
@@ -305,7 +357,35 @@ func bar_loop() -> void:
 			if current_note_num < notes_dictionary.size():
 				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE
 		else:
-			taking_input = false
+			pass
+			#taking_input = false
+			#if notes_dictionary[current_note_num]["status"] == note_status.PLAYED:
+				#taking_input = true
+
+func bar_loop() -> void:
+	#print("current_note_num, notes_dictionary.size():  ",current_note_num, notes_dictionary.size())
+	if current_note_num < notes_dictionary.size():
+		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
+		print(offset)
+		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
+		if pointer.position.x >= current_note_x_position - offset and pointer.position.x <= current_note_x_position + offset and notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
+			taking_input = true
+		elif pointer.position.x >= current_note_x_position + offset:
+			if notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
+				if not notes_dictionary[current_note_num]["type"] == "rest":
+					notes_dictionary[current_note_num]["status"] != note_status.MISSED
+					note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
+				else:
+					notes_dictionary[current_note_num]["status"] != note_status.PLAYED
+					note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
+			current_note_num += 1
+			if current_note_num < notes_dictionary.size():
+				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE
+		else:
+			print("bababbababab")
+			#taking_input = false
+			#if notes_dictionary[current_note_num]["status"] == note_status.PLAYED:
+				#taking_input = true
 		
 	else:
 		taking_input = false
@@ -357,8 +437,8 @@ func restart_level() -> void:
 	elapsed_time = 0
 
 func star_pulse() -> void:
-	beat_overlay.visible = true
-	beat_overlay.color.a = star_overlay_strength
+	star_success_overlay.visible = true
+	star_success_overlay.color.a = star_overlay_strength
 	
 func populate_note_nodes(number_of_notes: int = 4) -> void:
 	note_nodes.clear()
@@ -374,6 +454,7 @@ func populate_note_nodes(number_of_notes: int = 4) -> void:
 	emit_signal("notes_populated_signal")
 
 func change_background_color() -> void:
+	star_success_overlay.color.a -= 0.035
 	if listen_mode_background:
 		background.color = lerp(background.color, background_color_listen, elapsed_time_background / 30)
 		#background.color = background_color_listen

@@ -28,9 +28,9 @@ func load_image_for_type(image_type: String, duration: float = 1.0) -> void:
 			image_path = path_rest_quarter
 		"note":
 			if duration == 1.0: 
-				image_path = "res://quarter-note.png"
-			else:
+				image_path = "res://quarter-note2.png"
+			elif duration == 0.5:
 				image_path = "res://eigth-note.png"
 		_:
-			image_path = "res://quarter-note.png"
+			image_path = "res://quarter-note2.png"
 	texture = load(image_path)
