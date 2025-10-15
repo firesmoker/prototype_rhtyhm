@@ -147,44 +147,43 @@ func note_hit_effect(note_num: int) -> void:
 	sfx_player.play()
 
 func calculate_note_hit_success() -> void:
-	#note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
-				if note_nodes[current_note_num].type != "rest":
-					var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
-					var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
-					var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
-					accuracy = (1 - accuracy / offset) * 100
-					var penalty: int = int(2 - accuracy / (100 / 2) * notes_dictionary[current_note_num]["duration"]) * 4
-					print(accuracy)
-					print(penalty)
-					if penalty > 0:
-						var instance: HitNote = HitNoteScene.instantiate() as HitNote
-						instance.position.x = pointer.position.x
-						instance.position.y = note_y_location
-						add_child(instance)
-						instance.current_color.r = not_tight_color.r
-						instance.current_color.g = not_tight_color.g
-						instance.current_color.b = not_tight_color.b
-						note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
-					else:
-						#instance.current_color.r = success_color.r
-						#instance.current_color.g = success_color.g
-						#instance.current_color.b = success_color.b
-						note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
-					points += points_per_note - penalty
-					level_points += points_per_note - penalty
-					progress_bar.value = level_points
-					points_text.text = "נקודות: " + str(level_points)
-					trigger_stars()
-					print("yay")
-					taking_input = false
-				else:
-					shake()
-					note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
-					points -= 10
-					level_points -= 10
-					progress_bar.value = level_points
-					points_text.text = "נקודות: " + str(level_points)
-					#pointer.modulate = miss_color
+	if note_nodes[current_note_num].type != "rest":
+		var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
+		var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
+		#var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
+		accuracy = (1 - accuracy / note_visual_offset) * 100
+		var penalty: int = int(2 - accuracy / (100 / 2)) * 4
+		print(accuracy)
+		print(penalty)
+		if penalty > 0:
+			var instance: HitNote = HitNoteScene.instantiate() as HitNote
+			instance.position.x = pointer.position.x
+			instance.position.y = note_y_location
+			add_child(instance)
+			instance.current_color.r = not_tight_color.r
+			instance.current_color.g = not_tight_color.g
+			instance.current_color.b = not_tight_color.b
+			note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
+		else:
+			#instance.current_color.r = success_color.r
+			#instance.current_color.g = success_color.g
+			#instance.current_color.b = success_color.b
+			note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
+		points += points_per_note - penalty
+		level_points += points_per_note - penalty
+		progress_bar.value = level_points
+		points_text.text = "נקודות: " + str(level_points)
+		trigger_stars()
+		print("yay")
+		taking_input = false
+	else:
+		shake()
+		note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
+		points -= 10
+		level_points -= 10
+		progress_bar.value = level_points
+		points_text.text = "נקודות: " + str(level_points)
+		#pointer.modulate = miss_color
 func handle_input(event: InputEvent) -> void:
 	if event.is_action_pressed("play") and taking_input:
 		if current_note_num < notes_dictionary.size():
