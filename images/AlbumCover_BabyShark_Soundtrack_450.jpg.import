@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lyh6mmeywlik"
-path="res://.godot/imported/quarter-note2.png-4f1ebd011408d3c71fad8d4a98e89042.ctex"
+uid="uid://doihh3jn6466p"
+path="res://.godot/imported/AlbumCover_BabyShark_Soundtrack_450.jpg-03023a2258b6ddfcf793da52be644c15.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://quarter-note2.png"
-dest_files=["res://.godot/imported/quarter-note2.png-4f1ebd011408d3c71fad8d4a98e89042.ctex"]
+source_file="res://images/AlbumCover_BabyShark_Soundtrack_450.jpg"
+dest_files=["res://.godot/imported/AlbumCover_BabyShark_Soundtrack_450.jpg-03023a2258b6ddfcf793da52be644c15.ctex"]
 
 [params]
 

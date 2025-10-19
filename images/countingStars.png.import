@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmy3pf53wlaxs"
-path="res://.godot/imported/play_icon_green.png-aa2ada85ec6e077a0c2fbbc315d61ccb.ctex"
+uid="uid://b4k676rx2sudn"
+path="res://.godot/imported/countingStars.png-9eea627eb7bd4fffc23f660f10394476.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://play_icon_green.png"
-dest_files=["res://.godot/imported/play_icon_green.png-aa2ada85ec6e077a0c2fbbc315d61ccb.ctex"]
+source_file="res://images/countingStars.png"
+dest_files=["res://.godot/imported/countingStars.png-9eea627eb7bd4fffc23f660f10394476.ctex"]
 
 [params]
 

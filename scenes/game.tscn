@@ -4,9 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://cbv1drvhlkirr" path="res://scenes/pointer.tscn" id="2_0fjou"]
 [ext_resource type="PackedScene" uid="uid://bum12kke1fy0l" path="res://scenes/note.tscn" id="3_x7au0"]
 [ext_resource type="FontFile" uid="uid://bhx6aq6fsp3bi" path="res://instruction_font.tres" id="4_63s3l"]
-[ext_resource type="Texture2D" uid="uid://v3cxc6ouqia7" path="res://Star_Empty.svg" id="4_nsii6"]
-[ext_resource type="Texture2D" uid="uid://cxsp7jlidq1nt" path="res://Music-staff.png" id="5_dldts"]
-[ext_resource type="Texture2D" uid="uid://d4egegdc4orhv" path="res://listen.png" id="6_vd3uy"]
+[ext_resource type="Texture2D" uid="uid://v3cxc6ouqia7" path="res://images/Star_Empty.svg" id="4_nsii6"]
+[ext_resource type="Texture2D" uid="uid://cxsp7jlidq1nt" path="res://images/Music-staff.png" id="5_dldts"]
+[ext_resource type="Texture2D" uid="uid://d4egegdc4orhv" path="res://images/listen.png" id="6_vd3uy"]
 [ext_resource type="PackedScene" uid="uid://e7vogwvlx1kl" path="res://scenes/hit_note.tscn" id="8_pof02"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6l6um"]

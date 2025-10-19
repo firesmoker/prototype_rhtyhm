@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlsn2w8bku3n2"
-path="res://.godot/imported/believer2.png-4b91395c1cd5932fb8a47b4bd0e85cac.ctex"
+uid="uid://bqcnarikb7jgf"
+path="res://.godot/imported/pantera.jpeg-a22e1a33d560fb8482ec20af1345548d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://believer2.png"
-dest_files=["res://.godot/imported/believer2.png-4b91395c1cd5932fb8a47b4bd0e85cac.ctex"]
+source_file="res://images/pantera.jpeg"
+dest_files=["res://.godot/imported/pantera.jpeg-a22e1a33d560fb8482ec20af1345548d.ctex"]
 
 [params]
 

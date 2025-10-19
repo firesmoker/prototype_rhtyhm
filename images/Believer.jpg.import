@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4k676rx2sudn"
-path="res://.godot/imported/countingStars.png-d4ab93e46343363ec8528d9f5cbb5aa0.ctex"
+uid="uid://c4umekvn4i4ks"
+path="res://.godot/imported/Believer.jpg-5d1974e9b6c61d8098dc0ca0c9b2fb00.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://countingStars.png"
-dest_files=["res://.godot/imported/countingStars.png-d4ab93e46343363ec8528d9f5cbb5aa0.ctex"]
+source_file="res://images/Believer.jpg"
+dest_files=["res://.godot/imported/Believer.jpg-5d1974e9b6c61d8098dc0ca0c9b2fb00.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://35t03s1y7u"
-path="res://.godot/imported/play_icon.png-8a0d3761c44edae09bc93011eccdc82d.ctex"
+uid="uid://bxv8kuyvfn4s7"
+path="res://.godot/imported/believer3.png-ad46c1089cbff67b5550955c588c9fee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://play_icon.png"
-dest_files=["res://.godot/imported/play_icon.png-8a0d3761c44edae09bc93011eccdc82d.ctex"]
+source_file="res://images/believer3.png"
+dest_files=["res://.godot/imported/believer3.png-ad46c1089cbff67b5550955c588c9fee.ctex"]
 
 [params]
 

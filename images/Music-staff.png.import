@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://v3cxc6ouqia7"
-path="res://.godot/imported/Star_Empty.svg-4c88a7e77a9921d0675e13d42c0009ac.ctex"
+uid="uid://cxsp7jlidq1nt"
+path="res://.godot/imported/Music-staff.png-3e265c1b4c64553012c03becb0f094aa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Star_Empty.svg"
-dest_files=["res://.godot/imported/Star_Empty.svg-4c88a7e77a9921d0675e13d42c0009ac.ctex"]
+source_file="res://images/Music-staff.png"
+dest_files=["res://.godot/imported/Music-staff.png-3e265c1b4c64553012c03becb0f094aa.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

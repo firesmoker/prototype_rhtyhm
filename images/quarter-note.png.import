@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqcnarikb7jgf"
-path="res://.godot/imported/pantera.jpeg-63d4e1369bf643b0025c0cfbe4fa5a54.ctex"
+uid="uid://d0dcsnv4rfoy3"
+path="res://.godot/imported/quarter-note.png-f438691cebabcbb6bb69d2cae5b143f0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://pantera.jpeg"
-dest_files=["res://.godot/imported/pantera.jpeg-63d4e1369bf643b0025c0cfbe4fa5a54.ctex"]
+source_file="res://images/quarter-note.png"
+dest_files=["res://.godot/imported/quarter-note.png-f438691cebabcbb6bb69d2cae5b143f0.ctex"]
 
 [params]
 

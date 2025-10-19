@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnogovfwbmyjp"
-path="res://.godot/imported/Star_Filled.svg-4207745565164a35f17b2fb8a187af14.ctex"
+uid="uid://bd1t1twbmb7k1"
+path="res://.godot/imported/icon.svg-40d11009b022ae281956dc38e8f8d85e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Star_Filled.svg"
-dest_files=["res://.godot/imported/Star_Filled.svg-4207745565164a35f17b2fb8a187af14.ctex"]
+source_file="res://images/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-40d11009b022ae281956dc38e8f8d85e.ctex"]
 
 [params]
 

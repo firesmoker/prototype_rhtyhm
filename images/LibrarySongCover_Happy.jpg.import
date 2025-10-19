@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyp4hq5wdnfi2"
-path="res://.godot/imported/monkey.png-9d10cf6047633b94fe49a37c37c74acb.ctex"
+uid="uid://dymfbft6jr2g3"
+path="res://.godot/imported/LibrarySongCover_Happy.jpg-0c6e2b74828c0059c06e843f3a35ab66.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://monkey.png"
-dest_files=["res://.godot/imported/monkey.png-9d10cf6047633b94fe49a37c37c74acb.ctex"]
+source_file="res://images/LibrarySongCover_Happy.jpg"
+dest_files=["res://.godot/imported/LibrarySongCover_Happy.jpg-0c6e2b74828c0059c06e843f3a35ab66.ctex"]
 
 [params]
 

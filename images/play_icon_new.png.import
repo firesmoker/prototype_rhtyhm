@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4umekvn4i4ks"
-path="res://.godot/imported/Believer.jpg-faf969797db99025ea26deb4bf9b0fa7.ctex"
+uid="uid://bi35so2vs4s87"
+path="res://.godot/imported/play_icon_new.png-8d636f3ce561498d723aeb21bc82627c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Believer.jpg"
-dest_files=["res://.godot/imported/Believer.jpg-faf969797db99025ea26deb4bf9b0fa7.ctex"]
+source_file="res://images/play_icon_new.png"
+dest_files=["res://.godot/imported/play_icon_new.png-8d636f3ce561498d723aeb21bc82627c.ctex"]
 
 [params]
 

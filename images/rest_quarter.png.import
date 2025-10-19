@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cngyvcvwapxga"
-path="res://.godot/imported/eigth-notes.png-f8b22df2151613ec32341d921b610263.ctex"
+uid="uid://bcnewm7bli8w2"
+path="res://.godot/imported/rest_quarter.png-e8718ab182e1631f81298df0ed6b4873.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://eigth-notes.png"
-dest_files=["res://.godot/imported/eigth-notes.png-f8b22df2151613ec32341d921b610263.ctex"]
+source_file="res://images/rest_quarter.png"
+dest_files=["res://.godot/imported/rest_quarter.png-e8718ab182e1631f81298df0ed6b4873.ctex"]
 
 [params]
 

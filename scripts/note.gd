@@ -2,7 +2,7 @@ class_name Note extends Sprite2D
 
 @export_enum("note", "rest") var type: String = "note"
 var duration: float = 1.0
-var path_rest_quarter: String = "res://rest_quarter.png"
+var path_rest_quarter: String = "uid://bcnewm7bli8w2"
 
 func _ready() -> void:
 	if type == "rest":
@@ -28,9 +28,9 @@ func load_image_for_type(image_type: String, duration: float = 1.0) -> void:
 			image_path = path_rest_quarter
 		"note":
 			if duration == 1.0: 
-				image_path = "res://quarter-note2.png"
+				image_path = "uid://lyh6mmeywlik"
 			elif duration == 0.5:
-				image_path = "res://eigth-note.png"
+				image_path = "uid://4u0se6356vmg"
 		_:
-			image_path = "res://quarter-note2.png"
+			image_path = "uid://lyh6mmeywlik"
 	texture = load(image_path)

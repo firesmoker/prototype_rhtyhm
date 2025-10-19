@@ -31,10 +31,10 @@ class_name GameManager extends Node
 @export var miss_color: Color = Color.RED
 @export var success_color: Color = Color.TURQUOISE
 @export var not_tight_color: Color = Color.DARK_GOLDENROD
-@export var listen_icon: Texture = preload("res://stop_icon.png")
-@export var play_icon: Texture = preload("res://play_icon_green.png")
-@export var star_empty_icon: Texture = preload("res://Star_Empty.svg")
-@export var star_filled_icon: Texture = preload("res://Star_Filled.svg")
+@export var listen_icon: Texture = preload("uid://d4egegdc4orhv")
+@export var play_icon: Texture = preload("uid://bmy3pf53wlaxs")
+@export var star_empty_icon: Texture = preload("uid://v3cxc6ouqia7")
+@export var star_filled_icon: Texture = preload("uid://bnogovfwbmyjp")
 
 var listen_mode_background: bool = true
 var original_listen_scale: Vector2

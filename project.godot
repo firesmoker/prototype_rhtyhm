@@ -12,9 +12,9 @@ config_version=5
 
 config/name="prototype_rhtyhm"
 run/main_scene="uid://cy8yitgsn8y74"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 run/max_fps=60
-config/icon="res://icon.svg"
+config/icon="res://images/icon.svg"
 
 [autoload]
 

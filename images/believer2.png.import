@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://boxvj5bpq5q5d"
-path="res://.godot/imported/listen_new.png-b0bbb7b21e17b56ed80e987478feac97.ctex"
+uid="uid://dlsn2w8bku3n2"
+path="res://.godot/imported/believer2.png-047b3b40b31f9f4f3e6abd77422b9282.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://listen_new.png"
-dest_files=["res://.godot/imported/listen_new.png-b0bbb7b21e17b56ed80e987478feac97.ctex"]
+source_file="res://images/believer2.png"
+dest_files=["res://.godot/imported/believer2.png-047b3b40b31f9f4f3e6abd77422b9282.ctex"]
 
 [params]
 

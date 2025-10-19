@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxv8kuyvfn4s7"
-path="res://.godot/imported/believer3.png-284c70c3ffca2bbc5e62cd3b150cc371.ctex"
+uid="uid://c3qfrqsovtf5"
+path="res://.godot/imported/up-arrow.png-d1802cb881cf64be68573385ef9ccbee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://believer3.png"
-dest_files=["res://.godot/imported/believer3.png-284c70c3ffca2bbc5e62cd3b150cc371.ctex"]
+source_file="res://images/up-arrow.png"
+dest_files=["res://.godot/imported/up-arrow.png-d1802cb881cf64be68573385ef9ccbee.ctex"]
 
 [params]
 
