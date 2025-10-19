@@ -66,17 +66,20 @@ static var levelname: String = "dancemonkey85"
 signal beat_signal
 signal notes_populated_signal
 
-static func changeToBeliver() -> void:
-	levelname = "believer90"
-	
-static func changeToBabyShark() -> void:
-	levelname = "babyShark80"
+static func changeToLevel(level_name: String) -> void:
+	levelname = level_name
 
-static func changeToHappy() -> void:
-	levelname = "happy160"
-
-static func changeToPantera() -> void:
-	levelname = "Pantera"
+#static func changeToBeliver() -> void:
+	#levelname = "believer90"
+	#
+#static func changeToBabyShark() -> void:
+	#levelname = "babyShark80"
+#
+#static func changeToHappy() -> void:
+	#levelname = "happy160"
+#
+#static func changeToPantera() -> void:
+	#levelname = "Pantera"
 
 func set_ui() -> void:
 	listen.texture = listen_icon
@@ -131,13 +134,18 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 
 func handle_input_wip(event: InputEvent) -> void:
-	if event.is_action_pressed("play"):
-		if current_note_num < notes_dictionary.size():
-			if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
-				if note_nodes[current_note_num].type != "rest":
-					notes_dictionary[current_note_num]["status"] = note_status.PLAYED
+	if taking_input:
+		if event.is_action_pressed("play"):
+			if current_note_num < notes_dictionary.size():
+				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
+					if note_nodes[current_note_num].type != "rest":
+						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
+					else:
+						notes_dictionary[current_note_num]["status"] = note_status.MISSED
 					note_hit_effect(current_note_num)
 					calculate_note_hit_success()
+	else:
+		pass
 					
 
 func note_hit_effect(note_num: int) -> void:
@@ -169,20 +177,21 @@ func calculate_note_hit_success() -> void:
 			#instance.current_color.g = success_color.g
 			#instance.current_color.b = success_color.b
 			note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
-		points += points_per_note - penalty
-		level_points += points_per_note - penalty
-		progress_bar.value = level_points
-		points_text.text = "נקודות: " + str(level_points)
-		trigger_stars()
+		add_points(points_per_note - penalty)
+		#points += points_per_note - penalty
+		#level_points += points_per_note - penalty
+		#progress_bar.value = level_points
+		#points_text.text = "נקודות: " + str(level_points)
+		#trigger_stars()
 		print("yay")
 		taking_input = false
 	else:
 		shake()
 		note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
-		points -= 10
-		level_points -= 10
-		progress_bar.value = level_points
-		points_text.text = "נקודות: " + str(level_points)
+		#points -= 10
+		#level_points -= 10
+		#progress_bar.value = level_points
+		#points_text.text = "נקודות: " + str(level_points)
 		#pointer.modulate = miss_color
 func handle_input(event: InputEvent) -> void:
 	if event.is_action_pressed("play") and taking_input:
@@ -216,11 +225,7 @@ func handle_input(event: InputEvent) -> void:
 						#instance.current_color.g = success_color.g
 						#instance.current_color.b = success_color.b
 						note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
-					points += points_per_note - penalty
-					level_points += points_per_note - penalty
-					progress_bar.value = level_points
-					points_text.text = "נקודות: " + str(level_points)
-					trigger_stars()
+					add_points(points_per_note - penalty)
 					print("yay")
 					taking_input = false
 				else:
@@ -230,11 +235,7 @@ func handle_input(event: InputEvent) -> void:
 					shake()
 					notes_dictionary[current_note_num]["status"] = note_status.PLAYED
 					note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
-					points -= 10
-					level_points -= 10
-					progress_bar.value = level_points
-					points_text.text = "נקודות: " + str(level_points)
-					#pointer.modulate = miss_color
+					add_points(-10)
 				
 	elif event.is_action_pressed("play") and not taking_input:
 		sfx_player.stream = MusicPlayer.note_sound
@@ -336,30 +337,12 @@ func shake() -> void:
 	await timer.timeout
 	camera_2d.rotation = 0
 
-
-func bar_loop_wip() -> void:
-	if current_note_num < notes_dictionary.size():
-		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
-		print(offset)
-		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
-		if pointer.position.x >= current_note_x_position - offset and pointer.position.x <= current_note_x_position + offset and notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
-			taking_input = true
-		elif pointer.position.x >= current_note_x_position + offset:
-			if notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
-				if not notes_dictionary[current_note_num]["type"] == "rest":
-					notes_dictionary[current_note_num]["status"] != note_status.MISSED
-					note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
-				else:
-					notes_dictionary[current_note_num]["status"] != note_status.PLAYED
-					note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
-			current_note_num += 1
-			if current_note_num < notes_dictionary.size():
-				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE
-		else:
-			pass
-			#taking_input = false
-			#if notes_dictionary[current_note_num]["status"] == note_status.PLAYED:
-				#taking_input = true
+func add_points(new_points: int) -> void:
+	points += new_points
+	level_points += new_points
+	progress_bar.value = level_points
+	points_text.text = "נקודות: " + str(level_points)
+	trigger_stars()
 
 func bar_loop() -> void:
 	#print("current_note_num, notes_dictionary.size():  ",current_note_num, notes_dictionary.size())
@@ -374,8 +357,9 @@ func bar_loop() -> void:
 				if not notes_dictionary[current_note_num]["type"] == "rest":
 					notes_dictionary[current_note_num]["status"] != note_status.MISSED
 					note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
-				else:
+				elif notes_dictionary[current_note_num]["status"] != note_status.MISSED:
 					notes_dictionary[current_note_num]["status"] != note_status.PLAYED
+					add_points(points_per_note)
 					note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
 			current_note_num += 1
 			if current_note_num < notes_dictionary.size():

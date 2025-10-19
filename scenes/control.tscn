@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cy8yitgsn8y74"]
+[gd_scene load_steps=11 format=3 uid="uid://cy8yitgsn8y74"]
 
 [ext_resource type="Script" uid="uid://35hdjmrssa5k" path="res://scripts/control.gd" id="1_36pqa"]
 [ext_resource type="Texture2D" uid="uid://doihh3jn6466p" path="res://AlbumCover_BabyShark_Soundtrack_450.jpg" id="2_ldey4"]
@@ -9,97 +9,149 @@
 [ext_resource type="Texture2D" uid="uid://dymfbft6jr2g3" path="res://LibrarySongCover_Happy.jpg" id="5_nweso"]
 [ext_resource type="Texture2D" uid="uid://b4k676rx2sudn" path="res://countingStars.png" id="6_uk6n3"]
 [ext_resource type="Texture2D" uid="uid://bxv8kuyvfn4s7" path="res://believer3.png" id="7_8k5hk"]
+[ext_resource type="PackedScene" uid="uid://dl21vgnf0ja57" path="res://scenes/level_button.tscn" id="10_01bab"]
 
-[node name="Control" type="Node2D"]
-scale = Vector2(0.7, 0.662)
+[node name="Control" type="GridContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 10
 script = ExtResource("1_36pqa")
 
-[node name="Beliver" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
+[node name="LevelButton" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
 
-[node name="cover_image" type="Sprite2D" parent="Beliver"]
-position = Vector2(177, 168)
-scale = Vector2(0.7, 0.662)
+[node name="LevelButton2" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton3" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton4" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton5" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton6" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton7" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton8" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton9" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton10" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton11" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton12" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton13" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton14" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton15" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton16" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton17" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton18" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton19" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="LevelButton20" parent="." instance=ExtResource("10_01bab")]
+layout_mode = 2
+
+[node name="Believer" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(123.9, 111.216)
+scale = Vector2(0.49, 0.438244)
 texture = ExtResource("2_lt4a8")
 script = ExtResource("3_4hx77")
+level_name = "believer90"
 
-[node name="BabyShark" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
+[node name="BabyShark" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(496.65, 108.568)
+scale = Vector2(0.49, 0.438244)
+texture = ExtResource("2_ldey4")
+script = ExtResource("3_4hx77")
+level_name = "babyShark80"
 
-[node name="cover_image" type="Sprite2D" parent="BabyShark"]
-position = Vector2(709.5, 164)
-scale = Vector2(0.7, 0.662)
+[node name="BabySharkHarder" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(872.2, 121.146)
+scale = Vector2(0.49, 0.438244)
 texture = ExtResource("2_ldey4")
 script = ExtResource("3_4hx77")
 
-[node name="BabySharkHarder" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
-
-[node name="cover_image" type="Sprite2D" parent="BabySharkHarder"]
-position = Vector2(1246, 183)
-scale = Vector2(0.7, 0.662)
-texture = ExtResource("2_ldey4")
-script = ExtResource("3_4hx77")
-
-[node name="DanceMonkey" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
-
-[node name="cover_image" type="Sprite2D" parent="DanceMonkey"]
-position = Vector2(188, 583)
-scale = Vector2(0.7, 0.662)
+[node name="DanceMonkey" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(131.6, 385.946)
+scale = Vector2(0.49, 0.438244)
 texture = ExtResource("5_k6y7w")
 script = ExtResource("3_4hx77")
 
-[node name="DanceMonkeyHarder" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
-
-[node name="cover_image" type="Sprite2D" parent="DanceMonkeyHarder"]
-position = Vector2(706, 583)
-scale = Vector2(0.7, 0.662)
+[node name="DanceMonkeyHarder" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(494.2, 385.946)
+scale = Vector2(0.49, 0.438244)
 texture = ExtResource("5_k6y7w")
 script = ExtResource("3_4hx77")
 
-[node name="CountingStars" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
-
-[node name="cover_image" type="Sprite2D" parent="CountingStars"]
-position = Vector2(1246, 595)
-scale = Vector2(0.7, 0.662)
+[node name="CountingStars" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(872.2, 393.89)
+scale = Vector2(0.49, 0.438244)
 texture = ExtResource("6_uk6n3")
 script = ExtResource("3_4hx77")
 
-[node name="BelieverHarder" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
-
-[node name="cover_image" type="Sprite2D" parent="BelieverHarder"]
-position = Vector2(190, 1009)
-scale = Vector2(0.7, 0.662)
+[node name="BelieverHarder" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(133, 667.958)
+scale = Vector2(0.49, 0.438244)
 texture = ExtResource("7_8k5hk")
 script = ExtResource("3_4hx77")
 
-[node name="Level6" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
-
-[node name="cover_image" type="Sprite2D" parent="Level6"]
-position = Vector2(704.082, 1019.98)
-scale = Vector2(1.8747, 1.23048)
+[node name="CowboysFromHell" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(492.857, 675.227)
+scale = Vector2(1.31229, 0.814578)
 texture = ExtResource("5_53nxw")
 script = ExtResource("3_4hx77")
+level_name = "Pantera"
 
-[node name="Level7" type="Node2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.7, 0.662)
-
-[node name="cover_image" type="Sprite2D" parent="Level7"]
-position = Vector2(1232.65, 1017.7)
-scale = Vector2(0.537226, 0.496058)
+[node name="Level" type="Sprite2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(862.855, 673.717)
+scale = Vector2(0.376058, 0.32839)
 texture = ExtResource("5_nweso")
 script = ExtResource("3_4hx77")
+level_name = "happy160"

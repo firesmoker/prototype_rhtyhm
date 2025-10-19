@@ -7,7 +7,7 @@ var duration: float = 2.5
 @export var pointer_offset: int = 4
 @export_enum("player","teacher") var type: String = "player"
 @export var start_position: Vector2 = Vector2(-300, 209)
-@export var disappearing_pointer: bool = false
+@export var disappearing_pointer: bool = true
 var restart_position: Vector2
 var restart_target_position: Vector2
 var quarter_note_duration: float = 0.5
