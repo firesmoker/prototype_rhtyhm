@@ -11,14 +11,6 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 10
 
-[node name="LevelButton" parent="." instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "babyShark80"
-
-[node name="LevelButton2" parent="." instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "babyShark110"
-
 [node name="LevelButton3" parent="." instance=ExtResource("10_01bab")]
 layout_mode = 2
 
@@ -31,21 +23,6 @@ modulate = Color(1, 0, 1, 1)
 layout_mode = 2
 level_name = "countingStars122"
 
-[node name="LevelButton6" parent="." instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "dancemonkey85"
-
-[node name="LevelButton7" parent="." instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "dancemonkey90"
-
 [node name="LevelButton8" parent="." instance=ExtResource("10_01bab")]
 layout_mode = 2
 level_name = "happy160"
-
-[node name="LevelButton9" parent="." instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "Pantera"
-
-[node name="LevelButton10" parent="." instance=ExtResource("10_01bab")]
-layout_mode = 2
