@@ -384,9 +384,11 @@ func bar_loop() -> void:
 		if finished_round:
 			restart_level()
 			finished_round = false
-		
+
 
 func pulse(note_num: int) -> void:
+	if note_num >= note_nodes.size():
+		return
 	note_nodes[note_num].scale = original_note_scale * 1.25
 	note_nodes[note_num].position.y -= note_highlight_offset
 	var timer: Timer = Timer.new()
@@ -395,6 +397,8 @@ func pulse(note_num: int) -> void:
 	timer.start()
 	await timer.timeout
 	#print("timer stopped")
+	if note_num >= note_nodes.size():
+		return
 	note_nodes[note_num].scale = original_note_scale
 	note_nodes[note_num].position.y += note_highlight_offset
 

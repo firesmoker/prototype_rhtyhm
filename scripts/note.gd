@@ -5,8 +5,7 @@ var duration: float = 1.0
 var path_rest_quarter: String = "uid://bcnewm7bli8w2"
 
 func _ready() -> void:
-	if type == "rest":
-		texture = load(path_rest_quarter)
+	pass
 
 
 # Setter function for the type attribute
@@ -25,7 +24,12 @@ func load_image_for_type(image_type: String, duration: float = 1.0) -> void:
 	var image_path: String = ""
 	match image_type:
 		"rest":
-			image_path = path_rest_quarter
+			#pass
+			if duration == 1.0: 
+				image_path = "uid://bcnewm7bli8w2"
+			elif duration == 0.5:
+				image_path = "uid://c0k2j83dtydrl"
+			#image_path = path_rest_quarter
 		"note":
 			if duration == 1.0: 
 				image_path = "uid://lyh6mmeywlik"

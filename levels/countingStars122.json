@@ -24,8 +24,13 @@
 			},
 			{
 			  "note": "C3",
-			  "duration": 1,
+			  "duration": 0.5,
 			  "is_rest": true
+			},
+			{
+			  "note": "C3",
+			  "duration": 0.5,
+			  "is_rest": false
 			}
 		  ]
 		},

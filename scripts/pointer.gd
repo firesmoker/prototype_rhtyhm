@@ -24,22 +24,22 @@ func _ready() -> void:
 	player_start_position_x = game_manager.note_quarter_gap * (4 - beat_duration - pointer_offset)
 	teacher_start_position_x = game_manager.note_quarter_gap * (beat_duration - pointer_offset)
 	if type == "player":
-		var offset: float = game_manager.tempo / 4.0
-		position.x = player_start_position_x - offset
-		start_position.x = player_start_position_x - offset
-		restart_position = Vector2(player_start_position_x - offset, start_position.y)
-		restart_target_position = Vector2(target_position.x - offset, start_position.y)
+		var offset_modifier: float = game_manager.tempo / 4.0
+		position.x = player_start_position_x - offset_modifier
+		start_position.x = player_start_position_x - offset_modifier
+		restart_position = Vector2(player_start_position_x - offset_modifier, start_position.y)
+		restart_target_position = Vector2(target_position.x - offset_modifier, start_position.y)
 	elif type == "teacher":
-		var offset: float = game_manager.tempo / 4.0
-		position.x = teacher_start_position_x - offset
-		start_position.x = teacher_start_position_x - offset
-		target_position = target_teacher_position - Vector2(offset, 0)
-		restart_position = Vector2(teacher_start_position_x - offset, start_position.y)
-		restart_target_position = Vector2(target_teacher_position.x - offset, start_position.y)
+		var offset_modifier: float = game_manager.tempo / 4.0
+		position.x = teacher_start_position_x - offset_modifier
+		start_position.x = teacher_start_position_x - offset_modifier
+		target_position = target_teacher_position - Vector2(offset_modifier, 0)
+		restart_position = Vector2(teacher_start_position_x - offset_modifier, start_position.y)
+		restart_target_position = Vector2(target_teacher_position.x - offset_modifier, start_position.y)
 		
 	duration = game_manager.quarter_note_duration * (beat_duration + pointer_offset)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if game_manager.elapsed_time < duration:
 		var t: float = game_manager.elapsed_time / duration
 		position = start_position.lerp(target_position, t)

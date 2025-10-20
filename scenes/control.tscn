@@ -27,6 +27,7 @@ layout_mode = 2
 level_name = "believer115"
 
 [node name="LevelButton5" parent="." instance=ExtResource("10_01bab")]
+modulate = Color(1, 0, 1, 1)
 layout_mode = 2
 level_name = "countingStars122"
 
