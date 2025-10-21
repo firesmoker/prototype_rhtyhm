@@ -10,11 +10,13 @@ class_name GameManager extends Node
 @onready var vignette: TextureRect = $"../Background/ColorRect/Vignette"
 @onready var audio: AudioStreamPlayer = $"../Audio1"
 @onready var audio2: AudioStreamPlayer = $"../Audio2"
+@onready var debug_current_note_num: Label = $"../HUD/DebugCurrentNoteNum"
+@onready var delayed_hit_timer: Timer = $"../DelayedHitTimer"
 
 @onready var listen: Sprite2D = $"../Listen"
 
-@onready var pointer: Sprite2D = $"../Pointer"
-@onready var pointer_ai: Sprite2D = $"../Pointer_AI"
+@onready var pointer: Pointer = $"../Pointer"
+@onready var pointer_ai: Pointer = $"../Pointer_AI"
 @onready var star_1: Sprite2D = $"../HUD/Star1"
 @onready var star_2: Sprite2D = $"../HUD/Star2"
 @onready var star_3: Sprite2D = $"../HUD/Star3"
@@ -26,7 +28,7 @@ class_name GameManager extends Node
 var adjusted_note_quarter_gap: float
 @export var note_visual_offset: float = 100
 @export var tempo: float = 120 # in BPM
-@export var points: int = 0
+#@export var points: int = 0
 @export var level_points: int = 0
 @export var points_per_note: int = 10
 
@@ -40,6 +42,7 @@ var adjusted_note_quarter_gap: float
 @export var star_empty_icon: Texture = preload("uid://v3cxc6ouqia7")
 @export var star_filled_icon: Texture = preload("uid://bnogovfwbmyjp")
 
+var delayed_hit_viable: bool = false
 var current_rhythm_game_level: RhythmGameLevel
 var listen_mode_background: bool = true
 var original_listen_scale: Vector2
@@ -51,6 +54,7 @@ var stage_index: int = 0
 var original_note_scale: Vector2 = Vector2(0.281,0.281)
 enum note_status {IDLE,ACTIVE,PLAYED,MISSED}
 
+var playing_delayed_hit: bool = false
 var loop_finished: bool = false
 var notes_dictionary: Dictionary
 var four_quarters_bar_duration: float = 2
@@ -67,9 +71,12 @@ var HitNoteScene: PackedScene = preload("res://scenes/hit_note.tscn")
 var beats_passed: int = 0
 var did_load_bpm_and_audio: bool = false
 var keep_going_mode: bool = false
+var dual_pointer_mode: bool = false
+var current_active_pointer: Pointer
 static var levelname: String = "dancemonkey85"
 signal beat_signal
 signal notes_populated_signal
+signal restart_signal
 
 static func changeToLevel(level_name: String) -> void:
 	levelname = level_name
@@ -91,7 +98,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	vignette.self_modulate.a -= 0.025
 	if not MusicPlayer.playing:
-		MusicPlayer.play()	
+		MusicPlayer.play()
 	change_listenPlay_visuals()
 	elapsed_time += delta
 	elapsed_background_time += delta
@@ -100,18 +107,20 @@ func _process(delta: float) -> void:
 		beat_num += 1
 		beats_passed += 1
 		print(beats_passed)
-		beat_time -= quarter_note_duration 
+		beat_time -= quarter_note_duration
 		emit_signal("beat_signal") # go to beat_effects
 	bar_loop()
 
 func beat_effects() -> void:
 	if beat_visuals_on:
 		vignette.self_modulate.a = 0.5
-
+	if keep_going_mode:
+		listen_mode_background = false
 	if beats_passed == 1:
 		elapsed_background_time = 0
 	if beats_passed == 3:
-		listen_mode_background = !listen_mode_background
+		if not keep_going_mode:
+			listen_mode_background = !listen_mode_background
 		if not listen_mode_background:
 			listen.texture = play_icon
 	elif beats_passed >= time_signature:
@@ -131,17 +140,40 @@ func _unhandled_input(event: InputEvent) -> void:
 func handle_input_wip(event: InputEvent) -> void:
 	if taking_input:
 		if event.is_action_pressed("play"):
-			if current_note_num < notes_dictionary.size():
-				if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
-					if note_nodes[current_note_num].type != "rest":
-						notes_dictionary[current_note_num]["status"] = note_status.PLAYED
-					else:
-						notes_dictionary[current_note_num]["status"] = note_status.MISSED
-					note_hit_effect(current_note_num)
-					calculate_note_hit_success()
+			play_note()
 	else:
 		pass
 					
+func delayed_hit() -> void:
+	if not playing_delayed_hit:
+		delayed_hit_timer.start(0.1)
+		print("delayed hit started")
+		playing_delayed_hit = true
+		delayed_hit_viable = true
+		await restart_signal
+		if delayed_hit_viable:
+			delayed_hit_timer.stop()
+			play_note()
+		playing_delayed_hit = false
+		print("delayed hit happened")
+	else:
+		print("delayed hit rejected")
+
+func play_note() -> void:
+	if current_note_num < notes_dictionary.size():
+		if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
+			if note_nodes[current_note_num].type != "rest":
+				notes_dictionary[current_note_num]["status"] = note_status.PLAYED
+			else:
+				notes_dictionary[current_note_num]["status"] = note_status.MISSED
+			note_hit_effect(current_note_num)
+			calculate_note_hit_success()
+		elif current_note_num == notes_dictionary.size()-1:
+			print("triggered delayed hit")
+			delayed_hit()
+	elif current_note_num >= notes_dictionary.size():
+		print("triggered delay hit")
+		delayed_hit()
 
 func note_hit_effect(note_num: int) -> void:
 	pulse(note_num)
@@ -167,7 +199,7 @@ func calculate_note_hit_success() -> void:
 		else:
 			note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
 		add_points(points_per_note - penalty)
-		taking_input = false
+		#taking_input = false
 	else:
 		shake()
 		note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
@@ -182,7 +214,7 @@ func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
 	if "notes" in stage:
 		for note: Dictionary in stage["notes"]:
 			input_notes.append(note)
-			
+	
 	populate_note_nodes(input_notes.size())
 			
 	for i: int in range(input_notes.size()):
@@ -230,7 +262,6 @@ func load_rhythmic_pattern_level() -> void:
 		MusicPlayer.stream = new_stream
 		did_load_bpm_and_audio = true
 		adjusted_note_quarter_gap = note_quarter_gap * 4 / time_signature
-	
 	set_bar_stage(current_rhythm_game_level)
 
 
@@ -263,7 +294,7 @@ func shake() -> void:
 	camera_2d.rotation = 0
 
 func add_points(new_points: int) -> void:
-	points += new_points
+	#points += new_points
 	level_points += new_points
 	progress_bar.value = level_points
 	points_text.text = "נקודות: " + str(level_points)
@@ -294,11 +325,13 @@ func bar_loop() -> void:
 				elif notes_dictionary[current_note_num]["status"] != note_status.MISSED:
 					add_points(points_per_note)
 			current_note_num += 1
+			debug_current_note_num.text = "current_note_num: " + str(current_note_num)
 			if current_note_num < notes_dictionary.size():
-				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE		
+				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE
 	else:
 		print("bar notes ended")
-		taking_input = false
+		if not keep_going_mode:
+			taking_input = false
 		if not loop_finished:
 			loop_finished = true
 		await beat_signal
@@ -326,10 +359,12 @@ func pulse(note_num: int) -> void:
 func restart_level() -> void:
 	print("restart level func")
 	pointer.modulate.a = 1
-	set_bar_stage(current_rhythm_game_level)
-	points = 0
+	if not keep_going_mode:
+		set_bar_stage(current_rhythm_game_level)
 	current_note_num = 0
+	debug_current_note_num.text = "current_note_num: " + str(current_note_num)
 	notes_dictionary[0]["status"] = note_status.ACTIVE
+	#points = 0
 	#pointer.start_position = pointer.restart_position
 	#pointer.target_position = pointer.restart_target_position
 	pointer.position = pointer.start_position
@@ -339,6 +374,7 @@ func restart_level() -> void:
 	pointer_ai.position = pointer_ai.start_position
 	
 	elapsed_time = 0
+	emit_signal("restart_signal")
 
 func star_pulse() -> void:
 	star_success_overlay.visible = true
@@ -358,6 +394,10 @@ func populate_note_nodes(number_of_notes: int = time_signature) -> void:
 
 func change_listenPlay_visuals() -> void:
 	star_success_overlay.color.a -= 0.035
+	if keep_going_mode:
+		background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
+		instruction.text = "נגן"
+		return
 	if listen_mode_background:
 		background.color = lerp(background.color, background_color_listen, elapsed_background_time / 30)
 		if elapsed_background_time / 30 >= 0.01:
@@ -367,8 +407,16 @@ func change_listenPlay_visuals() -> void:
 		if elapsed_background_time / 30 >= 0.01:
 			instruction.text = "נגן"
 
-func change_listen_icon() -> void:
-	if listen_mode_background:
-		listen.texture = listen_icon
-	else:
-		listen.texture = play_icon
+#func change_listen_icon() -> void:
+	#if keep_going_mode:
+		#listen.texture = play_icon
+		#return
+	#if listen_mode_background:
+		#listen.texture = listen_icon
+	#else:
+		#listen.texture = play_icon
+
+
+func _on_delayed_hit_timer_timeout() -> void:
+	delayed_hit_viable = false
+	print("delayed hit too long and disabled")

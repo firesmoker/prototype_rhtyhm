@@ -1,5 +1,6 @@
-extends Sprite2D
+class_name Pointer extends Sprite2D
 @onready var game_manager: GameManager = $"../GameManager"
+
 var loop_duration: float
 var keep_going_loop_duration: float
 #@export var time_signature: float = 4
@@ -60,6 +61,8 @@ func pause(toggle: bool = true) -> void:
 
 func _process(_delta: float) -> void:
 	if game_manager.keep_going_mode: # keep_going_loop_duration
+		if type == "teacher":
+			pause()
 		var t: float = game_manager.elapsed_time / keep_going_loop_duration
 		if not paused:
 			position = Vector2(0,start_position.y).lerp(target_position, t)

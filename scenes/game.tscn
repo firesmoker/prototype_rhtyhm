@@ -144,6 +144,17 @@ theme_override_font_sizes/font_size = 50
 text = "נקודות: 0"
 autowrap_mode = 3
 
+[node name="DebugCurrentNoteNum" type="Label" parent="HUD"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -69.0
+offset_right = 437.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 40
+text = "current_note_num"
+autowrap_mode = 3
+
 [node name="ProgressBar" type="ProgressBar" parent="HUD"]
 modulate = Color(1, 0.784314, 0, 1)
 anchors_preset = 5
@@ -248,5 +259,8 @@ fade_speed = 0.03
 
 [node name="Audio1" type="AudioStreamPlayer" parent="."]
 
+[node name="DelayedHitTimer" type="Timer" parent="."]
+
 [connection signal="beat_signal" from="GameManager" to="GameManager" method="beat_visual_effect"]
 [connection signal="beat_signal" from="GameManager" to="GameManager" method="beat_effects"]
+[connection signal="timeout" from="DelayedHitTimer" to="GameManager" method="_on_delayed_hit_timer_timeout"]
