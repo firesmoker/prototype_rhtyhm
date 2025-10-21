@@ -27,6 +27,15 @@ func load_json_data(json_filename: String) -> void:
 	else:
 		print("File not found: ", json_filename)
 
+func get_time_signature() -> float:
+	print("get time signature func")
+	if "rhythmGameLevel" in rhythm_game_data:
+		if "timeSignature" in rhythm_game_data["rhythmGameLevel"]:
+			print("returned custom time signature " + str(rhythm_game_data["rhythmGameLevel"]["timeSignature"]))
+			return rhythm_game_data["rhythmGameLevel"]["timeSignature"]
+	print("returned default time signature")
+	return 4
+
 func get_audio_file() -> String:
 	if "rhythmGameLevel" in rhythm_game_data:
 		if "audioFile" in rhythm_game_data["rhythmGameLevel"]:

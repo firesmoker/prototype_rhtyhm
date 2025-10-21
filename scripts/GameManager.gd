@@ -82,6 +82,7 @@ func set_ui() -> void:
 func _ready() -> void:
 	load_rhythmic_pattern_level()
 	set_ui()
+	#print("setting durations with time signature " + str(time_signature))
 	four_quarters_bar_duration = 60 / tempo * time_signature
 	quarter_note_duration = 60 / tempo
 	elapsed_time = 0.0
@@ -214,19 +215,21 @@ func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
 		count += 1
 
 func load_rhythmic_pattern_level() -> void:
-	adjusted_note_quarter_gap = note_quarter_gap * 4 / time_signature
-	print("load rhythmic apttern level func")
+	#print("load rhythmic apttern level func")
 	notes_dictionary.clear()
 
 	# 
 	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://levels/" + levelname + ".json")
 	current_rhythm_game_level = rhythm_game_level
+	time_signature = rhythm_game_level.get_time_signature()
+	#print(time_signature)
 	if not did_load_bpm_and_audio:
 		tempo = rhythm_game_level.get_bpm()
 		var audio_file: String =  rhythm_game_level.get_audio_file()
 		var new_stream: AudioStream = load("res://music//" + audio_file)
 		MusicPlayer.stream = new_stream
 		did_load_bpm_and_audio = true
+		adjusted_note_quarter_gap = note_quarter_gap * 4 / time_signature
 	
 	set_bar_stage(current_rhythm_game_level)
 

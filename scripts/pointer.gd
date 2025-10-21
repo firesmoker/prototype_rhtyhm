@@ -29,6 +29,7 @@ func set_target_positions() -> void:
 func _ready() -> void:
 	set_target_positions()
 	var ts: float = game_manager.time_signature
+	#print("ts is " + str(ts))
 	notes_to_play = game_manager.note_nodes
 	player_start_position_x = game_manager.adjusted_note_quarter_gap * (- ts)
 	teacher_start_position_x = 0
