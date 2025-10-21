@@ -45,6 +45,7 @@ var original_listen_scale: Vector2
 @export var beat_visuals_on: bool = false
 var star_overlay_strength: float = 0.8
 
+var time_signature: float = 4
 var stage_index: int = 0
 var original_note_scale: Vector2 = Vector2(0.281,0.281)
 enum note_status {IDLE,ACTIVE,PLAYED,MISSED}
@@ -62,7 +63,7 @@ var current_note_num: int = 0
 var note_highlight_offset: float = 10
 var NoteScene: PackedScene = preload("res://scenes/note.tscn")
 var HitNoteScene: PackedScene = preload("res://scenes/hit_note.tscn")
-var bars_passed: int = 0
+#var bars_passed: int = 0
 var beats_passed: int = 0
 var did_load_bpm_and_audio: bool = false
 static var levelname: String = "dancemonkey85"
@@ -93,7 +94,7 @@ func _ready() -> void:
 	load_rhythmic_pattern_level()
 	set_ui()
 	#print("ready function")
-	four_quarters_bar_duration = 60 / tempo * 4
+	four_quarters_bar_duration = 60 / tempo * time_signature
 	quarter_note_duration = 60 / tempo
 	elapsed_time = 0.0
 	beat_time = 0 + MusicPlayer.beat_offset
@@ -111,31 +112,36 @@ func _process(delta: float) -> void:
 	elapsed_background_time += delta
 	beat_time += delta
 	if beat_time >= quarter_note_duration:
-		emit_signal("beat_signal")
 		beat_num += 1
 		beats_passed += 1
 		print(beats_passed)
 		beat_time -= quarter_note_duration 
-		if beats_passed == 1:
-			elapsed_background_time = 0
-		if beats_passed == 3:
-			listen_mode_background = !listen_mode_background
-			if not listen_mode_background:
-				listen.texture = play_icon
-		elif beats_passed >= 4:
-			if listen_mode_background:
-				listen.texture = listen_icon
-			print("BAR PASSED")
-			bars_passed += 1
-			beats_passed = 0
+		emit_signal("beat_signal") # go to beat_effects and beat_visual_effects
 	bar_loop()
+
+func beat_effects() -> void:
+	if beat_visuals_on:
+		vignette.self_modulate.a = 0.5
+
+	if beats_passed == 1:
+		elapsed_background_time = 0
+	if beats_passed == 3:
+		listen_mode_background = !listen_mode_background
+		if not listen_mode_background:
+			listen.texture = play_icon
+	elif beats_passed >= time_signature:
+		if listen_mode_background:
+			listen.texture = listen_icon
+		#print("BAR PASSED")
+		#bars_passed += 1
+		beats_passed = 0
 
 func change_active_note() -> void:
 	pass
 
-func beat_visual_effect() -> void:
-	if beat_visuals_on:
-		vignette.self_modulate.a = 0.5
+#func beat_visual_effect() -> void:
+	#if beat_visuals_on:
+		#vignette.self_modulate.a = 0.5
 
 func _unhandled_input(event: InputEvent) -> void:
 	handle_input_wip(event)
@@ -255,6 +261,7 @@ func calculate_note_hit_success() -> void:
 		#print("you suck")
 
 func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
+	print(notes_dictionary.size())
 	stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
 	print("load new rhythmic pattern for stage ", stage_index)
 	var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
@@ -407,6 +414,8 @@ func pointer_at_current_note(current_note_x_position: float, offset: float) -> b
 func bar_loop() -> void:
 	#print("current_note_num, notes_dictionary.size():  ",current_note_num, notes_dictionary.size())
 	if current_note_num < notes_dictionary.size():
+		print(current_note_num)
+		print(notes_dictionary.size())
 		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
 		#if pointer.position.x >= current_note_x_position - offset and pointer.position.x <= current_note_x_position + offset and notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
@@ -422,6 +431,7 @@ func bar_loop() -> void:
 			if current_note_num < notes_dictionary.size():
 				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE		
 	else:
+		print("bar notes ended")
 		taking_input = false
 		#if points >= 30 and not loop_finished:
 			#print("you win!")
@@ -480,7 +490,7 @@ func star_pulse() -> void:
 	star_success_overlay.visible = true
 	star_success_overlay.color.a = star_overlay_strength
 	
-func populate_note_nodes(number_of_notes: int = 4) -> void:
+func populate_note_nodes(number_of_notes: int = time_signature) -> void:
 	note_nodes.clear()
 	for n: Node in notes_container.get_children():
 		notes_container.remove_child(n)

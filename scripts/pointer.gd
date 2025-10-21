@@ -1,13 +1,13 @@
 extends Sprite2D
 @onready var game_manager: GameManager = $"../GameManager"
-var loop_duration: float = 2.5
-@export var time_signature: float = 4
+var loop_duration: float
+#@export var time_signature: float = 4
 @export var target_position: Vector2 = Vector2(1200, 209)
 @export var target_teacher_position: Vector2 = Vector2(2400, 209)
-@export var pointer_offset: int = 4
+#@export var pointer_offset: int = 4
 @export_enum("player","teacher") var type: String = "player"
 @export var start_position: Vector2 = Vector2(-300, 209)
-@export var disappearing_pointer: bool = true
+@export var disappearing_pointer: bool = false
 var restart_position: Vector2
 var restart_target_position: Vector2
 var quarter_note_duration: float = 0.5
@@ -17,25 +17,32 @@ var notes_to_play: Array[Note]
 var notes_played_count: int = 0
 var sfx_player: AudioStreamPlayer = MusicPlayer.get_child(0)
 
+func set_target_positions() -> void:
+	target_position.x = game_manager.note_quarter_gap * game_manager.time_signature
+	target_teacher_position.x = target_position.x * 2
+
 func _ready() -> void:
+	set_target_positions()
+	var ts: float = game_manager.time_signature
 	notes_to_play = game_manager.note_nodes
-	player_start_position_x = game_manager.note_quarter_gap * (4 - time_signature - pointer_offset)
-	teacher_start_position_x = game_manager.note_quarter_gap * (time_signature - pointer_offset)
+	player_start_position_x = game_manager.note_quarter_gap * (- ts)
+	#teacher_start_position_x = game_manager.note_quarter_gap * (ts - ts)
+	teacher_start_position_x = 0
 	if type == "player":
-		var offset_modifier: float = game_manager.tempo / 4.0
+		var offset_modifier: float = game_manager.tempo / ts
 		position.x = player_start_position_x - offset_modifier
 		start_position.x = player_start_position_x - offset_modifier
 		restart_position = Vector2(player_start_position_x - offset_modifier, start_position.y)
 		restart_target_position = Vector2(target_position.x - offset_modifier, start_position.y)
 	elif type == "teacher":
-		var offset_modifier: float = game_manager.tempo / 4.0
+		var offset_modifier: float = game_manager.tempo / ts
 		position.x = teacher_start_position_x - offset_modifier
 		start_position.x = teacher_start_position_x - offset_modifier
 		target_position = target_teacher_position - Vector2(offset_modifier, 0)
 		restart_position = Vector2(teacher_start_position_x - offset_modifier, start_position.y)
 		restart_target_position = Vector2(target_teacher_position.x - offset_modifier, start_position.y)
 		
-	loop_duration = game_manager.quarter_note_duration * (time_signature + pointer_offset)
+	loop_duration = game_manager.quarter_note_duration * (ts + ts)
 
 func _process(_delta: float) -> void:
 	if game_manager.elapsed_time < loop_duration:
