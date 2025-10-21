@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://ca7m4dpoqvys1"
-path="res://.godot/imported/teacher_note8.wav-1065866973ec548da417840f05417b96.sample"
+path="res://.godot/imported/teacher_note8.wav-1b97c7f9eae4042846d0f1958f2d9277.sample"
 
 [deps]
 
-source_file="res://audio/teacher_note8.wav"
-dest_files=["res://.godot/imported/teacher_note8.wav-1065866973ec548da417840f05417b96.sample"]
+source_file="res://sfx/teacher_note8.wav"
+dest_files=["res://.godot/imported/teacher_note8.wav-1b97c7f9eae4042846d0f1958f2d9277.sample"]
 
 [params]
 

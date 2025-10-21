@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://daa6ltb7u650x"
-path="res://.godot/imported/BabyShark_FMajor_80bpm_Vocals.wav-961b29b816b4caa0b86079b4c3a4f402.sample"
+path="res://.godot/imported/BabyShark_FMajor_80bpm_Vocals.wav-7703669305381d791c1ac0f459c31ec4.sample"
 
 [deps]
 
-source_file="res://audio/BabyShark_FMajor_80bpm_Vocals.wav"
-dest_files=["res://.godot/imported/BabyShark_FMajor_80bpm_Vocals.wav-961b29b816b4caa0b86079b4c3a4f402.sample"]
+source_file="res://music/BabyShark_FMajor_80bpm_Vocals.wav"
+dest_files=["res://.godot/imported/BabyShark_FMajor_80bpm_Vocals.wav-7703669305381d791c1ac0f459c31ec4.sample"]
 
 [params]
 

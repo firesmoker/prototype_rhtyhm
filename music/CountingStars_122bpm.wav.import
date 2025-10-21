@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://ow1mnseagje0"
-path="res://.godot/imported/CountingStars_122bpm.wav-2096109cef4a754d7aae4f16075cbd34.sample"
+path="res://.godot/imported/CountingStars_122bpm.wav-febebaea120b9f21068c17ca25946f48.sample"
 
 [deps]
 
-source_file="res://audio/CountingStars_122bpm.wav"
-dest_files=["res://.godot/imported/CountingStars_122bpm.wav-2096109cef4a754d7aae4f16075cbd34.sample"]
+source_file="res://music/CountingStars_122bpm.wav"
+dest_files=["res://.godot/imported/CountingStars_122bpm.wav-febebaea120b9f21068c17ca25946f48.sample"]
 
 [params]
 

@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://c6rrv28r7l8j2"
-path="res://.godot/imported/Babyshark_80_short.wav-cdb31f51c49f0de8d077d42fb6340a40.sample"
+path="res://.godot/imported/Babyshark_80_short.wav-ec6165d424544ed4fb7888757482d892.sample"
 
 [deps]
 
-source_file="res://audio/Babyshark_80_short.wav"
-dest_files=["res://.godot/imported/Babyshark_80_short.wav-cdb31f51c49f0de8d077d42fb6340a40.sample"]
+source_file="res://music/Babyshark_80_short.wav"
+dest_files=["res://.godot/imported/Babyshark_80_short.wav-ec6165d424544ed4fb7888757482d892.sample"]
 
 [params]
 

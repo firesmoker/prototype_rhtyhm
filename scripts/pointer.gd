@@ -1,7 +1,7 @@
 extends Sprite2D
 @onready var game_manager: GameManager = $"../GameManager"
-var duration: float = 2.5
-@export var beat_duration: float = 4
+var loop_duration: float = 2.5
+@export var time_signature: float = 4
 @export var target_position: Vector2 = Vector2(1200, 209)
 @export var target_teacher_position: Vector2 = Vector2(2400, 209)
 @export var pointer_offset: int = 4
@@ -11,8 +11,6 @@ var duration: float = 2.5
 var restart_position: Vector2
 var restart_target_position: Vector2
 var quarter_note_duration: float = 0.5
-var original_beat_duration: float = 4
-var original_duration: float
 var player_start_position_x: float
 var teacher_start_position_x: float
 var notes_to_play: Array[Note]
@@ -21,8 +19,8 @@ var sfx_player: AudioStreamPlayer = MusicPlayer.get_child(0)
 
 func _ready() -> void:
 	notes_to_play = game_manager.note_nodes
-	player_start_position_x = game_manager.note_quarter_gap * (4 - beat_duration - pointer_offset)
-	teacher_start_position_x = game_manager.note_quarter_gap * (beat_duration - pointer_offset)
+	player_start_position_x = game_manager.note_quarter_gap * (4 - time_signature - pointer_offset)
+	teacher_start_position_x = game_manager.note_quarter_gap * (time_signature - pointer_offset)
 	if type == "player":
 		var offset_modifier: float = game_manager.tempo / 4.0
 		position.x = player_start_position_x - offset_modifier
@@ -37,11 +35,11 @@ func _ready() -> void:
 		restart_position = Vector2(teacher_start_position_x - offset_modifier, start_position.y)
 		restart_target_position = Vector2(target_teacher_position.x - offset_modifier, start_position.y)
 		
-	duration = game_manager.quarter_note_duration * (beat_duration + pointer_offset)
+	loop_duration = game_manager.quarter_note_duration * (time_signature + pointer_offset)
 
 func _process(_delta: float) -> void:
-	if game_manager.elapsed_time < duration:
-		var t: float = game_manager.elapsed_time / duration
+	if game_manager.elapsed_time < loop_duration:
+		var t: float = game_manager.elapsed_time / loop_duration
 		position = start_position.lerp(target_position, t)
 	
 	if notes_played_count >= 1 and disappearing_pointer:

@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://dbdyrc878argc"
-path="res://.godot/imported/Believer_115.wav-92ef1cc525baed84f833fcd1a073f8c1.sample"
+uid="uid://c2ysdoossnjpk"
+path="res://.godot/imported/wrong4.wav-18598dbfbab83afdabf69eacdc163a95.sample"
 
 [deps]
 
-source_file="res://audio/Believer_115.wav"
-dest_files=["res://.godot/imported/Believer_115.wav-92ef1cc525baed84f833fcd1a073f8c1.sample"]
+source_file="res://sfx/wrong4.wav"
+dest_files=["res://.godot/imported/wrong4.wav-18598dbfbab83afdabf69eacdc163a95.sample"]
 
 [params]
 

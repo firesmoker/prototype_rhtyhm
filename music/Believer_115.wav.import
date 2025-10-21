@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://b04nfwccpy3kv"
-path="res://.godot/imported/clap_1.wav-8f89e8985deef19bbe1f6048339adead.sample"
+uid="uid://dbdyrc878argc"
+path="res://.godot/imported/Believer_115.wav-c7cbb09bde585a5b0e7725157d5b728b.sample"
 
 [deps]
 
-source_file="res://audio/clap_1.wav"
-dest_files=["res://.godot/imported/clap_1.wav-8f89e8985deef19bbe1f6048339adead.sample"]
+source_file="res://music/Believer_115.wav"
+dest_files=["res://.godot/imported/Believer_115.wav-c7cbb09bde585a5b0e7725157d5b728b.sample"]
 
 [params]
 

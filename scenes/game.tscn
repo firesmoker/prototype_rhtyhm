@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ckjo1flpk6cyw"]
+[gd_scene load_steps=19 format=3 uid="uid://ckjo1flpk6cyw"]
 
 [ext_resource type="Script" uid="uid://diwvrcggdf5pk" path="res://scripts/GameManager.gd" id="1_23irw"]
 [ext_resource type="PackedScene" uid="uid://cbv1drvhlkirr" path="res://scenes/pointer.tscn" id="2_0fjou"]
@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://bhx6aq6fsp3bi" path="res://instruction_font.tres" id="4_63s3l"]
 [ext_resource type="Texture2D" uid="uid://v3cxc6ouqia7" path="res://images/Star_Empty.svg" id="4_nsii6"]
 [ext_resource type="Texture2D" uid="uid://cxsp7jlidq1nt" path="res://images/Music-staff.png" id="5_dldts"]
+[ext_resource type="Texture2D" uid="uid://ddy3b4ktoxigi" path="res://images/vignette.png" id="6_0tnpc"]
 [ext_resource type="Texture2D" uid="uid://d4egegdc4orhv" path="res://images/listen.png" id="6_vd3uy"]
 [ext_resource type="PackedScene" uid="uid://e7vogwvlx1kl" path="res://scenes/hit_note.tscn" id="8_pof02"]
 
@@ -195,6 +196,16 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.556863, 0, 1, 1)
 
+[node name="Vignette" type="TextureRect" parent="Background/ColorRect"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_0tnpc")
+
 [node name="StarSuccessOverlay" type="ColorRect" parent="Background"]
 visible = false
 anchors_preset = 15
@@ -233,3 +244,9 @@ texture = ExtResource("6_vd3uy")
 material = SubResource("ShaderMaterial_w6oym")
 position = Vector2(578, 305)
 fade_speed = 0.03
+
+[node name="Audio2" type="AudioStreamPlayer" parent="."]
+
+[node name="Audio1" type="AudioStreamPlayer" parent="."]
+
+[connection signal="beat_signal" from="GameManager" to="GameManager" method="beat_visual_effect"]

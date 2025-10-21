@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://0m2rwbpvkyge"
-path="res://.godot/imported/dance_monkey_tight_2.wav-3d89242596fc5858894532f87a47784e.sample"
+path="res://.godot/imported/dance_monkey_tight_2.wav-6d796268a338ff6230a15c49b6482a49.sample"
 
 [deps]
 
-source_file="res://audio/dance_monkey_tight_2.wav"
-dest_files=["res://.godot/imported/dance_monkey_tight_2.wav-3d89242596fc5858894532f87a47784e.sample"]
+source_file="res://music/dance_monkey_tight_2.wav"
+dest_files=["res://.godot/imported/dance_monkey_tight_2.wav-6d796268a338ff6230a15c49b6482a49.sample"]
 
 [params]
 
