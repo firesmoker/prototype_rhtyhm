@@ -23,6 +23,7 @@ class_name GameManager extends Node
 @export var note_nodes: Array[Note]
 @export var note_y_location: float = -40
 @export var note_quarter_gap: float = 300
+var adjusted_note_quarter_gap: float
 @export var note_visual_offset: float = 100
 @export var tempo: float = 120 # in BPM
 @export var points: int = 0
@@ -63,27 +64,15 @@ var current_note_num: int = 0
 var note_highlight_offset: float = 10
 var NoteScene: PackedScene = preload("res://scenes/note.tscn")
 var HitNoteScene: PackedScene = preload("res://scenes/hit_note.tscn")
-#var bars_passed: int = 0
 var beats_passed: int = 0
 var did_load_bpm_and_audio: bool = false
+var keep_going_mode: bool = false
 static var levelname: String = "dancemonkey85"
 signal beat_signal
 signal notes_populated_signal
 
 static func changeToLevel(level_name: String) -> void:
 	levelname = level_name
-
-#static func changeToBeliver() -> void:
-	#levelname = "believer90"
-	#
-#static func changeToBabyShark() -> void:
-	#levelname = "babyShark80"
-#
-#static func changeToHappy() -> void:
-	#levelname = "happy160"
-#
-#static func changeToPantera() -> void:
-	#levelname = "Pantera"
 
 func set_ui() -> void:
 	listen.texture = listen_icon
@@ -93,21 +82,16 @@ func set_ui() -> void:
 func _ready() -> void:
 	load_rhythmic_pattern_level()
 	set_ui()
-	#print("ready function")
 	four_quarters_bar_duration = 60 / tempo * time_signature
 	quarter_note_duration = 60 / tempo
 	elapsed_time = 0.0
 	beat_time = 0 + MusicPlayer.beat_offset
-	#audio = MusicPlayer.get_child(0)
 
 func _process(delta: float) -> void:
-	#print("elapsed time = " + str(elapsed_time))
-	#if current_note_num < note_nodes.size(): #DEBUG
-		#note_nodes[current_note_num].material.set_shader_parameter("color", Color.BLUE)  #DEBUG
 	vignette.self_modulate.a -= 0.025
 	if not MusicPlayer.playing:
 		MusicPlayer.play()	
-	change_background_color()
+	change_listenPlay_visuals()
 	elapsed_time += delta
 	elapsed_background_time += delta
 	beat_time += delta
@@ -116,7 +100,7 @@ func _process(delta: float) -> void:
 		beats_passed += 1
 		print(beats_passed)
 		beat_time -= quarter_note_duration 
-		emit_signal("beat_signal") # go to beat_effects and beat_visual_effects
+		emit_signal("beat_signal") # go to beat_effects
 	bar_loop()
 
 func beat_effects() -> void:
@@ -132,21 +116,16 @@ func beat_effects() -> void:
 	elif beats_passed >= time_signature:
 		if listen_mode_background:
 			listen.texture = listen_icon
-		#print("BAR PASSED")
-		#bars_passed += 1
 		beats_passed = 0
 
 func change_active_note() -> void:
 	pass
 
-#func beat_visual_effect() -> void:
-	#if beat_visuals_on:
-		#vignette.self_modulate.a = 0.5
 
 func _unhandled_input(event: InputEvent) -> void:
 	handle_input_wip(event)
-	#handle_input(event)
-	
+	if event.is_action_pressed("pause"):
+		pointer_ai.pause(!pointer_ai.paused)
 
 func handle_input_wip(event: InputEvent) -> void:
 	if taking_input:
@@ -173,11 +152,8 @@ func calculate_note_hit_success() -> void:
 	if note_nodes[current_note_num].type != "rest":
 		var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
 		var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
-		#var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
 		accuracy = (1 - accuracy / note_visual_offset) * 100
 		var penalty: int = int(2 - accuracy / (100 / 2)) * 4
-		#print(accuracy)
-		#print(penalty)
 		if penalty > 0:
 			var instance: HitNote = HitNoteScene.instantiate() as HitNote
 			instance.position.x = pointer.position.x
@@ -188,77 +164,12 @@ func calculate_note_hit_success() -> void:
 			instance.current_color.b = not_tight_color.b
 			note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
 		else:
-			#instance.current_color.r = success_color.r
-			#instance.current_color.g = success_color.g
-			#instance.current_color.b = success_color.b
 			note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
 		add_points(points_per_note - penalty)
-		#points += points_per_note - penalty
-		#level_points += points_per_note - penalty
-		#progress_bar.value = level_points
-		#points_text.text = "נקודות: " + str(level_points)
-		#trigger_stars()
-		#print("yay")
 		taking_input = false
 	else:
 		shake()
 		note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
-		#points -= 10
-		#level_points -= 10
-		#progress_bar.value = level_points
-		#points_text.text = "נקודות: " + str(level_points)
-		#pointer.modulate = miss_color
-
-#func handle_input(event: InputEvent) -> void:
-	#if event.is_action_pressed("play") and taking_input:
-		#if current_note_num < notes_dictionary.size():
-			#if notes_dictionary[current_note_num]["status"] == note_status.ACTIVE:
-				#if note_nodes[current_note_num].type != "rest":
-					#pulse(current_note_num)
-					#audio.stream = MusicPlayer.player_hit_sound
-					#MusicPlayer.get_child(0).volume_db = -3
-					#audio.play()
-					#notes_dictionary[current_note_num]["status"] = note_status.PLAYED
-					##pointer.modulate = success_color # TEMPORARY
-					#var current_note_location: float = notes_dictionary[current_note_num]["x_location"]
-					#var accuracy: float = Vector2(current_note_location, note_y_location).distance_to(Vector2(pointer.position.x, note_y_location))
-					#var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
-					#accuracy = (1 - accuracy / offset) * 100
-					#var penalty: int = int(2 - accuracy / (100 / 2)) * 4
-					##print(accuracy)
-					##print(penalty)
-					#if penalty > 0:
-						#var instance: HitNote = HitNoteScene.instantiate() as HitNote
-						#instance.position.x = pointer.position.x
-						#instance.position.y = note_y_location
-						#add_child(instance)
-						#instance.current_color.r = not_tight_color.r
-						#instance.current_color.g = not_tight_color.g
-						#instance.current_color.b = not_tight_color.b
-						#note_nodes[current_note_num].material.set_shader_parameter("color", not_tight_color)
-					#else:
-						##instance.current_color.r = success_color.r
-						##instance.current_color.g = success_color.g
-						##instance.current_color.b = success_color.b
-						#note_nodes[current_note_num].material.set_shader_parameter("color", success_color)
-					#add_points(points_per_note - penalty)
-					##print("yay")
-					#taking_input = false
-				#else:
-					#audio.stream = MusicPlayer.note_sound
-					#MusicPlayer.get_child(0).volume_db = -3
-					#audio.play()
-					#shake()
-					#notes_dictionary[current_note_num]["status"] = note_status.PLAYED
-					#note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
-					#add_points(-10)
-				#
-	#elif event.is_action_pressed("play") and not taking_input:
-		#audio.stream = MusicPlayer.note_sound
-		#MusicPlayer.get_child(0).volume_db = -3
-		#audio.play()
-		#shake()
-		#print("you suck")
 
 func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
 	print(notes_dictionary.size())
@@ -280,16 +191,16 @@ func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
 		if i == 0:
 			notes_dictionary[i] = {
 				"x_location": 0,
-				"duration": input_notes[i]["duration"],  # Assuming all are quarter notes, adjust as needed
+				"duration": input_notes[i]["duration"],
 				"type": type,
-				"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
+				"status": note_status.IDLE,
 		}
 		else:
 			notes_dictionary[i] = {
-				"x_location": notes_dictionary[i-1]["x_location"] + note_quarter_gap * input_notes[i-1]["duration"],
-				"duration": input_notes[i]["duration"],  # Assuming all are quarter notes, adjust as needed
+				"x_location": notes_dictionary[i-1]["x_location"] + adjusted_note_quarter_gap * input_notes[i-1]["duration"],
+				"duration": input_notes[i]["duration"],
 				"type": type,
-				"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
+				"status": note_status.IDLE,
 			}
 		print("duration for note is: " + str(input_notes[i]["duration"]))
 		note_nodes[i].set_type_and_duration(type, input_notes[i]["duration"])
@@ -301,88 +212,41 @@ func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
 		note.position.x = notes_dictionary[count]["x_location"]
 		note.position.y = note_y_location
 		count += 1
-	#print(notes_dictionary)
 
 func load_rhythmic_pattern_level() -> void:
+	adjusted_note_quarter_gap = note_quarter_gap * 4 / time_signature
 	print("load rhythmic apttern level func")
 	notes_dictionary.clear()
-	#populate_note_nodes()
 
 	# 
 	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://levels/" + levelname + ".json")
 	current_rhythm_game_level = rhythm_game_level
 	if not did_load_bpm_and_audio:
 		tempo = rhythm_game_level.get_bpm()
-		# Access the AudioStreamPlayer node
-		# Load the new audio stream file
 		var audio_file: String =  rhythm_game_level.get_audio_file()
 		var new_stream: AudioStream = load("res://music//" + audio_file)
-		# Set the new stream to the audio player
 		MusicPlayer.stream = new_stream
 		did_load_bpm_and_audio = true
 	
 	set_bar_stage(current_rhythm_game_level)
-	#stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
-	#print("load new rhythmic pattern for stage ", stage_index)
-	#var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
-	## Assuming stages["notes"] contains the list of notes
-	#var input_notes: Array[Dictionary] = []
-	#if "notes" in stage:
-		#for note: Dictionary in stage["notes"]:
-			#input_notes.append(note)
-			#
-	#populate_note_nodes(input_notes.size())
-			#
-	#for i: int in range(input_notes.size()):
-		#var type: String  = "note"
-		#if input_notes[i]["is_rest"]:
-			#type = "rest"
-		#if i == 0:
-			#notes_dictionary[i] = {
-				#"x_location": 0,
-				#"duration": input_notes[i]["duration"],  # Assuming all are quarter notes, adjust as needed
-				#"type": type,
-				#"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
-		#}
-		#else:
-			#notes_dictionary[i] = {
-				#"x_location": notes_dictionary[i-1]["x_location"] + note_quarter_gap * input_notes[i-1]["duration"],
-				#"duration": input_notes[i]["duration"],  # Assuming all are quarter notes, adjust as needed
-				#"type": type,
-				#"status": note_status.IDLE,  # Assuming note_status is defined elsewhere in your code
-			#}
-		#print("duration for note is: " + str(input_notes[i]["duration"]))
-		#note_nodes[i].set_type_and_duration(type, input_notes[i]["duration"])
-	#
-	#notes_dictionary[0]["status"] = note_status.ACTIVE
-	#
-	#var count: int = 0
-	#for note: Note in note_nodes:
-		#note.position.x = notes_dictionary[count]["x_location"]
-		#note.position.y = note_y_location
-		#count += 1
-	##print(notes_dictionary)
 
 
 func trigger_stars() -> void:
 	if progress_bar.value >= progress_bar.max_value / 4:
 		if star_1.texture != star_filled_icon:
 			audio2.stream = MusicPlayer.star_success
-			#MusicPlayer.get_child(0).volume_db = 0
 			audio2.play()
 			star_pulse()
 			star_1.texture = star_filled_icon
 	if progress_bar.value >= progress_bar.max_value / 2:
 		if star_2.texture != star_filled_icon:
 			audio2.stream = MusicPlayer.star_success
-			#MusicPlayer.get_child(0).volume_db = 0
 			audio2.play()
 			star_pulse()
 			star_2.texture = star_filled_icon
 	if progress_bar.value >= progress_bar.max_value:
 		if star_3.texture != star_filled_icon:
 			audio2.stream = MusicPlayer.star_success
-			#MusicPlayer.get_child(0).volume_db = 0
 			audio2.play()
 			star_3.texture = star_filled_icon
 
@@ -412,13 +276,12 @@ func pointer_at_current_note(current_note_x_position: float, offset: float) -> b
 	return true
 
 func bar_loop() -> void:
-	#print("current_note_num, notes_dictionary.size():  ",current_note_num, notes_dictionary.size())
-	if current_note_num < notes_dictionary.size():
+	#var current_bar_stage_index: int = stage_index
+	if current_note_num < note_nodes.size():
 		print(current_note_num)
 		print(notes_dictionary.size())
 		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
-		#if pointer.position.x >= current_note_x_position - offset and pointer.position.x <= current_note_x_position + offset and notes_dictionary[current_note_num]["status"] != note_status.PLAYED:
 		if pointer_at_current_note(current_note_x_position, offset):
 			taking_input = true
 		elif pointer.position.x >= current_note_x_position + offset: #if pointer passed current note
@@ -433,12 +296,7 @@ func bar_loop() -> void:
 	else:
 		print("bar notes ended")
 		taking_input = false
-		#if points >= 30 and not loop_finished:
-			#print("you win!")
-			#loop_finished = true
-			#print("RESTART!")
 		if not loop_finished:
-			#print("you lose")
 			loop_finished = true
 		await beat_signal
 		if loop_finished:
@@ -457,31 +315,24 @@ func pulse(note_num: int) -> void:
 	timer.wait_time = 0.2
 	timer.start()
 	await timer.timeout
-	#print("timer stopped")
 	if note_num >= note_nodes.size():
 		return
 	note_nodes[note_num].scale = original_note_scale
 	note_nodes[note_num].position.y += note_highlight_offset
 
 func restart_level() -> void:
-	#populate_note_nodes()
 	print("restart level func")
 	pointer.modulate.a = 1
 	set_bar_stage(current_rhythm_game_level)
-	#load_rhythmic_pattern_level()
-	#if instruction.text == "Listen...":
-		#instruction.text = "Play!"
-	#else:
-		#instruction.text = "Listen..."
 	points = 0
 	current_note_num = 0
 	notes_dictionary[0]["status"] = note_status.ACTIVE
-	pointer.start_position = pointer.restart_position
-	pointer.target_position = pointer.restart_target_position
+	#pointer.start_position = pointer.restart_position
+	#pointer.target_position = pointer.restart_target_position
 	pointer.position = pointer.start_position
 	
-	pointer_ai.start_position = pointer_ai.restart_position
-	pointer_ai.target_position = pointer_ai.restart_target_position
+	#pointer_ai.start_position = pointer_ai.restart_position
+	#pointer_ai.target_position = pointer_ai.restart_target_position
 	pointer_ai.position = pointer_ai.start_position
 	
 	elapsed_time = 0
@@ -496,18 +347,16 @@ func populate_note_nodes(number_of_notes: int = time_signature) -> void:
 		notes_container.remove_child(n)
 		n.queue_free()
 		
-	#print(note_nodes.size())
 	for i: int in range(number_of_notes):
 		var instance: Note = NoteScene.instantiate() as Note
 		notes_container.add_child(instance)
 		note_nodes.append(instance)
 	emit_signal("notes_populated_signal")
 
-func change_background_color() -> void:
+func change_listenPlay_visuals() -> void:
 	star_success_overlay.color.a -= 0.035
 	if listen_mode_background:
 		background.color = lerp(background.color, background_color_listen, elapsed_background_time / 30)
-		#background.color = background_color_listen
 		if elapsed_background_time / 30 >= 0.01:
 			instruction.text = "הקשב"
 	else:
