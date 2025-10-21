@@ -67,6 +67,8 @@ func _process(_delta: float) -> void:
 		if not paused:
 			position = Vector2(0,start_position.y).lerp(target_position, t)
 	elif game_manager.elapsed_time < loop_duration:
+		if type == "teacher":
+			pause(false)
 		var t: float = game_manager.elapsed_time / loop_duration
 		if not paused:
 			position = start_position.lerp(target_position, t)

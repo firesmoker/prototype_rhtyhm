@@ -32,6 +32,7 @@
 		},
 		{
 		  "stageNumber": 2,
+		  "keepGoing": 4,
 		  "notes": [
 			{
 				"note": "C3",

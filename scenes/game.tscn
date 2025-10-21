@@ -263,4 +263,3 @@ fade_speed = 0.03
 
 [connection signal="beat_signal" from="GameManager" to="GameManager" method="beat_visual_effect"]
 [connection signal="beat_signal" from="GameManager" to="GameManager" method="beat_effects"]
-[connection signal="timeout" from="DelayedHitTimer" to="GameManager" method="_on_delayed_hit_timer_timeout"]

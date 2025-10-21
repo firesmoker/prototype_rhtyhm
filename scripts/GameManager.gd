@@ -44,11 +44,16 @@ var adjusted_note_quarter_gap: float
 
 var delayed_hit_viable: bool = false
 var current_rhythm_game_level: RhythmGameLevel
-var listen_mode_background: bool = true
+var change_to_listen_ui: bool = true
 var original_listen_scale: Vector2
 @export var beat_visuals_on: bool = false
 var star_overlay_strength: float = 0.8
-
+var game_status: String
+enum game_status_types {LISTEN,PLAY}
+var next_stage_status: String
+var ready_to_start_keep_going: bool = false
+var keep_going_repeats: int = 0
+var keep_going_repeats_passed: int = 0
 var time_signature: float = 4
 var stage_index: int = 0
 var original_note_scale: Vector2 = Vector2(0.281,0.281)
@@ -108,25 +113,29 @@ func _process(delta: float) -> void:
 		beats_passed += 1
 		print(beats_passed)
 		beat_time -= quarter_note_duration
-		emit_signal("beat_signal") # go to beat_effects
+		emit_signal("beat_signal",beats_passed) # go to beat_effects
+		if beats_passed >= time_signature:
+			beats_passed = 0
 	bar_loop()
 
-func beat_effects() -> void:
+func beat_effects(beat_num: int) -> void:
 	if beat_visuals_on:
 		vignette.self_modulate.a = 0.5
 	if keep_going_mode:
-		listen_mode_background = false
-	if beats_passed == 1:
+		change_to_listen_ui = false
+	if beat_num == 1:
 		elapsed_background_time = 0
-	if beats_passed == 3:
+	if beat_num == 3:
 		if not keep_going_mode:
-			listen_mode_background = !listen_mode_background
-		if not listen_mode_background:
+			change_to_listen_ui = !change_to_listen_ui
+		if not change_to_listen_ui:
 			listen.texture = play_icon
-	elif beats_passed >= time_signature:
-		if listen_mode_background:
+	elif beat_num >= time_signature:
+		#if ready_to_start_keep_going:
+			#keep_going_mode = true
+		if change_to_listen_ui and not ready_to_start_keep_going:
 			listen.texture = listen_icon
-		beats_passed = 0
+		#beats_passed = 0
 
 func change_active_note() -> void:
 	pass
@@ -204,6 +213,12 @@ func calculate_note_hit_success() -> void:
 		shake()
 		note_nodes[current_note_num].material.set_shader_parameter("color", miss_color)
 
+func enable_keep_going(number_of_repeats: int = 2) -> void:
+	keep_going_repeats = number_of_repeats
+	keep_going_repeats_passed = 0
+	#keep_going_mode = true
+	ready_to_start_keep_going = true
+
 func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
 	print(notes_dictionary.size())
 	stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
@@ -211,6 +226,8 @@ func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
 	var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
 	# Assuming stages["notes"] contains the list of notes
 	var input_notes: Array[Dictionary] = []
+	if "keepGoing" in stage:
+		enable_keep_going(stage["keepGoing"])
 	if "notes" in stage:
 		for note: Dictionary in stage["notes"]:
 			input_notes.append(note)
@@ -337,6 +354,9 @@ func bar_loop() -> void:
 		await beat_signal
 		if loop_finished:
 			print("RESTART!")
+			if ready_to_start_keep_going:
+				keep_going_mode = true
+				ready_to_start_keep_going = false
 			restart_level()
 			loop_finished = false
 
@@ -359,8 +379,15 @@ func pulse(note_num: int) -> void:
 func restart_level() -> void:
 	print("restart level func")
 	pointer.modulate.a = 1
+	if keep_going_mode:
+		keep_going_repeats_passed += 1
+		if keep_going_repeats_passed >= keep_going_repeats:
+			keep_going_repeats_passed = 0
+			keep_going_mode = false
+			change_to_listen_ui = true
 	if not keep_going_mode:
 		set_bar_stage(current_rhythm_game_level)
+		
 	current_note_num = 0
 	debug_current_note_num.text = "current_note_num: " + str(current_note_num)
 	notes_dictionary[0]["status"] = note_status.ACTIVE
@@ -396,9 +423,9 @@ func change_listenPlay_visuals() -> void:
 	star_success_overlay.color.a -= 0.035
 	if keep_going_mode:
 		background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
-		instruction.text = "נגן"
+		instruction.text = "תמשיך לנגן"
 		return
-	if listen_mode_background:
+	if change_to_listen_ui:
 		background.color = lerp(background.color, background_color_listen, elapsed_background_time / 30)
 		if elapsed_background_time / 30 >= 0.01:
 			instruction.text = "הקשב"
@@ -411,11 +438,13 @@ func change_listenPlay_visuals() -> void:
 	#if keep_going_mode:
 		#listen.texture = play_icon
 		#return
-	#if listen_mode_background:
+	#if change_to_listen_ui:
 		#listen.texture = listen_icon
 	#else:
 		#listen.texture = play_icon
 
+func change_game_status() -> void:
+	pass
 
 func _on_delayed_hit_timer_timeout() -> void:
 	delayed_hit_viable = false
