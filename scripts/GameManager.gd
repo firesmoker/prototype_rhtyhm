@@ -99,6 +99,7 @@ func set_light_beams() -> void:
 	var count: int = 0
 	for light_beam: ColorRect in light_beams.get_children():
 		light_beam.visible = false
+		light_beam.size.x = adjusted_note_quarter_gap
 		light_beam.position.x = adjusted_note_quarter_gap * count - light_beam.size.x / 2
 		count += 1
 
@@ -191,7 +192,7 @@ func delayed_hit() -> void:
 		playing_delayed_hit = true
 		delayed_hit_viable = true
 		await restart_signal
-		if delayed_hit_viable:
+		if delayed_hit_viable and game_status == game_status_types.PLAY:
 			delayed_hit_timer.stop()
 			play_note()
 		playing_delayed_hit = false
@@ -447,8 +448,9 @@ func restart_level() -> void:
 	emit_signal("restart_signal")
 
 func star_pulse() -> void:
-	star_success_overlay.visible = true
-	star_success_overlay.color.a = star_overlay_strength
+	pass
+	#star_success_overlay.visible = true
+	#star_success_overlay.color.a = star_overlay_strength
 	
 func populate_note_nodes(number_of_notes: int = time_signature) -> void:
 	note_nodes.clear()

@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://diwvrcggdf5pk" path="res://scripts/GameManager.gd" id="1_23irw"]
 [ext_resource type="PackedScene" uid="uid://cbv1drvhlkirr" path="res://scenes/pointer.tscn" id="2_0fjou"]
+[ext_resource type="Texture2D" uid="uid://brkig44l35byl" path="res://images/listen_4.png" id="2_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://bum12kke1fy0l" path="res://scenes/note.tscn" id="3_x7au0"]
 [ext_resource type="FontFile" uid="uid://bhx6aq6fsp3bi" path="res://instruction_font.tres" id="4_63s3l"]
 [ext_resource type="Texture2D" uid="uid://v3cxc6ouqia7" path="res://images/Star_Empty.svg" id="4_nsii6"]
 [ext_resource type="Texture2D" uid="uid://cxsp7jlidq1nt" path="res://images/Music-staff.png" id="5_dldts"]
 [ext_resource type="Texture2D" uid="uid://ddy3b4ktoxigi" path="res://images/vignette.png" id="6_0tnpc"]
-[ext_resource type="Texture2D" uid="uid://d4egegdc4orhv" path="res://images/listen.png" id="6_vd3uy"]
 [ext_resource type="PackedScene" uid="uid://8ut73mldwxdn" path="res://staff.tscn" id="6_vtaks"]
 [ext_resource type="Script" uid="uid://dhhdoe6g4e0mw" path="res://scripts/light_beam.gd" id="7_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://e7vogwvlx1kl" path="res://scenes/hit_note.tscn" id="8_pof02"]
@@ -107,6 +107,7 @@ tempo = 90.0
 background_color_listen = Color(0, 0.19689843, 0.0836476, 1)
 background_color_play = Color(0, 0.530021, 0.264785, 1)
 success_color = Color(0.22153, 0.727998, 0.282802, 1)
+listen_icon = ExtResource("2_kvpfn")
 
 [node name="Pointer" parent="." instance=ExtResource("2_0fjou")]
 visible = false
@@ -203,8 +204,8 @@ scale = Vector2(3.93822, 1.48353)
 texture = SubResource("GradientTexture2D_wjeh1")
 
 [node name="Staff" parent="." instance=ExtResource("6_vtaks")]
-position = Vector2(518.58, -63)
-scale = Vector2(5.925, 2.757)
+position = Vector2(556.73, -63)
+scale = Vector2(6.745, 2.757)
 
 [node name="LightBeams" type="Control" parent="."]
 layout_mode = 3
@@ -294,12 +295,13 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Listen" type="Sprite2D" parent="."]
-position = Vector2(-206.81, -62)
-texture = ExtResource("6_vd3uy")
+position = Vector2(-269, -62)
+texture = ExtResource("2_kvpfn")
 
 [node name="Hit_Note" parent="." instance=ExtResource("8_pof02")]
 material = SubResource("ShaderMaterial_w6oym")
 position = Vector2(578, 305)
+centered = false
 fade_speed = 0.03
 
 [node name="Audio2" type="AudioStreamPlayer" parent="."]

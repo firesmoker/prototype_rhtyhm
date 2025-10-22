@@ -89,7 +89,7 @@ func _process(_delta: float) -> void:
 					MusicPlayer.get_child(0).play()
 				else:
 					MusicPlayer.get_child(0).stream = MusicPlayer.rest_sound
-					MusicPlayer.get_child(0).volume_db = -3
+					MusicPlayer.get_child(0).volume_db = 0
 					MusicPlayer.get_child(0).play()
 				#print("sounding" + str(notes_played_count))
 			notes_played_count += 1

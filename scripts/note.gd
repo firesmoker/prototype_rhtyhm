@@ -34,7 +34,7 @@ func load_image_for_type(image_type: String, duration: float = 1.0) -> void:
 			if duration == 1.0: 
 				image_path = "uid://lyh6mmeywlik"
 			elif duration == 0.5:
-				image_path = "uid://4u0se6356vmg"
+				image_path = "uid://cx8uh8kdvltif"
 		_:
 			image_path = "uid://lyh6mmeywlik"
 	texture = load(image_path)
