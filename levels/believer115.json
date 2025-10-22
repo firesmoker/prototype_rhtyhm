@@ -7,21 +7,22 @@
 	  "stages": [
 		  {
 		  "stageNumber": 1,
+		  "keepGoing": 2,
 		  "notes": [
 			{
 				"note": "C3",
 				"duration": 1.0,
-				"is_rest": true
+				"is_rest": false
 			},
 			{
 				"note": "C3",
 				"duration": 1.0,
-				"is_rest": true
+				"is_rest": false
 			},
 			{
 			  "note": "C3",
 			  "duration": 1,
-			  "is_rest": true
+			  "is_rest": false
 			},
 			{
 			  "note": "C3",
@@ -32,7 +33,6 @@
 		},
 		{
 		  "stageNumber": 2,
-		  "keepGoing": 4,
 		  "notes": [
 			{
 				"note": "C3",

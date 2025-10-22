@@ -64,6 +64,16 @@ func get_stages() -> Array[Dictionary]:
 					stages.append(stage)
 	return stages
 	
+func get_notes_number() -> int:
+	var note_count: int = 0
+	var stages: Array = get_stages()
+	for stage: Dictionary in stages:
+		if "notes" in stage:
+			for note: Dictionary in stage["notes"]:
+				note_count += 1
+	return note_count
+
+
 
 func get_stages_number() -> int: 
 	return get_stages().size()

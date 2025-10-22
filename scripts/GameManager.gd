@@ -13,6 +13,7 @@ class_name GameManager extends Node
 @onready var debug_current_note_num: Label = $"../HUD/DebugCurrentNoteNum"
 @onready var delayed_hit_timer: Timer = $"../DelayedHitTimer"
 @onready var light_beams: Control = $"../LightBeams"
+@onready var debug_game_status: Label = $"../HUD/DebugGameStatus"
 
 @onready var listen: Sprite2D = $"../Listen"
 
@@ -50,7 +51,7 @@ var original_listen_scale: Vector2
 @export var beat_visuals_on: bool = false
 var star_overlay_strength: float = 0.8
 var game_status: int
-enum game_status_types {LISTEN,PLAY}
+enum game_status_types {LISTEN,PLAY,KEEP_GOING}
 var next_stage_status: String
 var ready_to_start_keep_going: bool = false
 var keep_going_repeats: int = 0
@@ -142,6 +143,7 @@ func _process(delta: float) -> void:
 		#emit_signal("beat_signal",beats_passed) # go to beat_effects
 		if beats_passed >= time_signature:
 			beats_passed = 0
+			#change_game_status()
 		emit_signal("beat_signal",beats_passed)
 	bar_loop()
 
@@ -149,24 +151,26 @@ func beat_effects(beat_num: int) -> void:
 	#beat_light_pulse(beat_num)
 	if beat_visuals_on:
 		vignette.self_modulate.a = 0.5
-	if keep_going_mode:
-		change_to_listen_ui = false
+	#if keep_going_mode:
+		#change_to_listen_ui = false
 	if beat_num == 1:
 		elapsed_background_time = 0
 	if beat_num == 3:
-		if not keep_going_mode:
-			change_to_listen_ui = !change_to_listen_ui
-		if not change_to_listen_ui:
-			listen.texture = play_icon
-		if change_to_listen_ui and not ready_to_start_keep_going:
-			print("LISTEN")
-			listen.texture = listen_icon
+		change_game_status()
+		#if not keep_going_mode:
+			#change_to_listen_ui = !change_to_listen_ui
+		#if not change_to_listen_ui:
+			#listen.texture = play_icon
+		#if change_to_listen_ui and not ready_to_start_keep_going:
+			#print("LISTEN")
+			#listen.texture = listen_icon
 	elif beat_num >= time_signature or beat_num == 0:
+		pass
 		#if ready_to_start_keep_going:
 			#keep_going_mode = true
-		if change_to_listen_ui and not ready_to_start_keep_going:
-			print("LISTEN")
-			listen.texture = listen_icon
+		#if change_to_listen_ui and not ready_to_start_keep_going:
+			#print("LISTEN")
+			#listen.texture = listen_icon
 		#beats_passed = 0
 
 func change_active_note() -> void:
@@ -251,9 +255,14 @@ func enable_keep_going(number_of_repeats: int = 2) -> void:
 	#keep_going_mode = true
 	ready_to_start_keep_going = true
 
-func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
+func set_bar_stage(rhythm_game_level: RhythmGameLevel, looping: bool = false) -> void:
 	#print(notes_dictionary.size())
-	stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
+	if looping:
+		stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
+	else:
+		stage_index += 1
+		if stage_index > rhythm_game_level.get_stages_number():
+			get_tree().quit()
 	print("load new rhythmic pattern for stage ", stage_index)
 	var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
 	# Assuming stages["notes"] contains the list of notes
@@ -295,12 +304,16 @@ func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
 		note.position.y = note_y_location
 		count += 1
 
+func set_star_formula(notes_in_level: int) -> void:
+	progress_bar.max_value = notes_in_level * points_per_note
+
 func load_rhythmic_pattern_level() -> void:
 	#print("load rhythmic apttern level func")
 	notes_dictionary.clear()
 
 	# 
 	var rhythm_game_level: RhythmGameLevel = RhythmGameLevel.new("res://levels/" + levelname + ".json")
+	set_star_formula(rhythm_game_level.get_notes_number())
 	current_rhythm_game_level = rhythm_game_level
 	time_signature = rhythm_game_level.get_time_signature()
 	#print(time_signature)
@@ -327,7 +340,7 @@ func trigger_stars() -> void:
 			audio2.play()
 			star_pulse()
 			star_2.texture = star_filled_icon
-	if progress_bar.value >= progress_bar.max_value:
+	if progress_bar.value >= progress_bar.max_value * 0.8:
 		if star_3.texture != star_filled_icon:
 			audio2.stream = MusicPlayer.star_success
 			audio2.play()
@@ -427,7 +440,7 @@ func restart_level() -> void:
 		if keep_going_repeats_passed >= keep_going_repeats:
 			keep_going_repeats_passed = 0
 			keep_going_mode = false
-			change_to_listen_ui = true
+			#change_to_listen_ui = true
 	if not keep_going_mode:
 		set_bar_stage(current_rhythm_game_level)
 		
@@ -444,7 +457,6 @@ func restart_level() -> void:
 	pointer_ai.position = pointer_ai.start_position
 	
 	elapsed_time = 0
-	change_game_status()
 	emit_signal("restart_signal")
 
 func star_pulse() -> void:
@@ -469,30 +481,46 @@ func change_game_status() -> void:
 		game_status_types.LISTEN:
 			game_status = game_status_types.PLAY
 		game_status_types.PLAY:
-			if keep_going_mode:
-				if keep_going_repeats_passed >= keep_going_repeats:
-					game_status = game_status_types.PLAY
-				else:
-					return
+			if ready_to_start_keep_going:
+				game_status = game_status_types.KEEP_GOING
 			else:
 				game_status = game_status_types.LISTEN
-		
+		game_status_types.KEEP_GOING:
+			if not keep_going_mode:
+				game_status = game_status_types.LISTEN
+	debug_game_status.text = str(game_status)
 	
 
 func change_game_status_visuals() -> void:
 	star_success_overlay.color.a -= 0.035
-	if keep_going_mode:
-		background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
-		instruction.text = "תמשיך לנגן"
-		return
-	if change_to_listen_ui and not ready_to_start_keep_going:
-		background.color = lerp(background.color, background_color_listen, elapsed_background_time / 30)
-		if elapsed_background_time / 30 >= 0.01:
-			instruction.text = "הקשב"
-	else:
-		background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
-		if elapsed_background_time / 30 >= 0.01:
-			instruction.text = "נגן"
+	match game_status:
+		game_status_types.LISTEN:
+			background.color = lerp(background.color, background_color_listen, elapsed_background_time / 30)
+			if elapsed_background_time / 30 >= 0.01:
+				instruction.text = "הקשב"
+		
+		game_status_types.PLAY:
+			background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
+			if elapsed_background_time / 30 >= 0.01:
+				instruction.text = "נגן"
+		
+		game_status_types.KEEP_GOING:
+			background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
+			if elapsed_background_time / 30 >= 0.01:
+				instruction.text = "תמשיך לנגן"
+	
+	#if keep_going_mode:
+		#background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
+		#instruction.text = "תמשיך לנגן"
+		#return
+	#if change_to_listen_ui and not ready_to_start_keep_going:
+		#background.color = lerp(background.color, background_color_listen, elapsed_background_time / 30)
+		#if elapsed_background_time / 30 >= 0.01:
+			#instruction.text = "הקשב"
+	#else:
+		#background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
+		#if elapsed_background_time / 30 >= 0.01:
+			#instruction.text = "נגן"
 
 #func change_listen_icon() -> void:
 	#if keep_going_mode:
