@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxsp7jlidq1nt"
-path="res://.godot/imported/Music-staff.png-3e265c1b4c64553012c03becb0f094aa.ctex"
+uid="uid://b4joyt01likkl"
+path="res://.godot/imported/LedgerLine.png-e12f2916fcd13b2a8fb0ddd60736283f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/Music-staff.png"
-dest_files=["res://.godot/imported/Music-staff.png-3e265c1b4c64553012c03becb0f094aa.ctex"]
+source_file="res://images/LedgerLine.png"
+dest_files=["res://.godot/imported/LedgerLine.png-e12f2916fcd13b2a8fb0ddd60736283f.ctex"]
 
 [params]
 

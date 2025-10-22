@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=3 uid="uid://8ut73mldwxdn"]
+
+[ext_resource type="Texture2D" uid="uid://cxsp7jlidq1nt" path="res://images/Music-staff.png" id="1_0od3r"]
+[ext_resource type="Texture2D" uid="uid://b4joyt01likkl" path="res://images/LedgerLine.png" id="1_bjgmo"]
+
+[sub_resource type="Gradient" id="Gradient_eiuy8"]
+offsets = PackedFloat32Array(0, 0.00440529)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lo1rx"]
+gradient = SubResource("Gradient_eiuy8")
+
+[node name="Staff" type="Node2D"]
+z_index = -1
+scale = Vector2(9.675, 1.27303)
+metadata/_edit_lock_ = true
+
+[node name="StaffBackground" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-0.0258507, -0.0326035)
+scale = Vector2(3.12419, 1.49899)
+texture = SubResource("GradientTexture2D_lo1rx")
+metadata/_edit_lock_ = true
+
+[node name="StaffShadow" type="Sprite2D" parent="StaffBackground"]
+modulate = Color(0, 0, 0, 0.1)
+show_behind_parent = true
+z_index = -1
+position = Vector2(0.033, 3)
+texture = SubResource("GradientTexture2D_lo1rx")
+
+[node name="Line" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(1.583, 0.157105)
+texture = ExtResource("1_bjgmo")
+
+[node name="Line2" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(0, -24)
+scale = Vector2(1.583, 0.157105)
+texture = ExtResource("1_bjgmo")
+
+[node name="Line3" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(0, -48)
+scale = Vector2(1.583, 0.157105)
+texture = ExtResource("1_bjgmo")
+
+[node name="Line4" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(0, 24)
+scale = Vector2(1.583, 0.157105)
+texture = ExtResource("1_bjgmo")
+
+[node name="Line5" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(0, 48)
+scale = Vector2(1.583, 0.157105)
+texture = ExtResource("1_bjgmo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+z_index = -1
+texture = ExtResource("1_0od3r")

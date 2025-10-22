@@ -12,6 +12,7 @@ class_name GameManager extends Node
 @onready var audio2: AudioStreamPlayer = $"../Audio2"
 @onready var debug_current_note_num: Label = $"../HUD/DebugCurrentNoteNum"
 @onready var delayed_hit_timer: Timer = $"../DelayedHitTimer"
+@onready var light_beams: Control = $"../LightBeams"
 
 @onready var listen: Sprite2D = $"../Listen"
 
@@ -23,7 +24,7 @@ class_name GameManager extends Node
 
 
 @export var note_nodes: Array[Note]
-@export var note_y_location: float = -40
+@export var note_y_location: float = -52
 @export var note_quarter_gap: float = 300
 var adjusted_note_quarter_gap: float
 @export var note_visual_offset: float = 100
@@ -48,7 +49,7 @@ var change_to_listen_ui: bool = true
 var original_listen_scale: Vector2
 @export var beat_visuals_on: bool = false
 var star_overlay_strength: float = 0.8
-var game_status: String
+var game_status: int
 enum game_status_types {LISTEN,PLAY}
 var next_stage_status: String
 var ready_to_start_keep_going: bool = false
@@ -67,13 +68,16 @@ var quarter_note_duration: float = 0.5  # Duration of a quarter note in seconds 
 var elapsed_time: float = 0.0
 var elapsed_background_time: float = 0.0
 var beat_time: float = 0
-var beat_num: int = -1
+var pre_beat_time: float = 0
+@export var pre_beat_modifier: float = 0.3
+#var beat_num: int = -1
 var taking_input: bool = false
 var current_note_num: int = 0
 var note_highlight_offset: float = 10
 var NoteScene: PackedScene = preload("res://scenes/note.tscn")
 var HitNoteScene: PackedScene = preload("res://scenes/hit_note.tscn")
 var beats_passed: int = 0
+var pre_beats_passed: int = 0
 var did_load_bpm_and_audio: bool = false
 var keep_going_mode: bool = false
 var dual_pointer_mode: bool = false
@@ -91,34 +95,57 @@ func set_ui() -> void:
 	original_listen_scale = listen.scale
 	background.color = background_color_listen
 
+func set_light_beams() -> void:
+	var count: int = 0
+	for light_beam: ColorRect in light_beams.get_children():
+		light_beam.visible = false
+		light_beam.position.x = adjusted_note_quarter_gap * count - light_beam.size.x / 2
+		count += 1
+
 func _ready() -> void:
 	load_rhythmic_pattern_level()
+	set_light_beams()
+		
+	#for i: int in time_signature:
+		
 	set_ui()
 	#print("setting durations with time signature " + str(time_signature))
 	four_quarters_bar_duration = 60 / tempo * time_signature
 	quarter_note_duration = 60 / tempo
 	elapsed_time = 0.0
 	beat_time = 0 + MusicPlayer.beat_offset
+	light_beams.get_child(0).light_pulse(pre_beat_modifier)
 
 func _process(delta: float) -> void:
 	vignette.self_modulate.a -= 0.025
 	if not MusicPlayer.playing:
 		MusicPlayer.play()
-	change_listenPlay_visuals()
+	change_game_status_visuals()
 	elapsed_time += delta
 	elapsed_background_time += delta
 	beat_time += delta
+	pre_beat_time += delta
+	if pre_beat_time >= quarter_note_duration - pre_beat_modifier:
+		pre_beats_passed += 1
+		#beat_light_pulse(pre_beats_passed)
+		#print(pre_beats_passed)
+		pre_beat_time -= quarter_note_duration
+		if pre_beats_passed >= time_signature:
+			print("prebeat 0")
+			pre_beats_passed = 0
+		beat_light_pulse(pre_beats_passed)
 	if beat_time >= quarter_note_duration:
-		beat_num += 1
+		#beat_num += 1
 		beats_passed += 1
-		print(beats_passed)
 		beat_time -= quarter_note_duration
-		emit_signal("beat_signal",beats_passed) # go to beat_effects
+		#emit_signal("beat_signal",beats_passed) # go to beat_effects
 		if beats_passed >= time_signature:
 			beats_passed = 0
+		emit_signal("beat_signal",beats_passed)
 	bar_loop()
 
 func beat_effects(beat_num: int) -> void:
+	#beat_light_pulse(beat_num)
 	if beat_visuals_on:
 		vignette.self_modulate.a = 0.5
 	if keep_going_mode:
@@ -130,10 +157,14 @@ func beat_effects(beat_num: int) -> void:
 			change_to_listen_ui = !change_to_listen_ui
 		if not change_to_listen_ui:
 			listen.texture = play_icon
-	elif beat_num >= time_signature:
+		if change_to_listen_ui and not ready_to_start_keep_going:
+			print("LISTEN")
+			listen.texture = listen_icon
+	elif beat_num >= time_signature or beat_num == 0:
 		#if ready_to_start_keep_going:
 			#keep_going_mode = true
 		if change_to_listen_ui and not ready_to_start_keep_going:
+			print("LISTEN")
 			listen.texture = listen_icon
 		#beats_passed = 0
 
@@ -220,7 +251,7 @@ func enable_keep_going(number_of_repeats: int = 2) -> void:
 	ready_to_start_keep_going = true
 
 func set_bar_stage(rhythm_game_level: RhythmGameLevel) -> void:
-	print(notes_dictionary.size())
+	#print(notes_dictionary.size())
 	stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
 	print("load new rhythmic pattern for stage ", stage_index)
 	var stage: Dictionary = rhythm_game_level.get_stage(stage_index)
@@ -329,8 +360,8 @@ func pointer_at_current_note(current_note_x_position: float, offset: float) -> b
 func bar_loop() -> void:
 	#var current_bar_stage_index: int = stage_index
 	if current_note_num < note_nodes.size():
-		print(current_note_num)
-		print(notes_dictionary.size())
+		#print(current_note_num)
+		#print(notes_dictionary.size())
 		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
 		if pointer_at_current_note(current_note_x_position, offset):
@@ -361,6 +392,10 @@ func bar_loop() -> void:
 			loop_finished = false
 
 
+func clear_notes_colors() -> void:
+	for note: Note in note_nodes:
+		note.material.set_shader_parameter("color", Color.BLACK)
+
 func pulse(note_num: int) -> void:
 	if note_num >= note_nodes.size():
 		return
@@ -375,11 +410,18 @@ func pulse(note_num: int) -> void:
 		return
 	note_nodes[note_num].scale = original_note_scale
 	note_nodes[note_num].position.y += note_highlight_offset
+	
+func beat_light_pulse(note_num: int) -> void:
+	var beams: Array = light_beams.get_children()
+	#beams[note_num].visible = true
+	beams[note_num].light_pulse(pre_beat_modifier)
+	
 
 func restart_level() -> void:
 	print("restart level func")
 	pointer.modulate.a = 1
 	if keep_going_mode:
+		clear_notes_colors()
 		keep_going_repeats_passed += 1
 		if keep_going_repeats_passed >= keep_going_repeats:
 			keep_going_repeats_passed = 0
@@ -401,6 +443,7 @@ func restart_level() -> void:
 	pointer_ai.position = pointer_ai.start_position
 	
 	elapsed_time = 0
+	change_game_status()
 	emit_signal("restart_signal")
 
 func star_pulse() -> void:
@@ -419,13 +462,28 @@ func populate_note_nodes(number_of_notes: int = time_signature) -> void:
 		note_nodes.append(instance)
 	emit_signal("notes_populated_signal")
 
-func change_listenPlay_visuals() -> void:
+func change_game_status() -> void:
+	match game_status:
+		game_status_types.LISTEN:
+			game_status = game_status_types.PLAY
+		game_status_types.PLAY:
+			if keep_going_mode:
+				if keep_going_repeats_passed >= keep_going_repeats:
+					game_status = game_status_types.PLAY
+				else:
+					return
+			else:
+				game_status = game_status_types.LISTEN
+		
+	
+
+func change_game_status_visuals() -> void:
 	star_success_overlay.color.a -= 0.035
 	if keep_going_mode:
 		background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
 		instruction.text = "תמשיך לנגן"
 		return
-	if change_to_listen_ui:
+	if change_to_listen_ui and not ready_to_start_keep_going:
 		background.color = lerp(background.color, background_color_listen, elapsed_background_time / 30)
 		if elapsed_background_time / 30 >= 0.01:
 			instruction.text = "הקשב"
@@ -443,8 +501,6 @@ func change_listenPlay_visuals() -> void:
 	#else:
 		#listen.texture = play_icon
 
-func change_game_status() -> void:
-	pass
 
 func _on_delayed_hit_timer_timeout() -> void:
 	delayed_hit_viable = false
