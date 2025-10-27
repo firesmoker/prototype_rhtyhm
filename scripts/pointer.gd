@@ -31,9 +31,11 @@ func set_target_positions() -> void:
 
 func _ready() -> void:
 	set_target_positions()
+	game_manager.restart_signal.connect(restart_notes_to_play)
 	var ts: float = game_manager.time_signature
 	#print("ts is " + str(ts))
 	notes_to_play = game_manager.note_nodes
+	notes_played_count = 0
 	player_start_position_x = game_manager.adjusted_note_quarter_gap * (- ts * game_manager.number_of_bars)
 	teacher_start_position_x = 0
 	if type == "player":
@@ -61,6 +63,10 @@ func pause(toggle: bool = true) -> void:
 #func keep_going(toggle: bool) -> void:
 	#keep_going_mode = toggle
 
+func restart_notes_to_play() -> void:
+	notes_to_play = game_manager.note_nodes
+	notes_played_count = 0
+
 func _process(_delta: float) -> void:
 	if game_manager.keep_going_mode: # keep_going_loop_duration
 		if type == "teacher":
@@ -80,6 +86,8 @@ func _process(_delta: float) -> void:
 	
 	#if type == "teacher":
 	if notes_played_count < notes_to_play.size():
+		#print("note_played_count " + str(notes_played_count))
+		#print("note is: " + str(notes_to_play[notes_played_count]))
 		if position.x >= notes_to_play[notes_played_count].position.x:
 			if not MusicPlayer.playing:
 				MusicPlayer.play()
@@ -90,19 +98,34 @@ func _process(_delta: float) -> void:
 					MusicPlayer.get_child(0).volume_db = 0
 					MusicPlayer.get_child(0).play()
 				else:
-					MusicPlayer.get_child(0).stream = MusicPlayer.rest_sound
-					MusicPlayer.get_child(0).volume_db = 0
-					MusicPlayer.get_child(0).play()
+					game_manager.pulse(notes_played_count)
+					pass
+					#MusicPlayer.get_child(0).stream = MusicPlayer.rest_sound
+					#MusicPlayer.get_child(0).volume_db = 0
+					#MusicPlayer.get_child(0).play()
 				#print("sounding" + str(notes_played_count))
 			notes_played_count += 1
+	
+	
 	elif game_manager.note_nodes.size() > 0:
-		if not position.x >= game_manager.note_nodes[game_manager.note_nodes.size() - 1].position.x:
-			notes_played_count = 0
-			print("waiting for populate signal")
-			await game_manager.notes_populated_signal
-			print("notes populated, updating pointer")
-			notes_to_play = game_manager.note_nodes
+		#print("game_manager.note_nodes.size = " + str(game_manager.note_nodes.size()))
+		#print("notes_played_count " + str(notes_played_count))
+		if position.x < game_manager.note_nodes[game_manager.note_nodes.size() - 1].position.x:
+			#print("should be 0 i'm lower position x" + str(type))
+			#print("waiting for populate signal")
+			#await game_manager.notes_populated_signal
+			#print("notes populated, updating pointer")
+			pass
+			#notes_to_play = game_manager.note_nodes
+			#notes_played_count = 0
+		else:
+			pass
+			#print("type " + str(type) + " position.x " + str(position.x))
+			#print("last note in nodes position.x " + str(game_manager.note_nodes[game_manager.note_nodes.size() - 1].position.x))
 	else:
-		await game_manager.notes_populated_signal
-		notes_played_count = 0
-		notes_to_play = game_manager.note_nodes
+		pass
+		#print("should be 0 " + str(type))
+		#print("waiting for notes_populated_signal")
+		#await game_manager.notes_populated_signal
+		#notes_to_play = game_manager.note_nodes
+		#notes_played_count = 0

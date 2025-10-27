@@ -12,6 +12,7 @@ class_name GameManager extends Node
 @onready var audio2: AudioStreamPlayer = $"../Audio2"
 @onready var debug_current_note_num: Label = $"../HUD/DebugCurrentNoteNum"
 @onready var delayed_hit_timer: Timer = $"../DelayedHitTimer"
+
 @onready var light_beams: Control = $"../LightBeams"
 @onready var debug_game_status: Label = $"../HUD/DebugGameStatus"
 @onready var light_beam: ColorRect = $"../LightBeams/LightBeam"
@@ -119,7 +120,7 @@ func toggle_debug_ui(toggle: bool) -> void:
 	debug_game_status.visible = toggle
 
 func _ready() -> void:
-	toggle_debug_ui(false)
+	toggle_debug_ui(true)
 	load_rhythmic_pattern_level()
 	set_light_beams()
 		
@@ -149,7 +150,7 @@ func calculate_beat_num(delta: float) -> void:
 		pre_beats_passed += 1
 		pre_beat_time -= quarter_note_duration
 		if pre_beats_passed >= time_signature * number_of_bars:
-			print("prebeat 0")
+			#print("prebeat 0")
 			pre_beats_passed = 0
 		beat_light_pulse(pre_beats_passed)
 	if beat_time >= quarter_note_duration:
@@ -305,7 +306,7 @@ func set_bar_stage(rhythm_game_level: RhythmGameLevel, looping: bool = true) -> 
 				"type": type,
 				"status": note_status.IDLE,
 			}
-		print("duration for note is: " + str(input_notes[i]["duration"]))
+		#print("duratsion for note is: " + str(input_notes[i]["duration"]))
 		note_nodes[i].set_type_and_duration(type, input_notes[i]["duration"])
 	
 	notes_dictionary[0]["status"] = note_status.ACTIVE
@@ -401,14 +402,14 @@ func bar_loop() -> void:
 			if current_note_num < notes_dictionary.size():
 				notes_dictionary[current_note_num]["status"] = note_status.ACTIVE
 	else:
-		print("bar notes ended")
+		#print("bar notes ended")
 		if not keep_going_mode:
 			taking_input = false
 		if not loop_finished:
 			loop_finished = true
 		await beat_signal
 		if loop_finished:
-			print("RESTART!")
+			#print("RESTART!")
 			if ready_to_start_keep_going:
 				keep_going_mode = true
 				ready_to_start_keep_going = false
@@ -442,7 +443,7 @@ func beat_light_pulse(note_num: int) -> void:
 	
 
 func restart_level() -> void:
-	print("restart level func")
+	#print("restart level func")
 	pointer.modulate.a = 1
 	if keep_going_mode:
 		clear_notes_colors()
@@ -484,6 +485,7 @@ func populate_note_nodes(number_of_notes: int = time_signature * number_of_bars)
 		var instance: Note = NoteScene.instantiate() as Note
 		notes_container.add_child(instance)
 		note_nodes.append(instance)
+	print("notes_populated_signal")
 	emit_signal("notes_populated_signal")
 
 func change_game_status() -> void:

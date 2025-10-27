@@ -110,13 +110,11 @@ success_color = Color(0.22153, 0.727998, 0.282802, 1)
 listen_icon = ExtResource("2_kvpfn")
 
 [node name="Pointer" parent="." instance=ExtResource("2_0fjou")]
-visible = false
 top_level = true
 position = Vector2(-300, 209)
 disappearing_pointer = true
 
 [node name="Pointer_AI" parent="." instance=ExtResource("2_0fjou")]
-visible = false
 self_modulate = Color(0.2666669, 0, 1, 1)
 material = SubResource("CanvasItemMaterial_6l6um")
 position = Vector2(-600, 209)
@@ -171,6 +169,19 @@ offset_right = 1133.0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 40
 text = "current_note_num"
+autowrap_mode = 3
+
+[node name="DebugGameStatus2" type="Label" parent="HUD"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 836.0
+offset_top = -578.0
+offset_right = 1273.0
+offset_bottom = -509.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 40
+text = "notes_played: "
 autowrap_mode = 3
 
 [node name="ProgressBar" type="ProgressBar" parent="HUD"]

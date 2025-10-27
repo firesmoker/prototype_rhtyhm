@@ -1,9 +1,10 @@
 {
   "rhythmGameLevel": {
-	"levelName": "marry",
-	"bpm": 124,
+	"levelName": "badguy",
+	"song_Name": "Bad Guy",
+	"bpm": 135,
 	"numberOfBars": 2,
-	"audioFile": "BadGuy_Cminor_124bpm_vocals.wav",
+	"audioFile": "badguy_135_full.wav",
 	"stages": [
 	  {
 		"stageNumber": 1,
@@ -21,13 +22,18 @@
 	  {
 		"stageNumber": 2,
 		"notes": [
-		  { "note": "E4", "duration": 1.0, "is_rest": true },
 		  { "note": "D4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": true },
 		  { "note": "D4", "duration": 1.0, "is_rest": false },
-		  { "note": "E4", "duration": 1.0, "is_rest": true },
-		  { "note": "D4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": true },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
 		  { "note": "D4", "duration": 1.0, "is_rest": false },
 		]
 	  },
@@ -36,55 +42,19 @@
 		"notes": [
 		  { "note": "D4", "duration": 1.0, "is_rest": false },
 		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
+		  { "note": "E4", "duration": 0.5, "is_rest": true },
+		  { "note": "D4", "duration": 0.5, "is_rest": false },
 		  { "note": "D4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": true }
 		]
 	  },
-	  {
-		"stageNumber": 4,
-		"notes": [
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": true }
-		]
-	  },
-	  {
-		"stageNumber": 5,
-		"notes": [
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "D4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": false },
-		  { "note": "D4", "duration": 1.0, "is_rest": false }
-		]
-	  },
-	  {
-		"stageNumber": 6,
-		"notes": [
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": true }
-		]
-	  },
-	  {
-		"stageNumber": 7,
-		"notes": [
-		  { "note": "D4", "duration": 1.0, "is_rest": false },
-		  { "note": "D4", "duration": 1.0, "is_rest": false },
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "D4", "duration": 1.0, "is_rest": false }
-		]
-	  },
-	  {
-		"stageNumber": 8,
-		"notes": [
-		  { "note": "C4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": true },
-		  { "note": "C4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": true }
-		]
-	  }
 	]
   }
 }
