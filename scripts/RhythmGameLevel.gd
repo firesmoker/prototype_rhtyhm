@@ -73,6 +73,11 @@ func get_notes_number() -> int:
 				note_count += 1
 	return note_count
 
+func get_number_of_bars() -> float:
+	if "rhythmGameLevel" in rhythm_game_data:
+		if "numberOfBars" in rhythm_game_data["rhythmGameLevel"]:
+			return rhythm_game_data["rhythmGameLevel"]["numberOfBars"]
+	return 1
 
 
 func get_stages_number() -> int: 

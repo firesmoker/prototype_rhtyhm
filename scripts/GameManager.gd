@@ -44,7 +44,7 @@ var adjusted_note_quarter_gap: float
 @export var play_icon: Texture = preload("uid://bmy3pf53wlaxs")
 @export var star_empty_icon: Texture = preload("uid://v3cxc6ouqia7")
 @export var star_filled_icon: Texture = preload("uid://bnogovfwbmyjp")
-var number_of_bars: float = 2
+var number_of_bars: float = 1
 var delayed_hit_viable: bool = false
 var current_rhythm_game_level: RhythmGameLevel
 var change_to_listen_ui: bool = true
@@ -100,6 +100,7 @@ func set_ui() -> void:
 func set_light_beams() -> void:
 	light_beam.visible = false
 	light_beam.size.x = adjusted_note_quarter_gap
+	light_beam.position.x = - light_beam.size.x / 2
 	for i in range(time_signature*number_of_bars):
 		var new_light_beam: ColorRect = light_beam.duplicate()
 		light_beams.add_child(new_light_beam)
@@ -327,6 +328,7 @@ func load_rhythmic_pattern_level() -> void:
 	set_star_formula(rhythm_game_level.get_notes_number())
 	current_rhythm_game_level = rhythm_game_level
 	time_signature = rhythm_game_level.get_time_signature()
+	number_of_bars = rhythm_game_level.get_number_of_bars()
 	#print(time_signature)
 	if not did_load_bpm_and_audio:
 		tempo = rhythm_game_level.get_bpm()

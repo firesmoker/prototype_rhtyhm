@@ -2,6 +2,7 @@
   "rhythmGameLevel": {
 	"levelName": "marry",
 	"bpm": 72,
+	"numberOfBars": 2,
 	"audioFile": "MaryHadALittleLambFixed_Cmajor_72Bpm.wav",
 	"stages": [
 	  {
