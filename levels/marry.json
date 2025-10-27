@@ -1,0 +1,81 @@
+{
+  "rhythmGameLevel": {
+	"levelName": "marry",
+	"bpm": 72,
+	"audioFile": "MaryHadALittleLambFixed_Cmajor_72Bpm.wav",
+	"stages": [
+	  {
+		"stageNumber": 1,
+		"notes": [
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		]
+	  },
+	  {
+		"stageNumber": 2,
+		"notes": [
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": true }
+		]
+	  },
+	  {
+		"stageNumber": 3,
+		"notes": [
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": true }
+		]
+	  },
+	  {
+		"stageNumber": 4,
+		"notes": [
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": true }
+		]
+	  },
+	  {
+		"stageNumber": 5,
+		"notes": [
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false }
+		]
+	  },
+	  {
+		"stageNumber": 6,
+		"notes": [
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": true }
+		]
+	  },
+	  {
+		"stageNumber": 7,
+		"notes": [
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false }
+		]
+	  },
+	  {
+		"stageNumber": 8,
+		"notes": [
+		  { "note": "C4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": true },
+		  { "note": "C4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": true }
+		]
+	  }
+	]
+  }
+}

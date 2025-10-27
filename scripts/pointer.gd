@@ -24,18 +24,20 @@ var paused: bool = false
 #var keep_going_mode: bool = false
 
 func set_target_positions() -> void:
-	target_position.x = game_manager.adjusted_note_quarter_gap * game_manager.time_signature
+	target_position.x = game_manager.adjusted_note_quarter_gap * game_manager.time_signature * game_manager.number_of_bars
 	target_teacher_position.x = target_position.x * 2
+
+
 
 func _ready() -> void:
 	set_target_positions()
 	var ts: float = game_manager.time_signature
 	#print("ts is " + str(ts))
 	notes_to_play = game_manager.note_nodes
-	player_start_position_x = game_manager.adjusted_note_quarter_gap * (- ts)
+	player_start_position_x = game_manager.adjusted_note_quarter_gap * (- ts * game_manager.number_of_bars)
 	teacher_start_position_x = 0
 	if type == "player":
-		var offset_modifier: float = game_manager.tempo / ts
+		var offset_modifier: float = game_manager.tempo / ts * game_manager.number_of_bars
 		position.x = player_start_position_x - offset_modifier
 		start_position.x = player_start_position_x - offset_modifier
 		keep_going_start_position.x = 0 - offset_modifier
@@ -43,15 +45,15 @@ func _ready() -> void:
 		#restart_position = Vector2(player_start_position_x - offset_modifier, start_position.y)
 		#restart_target_position = Vector2(target_position.x - offset_modifier, start_position.y)
 	elif type == "teacher":
-		var offset_modifier: float = game_manager.tempo / ts
+		var offset_modifier: float = game_manager.tempo / ts * game_manager.number_of_bars
 		position.x = teacher_start_position_x - offset_modifier
 		start_position.x = teacher_start_position_x - offset_modifier
 		target_position = target_teacher_position - Vector2(offset_modifier, 0)
 		#restart_position = Vector2(teacher_start_position_x - offset_modifier, start_position.y)
 		#restart_target_position = Vector2(target_teacher_position.x - offset_modifier, start_position.y)
 		
-	loop_duration = game_manager.quarter_note_duration * (ts + ts)
-	keep_going_loop_duration = game_manager.quarter_note_duration * ts
+	loop_duration = game_manager.quarter_note_duration * (ts + ts)  * game_manager.number_of_bars
+	keep_going_loop_duration = game_manager.quarter_note_duration * ts * game_manager.number_of_bars
 
 func pause(toggle: bool = true) -> void:
 	paused =  toggle
@@ -82,7 +84,7 @@ func _process(_delta: float) -> void:
 			if not MusicPlayer.playing:
 				MusicPlayer.play()
 			if type == "teacher":
-				#game_manager.pulse(notes_played_count)
+				game_manager.pulse(notes_played_count)
 				if notes_to_play[notes_played_count].type == "note":
 					MusicPlayer.get_child(0).stream = MusicPlayer.teacher_note
 					MusicPlayer.get_child(0).volume_db = 0
@@ -93,12 +95,13 @@ func _process(_delta: float) -> void:
 					MusicPlayer.get_child(0).play()
 				#print("sounding" + str(notes_played_count))
 			notes_played_count += 1
-	elif not position.x >= game_manager.note_nodes[game_manager.note_nodes.size() - 1].position.x:
-		notes_played_count = 0
-		print("waiting for populate signal")
-		await game_manager.notes_populated_signal
-		print("notes populated, updating pointer")
-		notes_to_play = game_manager.note_nodes
+	elif game_manager.note_nodes.size() > 0:
+		if not position.x >= game_manager.note_nodes[game_manager.note_nodes.size() - 1].position.x:
+			notes_played_count = 0
+			print("waiting for populate signal")
+			await game_manager.notes_populated_signal
+			print("notes populated, updating pointer")
+			notes_to_play = game_manager.note_nodes
 	else:
 		await game_manager.notes_populated_signal
 		notes_played_count = 0

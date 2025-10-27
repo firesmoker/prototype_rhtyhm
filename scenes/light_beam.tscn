@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://crsmvaqht8wxw"]
+
+[ext_resource type="Script" uid="uid://dhhdoe6g4e0mw" path="res://scripts/light_beam.gd" id="1_mb8gv"]
+
+[node name="LightBeam1" type="ColorRect"]
+offset_top = 200.0
+offset_right = 250.0
+offset_bottom = 230.0
+script = ExtResource("1_mb8gv")

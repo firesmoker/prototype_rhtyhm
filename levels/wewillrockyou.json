@@ -1,0 +1,46 @@
+
+{
+	"rhythmGameLevel": {
+	  "levelName": "wewillrockyou",
+	  "bpm": 82,
+	  "audioFile": "WeWillRockYou_Cmajor_82bpm_Vocals.wav",
+	  "stages": [
+		{
+		  "stageNumber": 1,
+		  "notes": [
+			{
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			},
+			{
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			},
+			{
+			  "note": "C3",
+			  "duration": 1,
+			  "is_rest": false
+			},
+			{
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			},
+			{
+				"note": "C3",
+				"duration": 0.5,
+				"is_rest": false
+			},
+			{
+			  "note": "C3",
+			  "duration": 1,
+			  "is_rest": false
+			},
+		  ]
+		},
+	  ]
+	}
+  }
+  

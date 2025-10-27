@@ -14,6 +14,7 @@ class_name GameManager extends Node
 @onready var delayed_hit_timer: Timer = $"../DelayedHitTimer"
 @onready var light_beams: Control = $"../LightBeams"
 @onready var debug_game_status: Label = $"../HUD/DebugGameStatus"
+@onready var light_beam: ColorRect = $"../LightBeams/LightBeam"
 
 @onready var listen: Sprite2D = $"../Listen"
 
@@ -43,7 +44,7 @@ var adjusted_note_quarter_gap: float
 @export var play_icon: Texture = preload("uid://bmy3pf53wlaxs")
 @export var star_empty_icon: Texture = preload("uid://v3cxc6ouqia7")
 @export var star_filled_icon: Texture = preload("uid://bnogovfwbmyjp")
-
+var number_of_bars: float = 1
 var delayed_hit_viable: bool = false
 var current_rhythm_game_level: RhythmGameLevel
 var change_to_listen_ui: bool = true
@@ -64,7 +65,7 @@ enum note_status {IDLE,ACTIVE,PLAYED,MISSED}
 var playing_delayed_hit: bool = false
 var loop_finished: bool = false
 var notes_dictionary: Dictionary
-var four_quarters_bar_duration: float = 2
+#var four_quarters_bar_duration: float = 2
 var quarter_note_duration: float = 0.5  # Duration of a quarter note in seconds (120 BPM)
 var elapsed_time: float = 0.0
 var elapsed_background_time: float = 0.0
@@ -97,14 +98,27 @@ func set_ui() -> void:
 	background.color = background_color_listen
 
 func set_light_beams() -> void:
-	var count: int = 0
-	for light_beam: ColorRect in light_beams.get_children():
-		light_beam.visible = false
-		light_beam.size.x = adjusted_note_quarter_gap
-		light_beam.position.x = adjusted_note_quarter_gap * count - light_beam.size.x / 2
-		count += 1
+	light_beam.visible = false
+	light_beam.size.x = adjusted_note_quarter_gap
+	for i in range(time_signature*number_of_bars):
+		var new_light_beam: ColorRect = light_beam.duplicate()
+		light_beams.add_child(new_light_beam)
+		new_light_beam.visible = false
+		new_light_beam.size.x = adjusted_note_quarter_gap
+		new_light_beam.position.x = adjusted_note_quarter_gap * (i+1) - light_beam.size.x / 2
+	#var count: int = 0
+	#for light_beam: ColorRect in light_beams.get_children():
+		#light_beam.visible = false
+		#light_beam.size.x = adjusted_note_quarter_gap
+		#light_beam.position.x = adjusted_note_quarter_gap * count - light_beam.size.x / 2
+		#count += 1
+
+func toggle_debug_ui(toggle: bool) -> void:
+	debug_current_note_num.visible = toggle
+	debug_game_status.visible = toggle
 
 func _ready() -> void:
+	toggle_debug_ui(false)
 	load_rhythmic_pattern_level()
 	set_light_beams()
 		
@@ -112,40 +126,37 @@ func _ready() -> void:
 		
 	set_ui()
 	#print("setting durations with time signature " + str(time_signature))
-	four_quarters_bar_duration = 60 / tempo * time_signature
+	#four_quarters_bar_duration = 60 / tempo * time_signature
 	quarter_note_duration = 60 / tempo
 	elapsed_time = 0.0
 	beat_time = 0 + MusicPlayer.beat_offset
 	light_beams.get_child(0).light_pulse(pre_beat_modifier)
 
 func _process(delta: float) -> void:
-	vignette.self_modulate.a -= 0.025
 	if not MusicPlayer.playing:
 		MusicPlayer.play()
 	change_game_status_visuals()
+	calculate_beat_num(delta)
+	bar_loop()
+
+func calculate_beat_num(delta: float) -> void:
 	elapsed_time += delta
 	elapsed_background_time += delta
 	beat_time += delta
 	pre_beat_time += delta
 	if pre_beat_time >= quarter_note_duration - pre_beat_modifier:
 		pre_beats_passed += 1
-		#beat_light_pulse(pre_beats_passed)
-		#print(pre_beats_passed)
 		pre_beat_time -= quarter_note_duration
-		if pre_beats_passed >= time_signature:
+		if pre_beats_passed >= time_signature * number_of_bars:
 			print("prebeat 0")
 			pre_beats_passed = 0
 		beat_light_pulse(pre_beats_passed)
 	if beat_time >= quarter_note_duration:
-		#beat_num += 1
 		beats_passed += 1
 		beat_time -= quarter_note_duration
-		#emit_signal("beat_signal",beats_passed) # go to beat_effects
-		if beats_passed >= time_signature:
+		if beats_passed >= time_signature * number_of_bars:
 			beats_passed = 0
-			#change_game_status()
 		emit_signal("beat_signal",beats_passed)
-	bar_loop()
 
 func beat_effects(beat_num: int) -> void:
 	#beat_light_pulse(beat_num)
@@ -155,7 +166,7 @@ func beat_effects(beat_num: int) -> void:
 		#change_to_listen_ui = false
 	if beat_num == 1:
 		elapsed_background_time = 0
-	if beat_num == 3:
+	if beat_num == time_signature * number_of_bars - 1:
 		change_game_status()
 		#if not keep_going_mode:
 			#change_to_listen_ui = !change_to_listen_ui
@@ -164,7 +175,7 @@ func beat_effects(beat_num: int) -> void:
 		#if change_to_listen_ui and not ready_to_start_keep_going:
 			#print("LISTEN")
 			#listen.texture = listen_icon
-	elif beat_num >= time_signature or beat_num == 0:
+	elif beat_num >= time_signature * number_of_bars or beat_num == 0:
 		pass
 		#if ready_to_start_keep_going:
 			#keep_going_mode = true
@@ -255,7 +266,7 @@ func enable_keep_going(number_of_repeats: int = 2) -> void:
 	#keep_going_mode = true
 	ready_to_start_keep_going = true
 
-func set_bar_stage(rhythm_game_level: RhythmGameLevel, looping: bool = false) -> void:
+func set_bar_stage(rhythm_game_level: RhythmGameLevel, looping: bool = true) -> void:
 	#print(notes_dictionary.size())
 	if looping:
 		stage_index = (stage_index % rhythm_game_level.get_stages_number()) + 1
@@ -323,7 +334,7 @@ func load_rhythmic_pattern_level() -> void:
 		var new_stream: AudioStream = load("res://music//" + audio_file)
 		MusicPlayer.stream = new_stream
 		did_load_bpm_and_audio = true
-		adjusted_note_quarter_gap = note_quarter_gap * 4 / time_signature
+		adjusted_note_quarter_gap = note_quarter_gap * 4 / time_signature / number_of_bars
 	set_bar_stage(current_rhythm_game_level)
 
 
@@ -372,10 +383,7 @@ func pointer_at_current_note(current_note_x_position: float, offset: float) -> b
 	return true
 
 func bar_loop() -> void:
-	#var current_bar_stage_index: int = stage_index
 	if current_note_num < note_nodes.size():
-		#print(current_note_num)
-		#print(notes_dictionary.size())
 		var offset: float = note_visual_offset * notes_dictionary[current_note_num]["duration"]
 		var current_note_x_position: float = notes_dictionary[current_note_num]["x_location"]
 		if pointer_at_current_note(current_note_x_position, offset):
@@ -464,7 +472,7 @@ func star_pulse() -> void:
 	#star_success_overlay.visible = true
 	#star_success_overlay.color.a = star_overlay_strength
 	
-func populate_note_nodes(number_of_notes: int = time_signature) -> void:
+func populate_note_nodes(number_of_notes: int = time_signature * number_of_bars) -> void:
 	note_nodes.clear()
 	for n: Node in notes_container.get_children():
 		notes_container.remove_child(n)
@@ -492,22 +500,26 @@ func change_game_status() -> void:
 	
 
 func change_game_status_visuals() -> void:
+	vignette.self_modulate.a -= 0.025
 	star_success_overlay.color.a -= 0.035
 	match game_status:
 		game_status_types.LISTEN:
 			background.color = lerp(background.color, background_color_listen, elapsed_background_time / 30)
 			if elapsed_background_time / 30 >= 0.01:
 				instruction.text = "הקשב"
+				listen.texture = listen_icon
 		
 		game_status_types.PLAY:
 			background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
 			if elapsed_background_time / 30 >= 0.01:
 				instruction.text = "נגן"
+				listen.texture = play_icon
 		
 		game_status_types.KEEP_GOING:
 			background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
 			if elapsed_background_time / 30 >= 0.01:
 				instruction.text = "תמשיך לנגן"
+				listen.texture = play_icon
 	
 	#if keep_going_mode:
 		#background.color = lerp(background.color, background_color_play, elapsed_background_time / 10)
