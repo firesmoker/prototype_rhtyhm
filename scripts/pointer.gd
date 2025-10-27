@@ -46,9 +46,9 @@ func _ready() -> void:
 		#restart_target_position = Vector2(target_position.x - offset_modifier, start_position.y)
 	elif type == "teacher":
 		var offset_modifier: float = game_manager.tempo / ts * game_manager.number_of_bars
-		position.x = teacher_start_position_x - offset_modifier
-		start_position.x = teacher_start_position_x - offset_modifier
-		target_position = target_teacher_position - Vector2(offset_modifier, 0)
+		position.x = teacher_start_position_x
+		start_position.x = teacher_start_position_x
+		target_position = target_teacher_position
 		#restart_position = Vector2(teacher_start_position_x - offset_modifier, start_position.y)
 		#restart_target_position = Vector2(target_teacher_position.x - offset_modifier, start_position.y)
 		

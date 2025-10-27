@@ -44,7 +44,7 @@ var adjusted_note_quarter_gap: float
 @export var play_icon: Texture = preload("uid://bmy3pf53wlaxs")
 @export var star_empty_icon: Texture = preload("uid://v3cxc6ouqia7")
 @export var star_filled_icon: Texture = preload("uid://bnogovfwbmyjp")
-var number_of_bars: float = 1
+var number_of_bars: float = 2
 var delayed_hit_viable: bool = false
 var current_rhythm_game_level: RhythmGameLevel
 var change_to_listen_ui: bool = true

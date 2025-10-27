@@ -11,15 +11,23 @@
 		  { "note": "D4", "duration": 1.0, "is_rest": false },
 		  { "note": "C4", "duration": 1.0, "is_rest": false },
 		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": false },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
 		]
 	  },
 	  {
 		"stageNumber": 2,
 		"notes": [
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "E4", "duration": 1.0, "is_rest": false },
-		  { "note": "C4", "duration": 1.0, "is_rest": true }
+		  { "note": "E4", "duration": 1.0, "is_rest": true },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": true },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "E4", "duration": 1.0, "is_rest": true },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
+		  { "note": "C4", "duration": 1.0, "is_rest": true },
+		  { "note": "D4", "duration": 1.0, "is_rest": false },
 		]
 	  },
 	  {
