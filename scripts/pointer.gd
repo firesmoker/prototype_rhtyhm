@@ -91,7 +91,7 @@ func _process(_delta: float) -> void:
 		if position.x >= notes_to_play[notes_played_count].position.x:
 			if not MusicPlayer.playing:
 				MusicPlayer.play()
-			if type == "teacher":
+			if type == "teacher" and not game_manager.keep_going_mode:
 				game_manager.pulse(notes_played_count)
 				if notes_to_play[notes_played_count].type == "note":
 					MusicPlayer.get_child(0).stream = MusicPlayer.teacher_note

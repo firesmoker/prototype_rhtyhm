@@ -209,7 +209,7 @@ func delayed_hit() -> void:
 		playing_delayed_hit = true
 		delayed_hit_viable = true
 		await restart_signal
-		if delayed_hit_viable and game_status == game_status_types.PLAY:
+		if delayed_hit_viable and game_status != game_status_types.LISTEN:
 			delayed_hit_timer.stop()
 			play_note()
 		playing_delayed_hit = false
@@ -498,7 +498,7 @@ func change_game_status() -> void:
 			else:
 				game_status = game_status_types.LISTEN
 		game_status_types.KEEP_GOING:
-			if not keep_going_mode:
+			if keep_going_repeats_passed >= keep_going_repeats -1:
 				game_status = game_status_types.LISTEN
 	debug_game_status.text = str(game_status)
 	
