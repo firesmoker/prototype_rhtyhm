@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cy8yitgsn8y74"]
+[gd_scene load_steps=3 format=3 uid="uid://cy8yitgsn8y74"]
 
+[ext_resource type="Script" uid="uid://35hdjmrssa5k" path="res://scripts/control.gd" id="1_r67kn"]
 [ext_resource type="PackedScene" uid="uid://dl21vgnf0ja57" path="res://scenes/level_button.tscn" id="10_01bab"]
 
 [node name="Control" type="ScrollContainer"]
@@ -8,34 +9,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_r67kn")
+level_button_template = ExtResource("10_01bab")
 
 [node name="Grid" type="GridContainer" parent="."]
 layout_mode = 2
 columns = 6
-
-[node name="LevelButton3" parent="Grid" instance=ExtResource("10_01bab")]
-layout_mode = 2
-
-[node name="LevelButton4" parent="Grid" instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "marry"
-
-[node name="LevelButton5" parent="Grid" instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "countingStars122"
-
-[node name="LevelButton8" parent="Grid" instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "happy160"
-
-[node name="LevelButton9" parent="Grid" instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "happy160"
-
-[node name="LevelButton10" parent="Grid" instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "happy160"
-
-[node name="LevelButton11" parent="Grid" instance=ExtResource("10_01bab")]
-layout_mode = 2
-level_name = "wewillrockyou"
